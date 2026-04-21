@@ -31,7 +31,6 @@ export default async function EmployeesPage() {
                   <th className="px-6 py-4 font-medium">Name</th>
                   <th className="px-6 py-4 font-medium">Email</th>
                   <th className="px-6 py-4 font-medium">Department</th>
-                  <th className="px-6 py-4 font-medium">Hire Date</th>
                 </tr>
               </thead>
 
