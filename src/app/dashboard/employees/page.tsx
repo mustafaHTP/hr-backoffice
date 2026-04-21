@@ -1,4 +1,5 @@
 import { getEmployees } from "@/lib/dal";
+import Link from "next/link";
 
 export default async function EmployeesPage() {
   const employees = await getEmployees();
@@ -16,9 +17,11 @@ export default async function EmployeesPage() {
           </p>
         </div>
 
-        <button className="rounded-full bg-violet-950 px-4 py-2 text-sm font-semibold text-white hover:bg-violet-800 transition">
-          + Add Employee
-        </button>
+        <Link href="/dashboard/employees/create">
+          <button className="rounded-full bg-violet-950 px-4 py-2 text-sm font-semibold text-white hover:bg-violet-800 transition">
+            + Add Employee
+          </button>
+        </Link>
       </div>
 
       {/* Card */}
