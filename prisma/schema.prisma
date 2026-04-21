@@ -5,9 +5,31 @@
 
 generator client {
   provider = "prisma-client"
-  output   = "../app/generated/prisma"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
+}
+
+model Department {
+  id          Int        @id @default(autoincrement())
+  name        String     @unique
+  description String?
+  createdAt   DateTime   @default(now())
+
+  employees   Employee[]
+}
+
+model Employee {
+  id           Int        @id @default(autoincrement())
+  firstName    String
+  lastName     String
+  email        String     @unique
+  phone        String?
+
+  departmentId Int?
+  department   Department? @relation(fields: [departmentId], references: [id])
+
+  createdAt    DateTime   @default(now())
 }
