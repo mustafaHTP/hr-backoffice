@@ -1,7 +1,67 @@
-export default function DeparmentsPage() {
+import { getDepartments } from "@/lib/dal";
+import Link from "next/link";
+
+export default async function DeparmentsPage() {
+  const departments = await getDepartments();
+
   return (
-    <>
-      <div>Deparments page</div>
-    </>
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-start justify-between">
+        <div>
+          <h1 className="text-2xl font-semibold text-zinc-950 dark:text-white">
+            Departments
+          </h1>
+          <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+            Manage all departmens in your organization
+          </p>
+        </div>
+
+        <Link href="/dashboard/departments/create">
+          <button className="rounded-full bg-violet-950 px-4 py-2 text-sm font-semibold text-white hover:bg-violet-800 transition">
+            + Add Department
+          </button>
+        </Link>
+      </div>
+
+      {/* Card */}
+      <div className="rounded-3xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900 overflow-hidden">
+        {departments.length > 0 ? (
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-sm">
+              <thead className="border-b border-zinc-200 dark:border-zinc-800">
+                <tr className="text-zinc-500 dark:text-zinc-400">
+                  <th className="px-6 py-4 font-medium">Name</th>
+                  <th className="px-6 py-4 font-medium">Description</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {departments.map((dpt) => (
+                  <tr
+                    key={dpt.id}
+                    className="border-b border-zinc-100 last:border-0 hover:bg-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-800/40 transition"
+                  >
+                    <td className="px-6 py-4 font-medium text-zinc-950 dark:text-white">
+                      {dpt.name}
+                    </td>
+
+                    <td className="px-6 py-4 text-zinc-600 dark:text-zinc-300">
+                      {dpt.description ?? "No Description"}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <div className="p-10 text-center">
+            <p className="text-zinc-600 dark:text-zinc-400">
+              No departments found
+            </p>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
