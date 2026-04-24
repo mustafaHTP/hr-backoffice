@@ -1,5 +1,6 @@
 import { getEmployees } from "@/lib/dal";
 import Link from "next/link";
+import EmployeeRow from "./EmployeeRow";
 
 export default async function EmployeesPage() {
   const employees = await getEmployees();
@@ -34,27 +35,13 @@ export default async function EmployeesPage() {
                   <th className="px-6 py-4 font-medium">Name</th>
                   <th className="px-6 py-4 font-medium">Email</th>
                   <th className="px-6 py-4 font-medium">Department</th>
+                  <th className="px-6 py-4 font-medium">Actions</th>
                 </tr>
               </thead>
 
               <tbody>
                 {employees.map((emp) => (
-                  <tr
-                    key={emp.id}
-                    className="border-b border-zinc-100 last:border-0 hover:bg-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-800/40 transition"
-                  >
-                    <td className="px-6 py-4 font-medium text-zinc-950 dark:text-white">
-                      {emp.firstName} {emp.lastName}
-                    </td>
-
-                    <td className="px-6 py-4 text-zinc-600 dark:text-zinc-300">
-                      {emp.email}
-                    </td>
-
-                    <td className="px-6 py-4 text-zinc-600 dark:text-zinc-300">
-                      {emp.department?.name ?? "Unassigned"}
-                    </td>
-                  </tr>
+                  <EmployeeRow key={emp.id} emp={emp} />
                 ))}
               </tbody>
             </table>
