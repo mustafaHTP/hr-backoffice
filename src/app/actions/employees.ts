@@ -3,7 +3,9 @@
 import { prisma } from "@/lib/prisma";
 import z, { number, success } from "zod";
 import { isNumber } from "@/lib/utils";
-import { revalidatePath } from "next/dist/server/web/spec-extension/revalidate";
+import { updateEmployee } from "@/lib/dal";
+import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 // ? Move somewhere else
 const employeeSchema = z.object({
@@ -13,6 +15,8 @@ const employeeSchema = z.object({
   phone: z.string().optional(),
   departmentId: z.number().optional().nullable(),
 });
+
+export type EmployeeSchema = z.infer<typeof employeeSchema>;
 
 export type ActionResponse = {
   success: boolean;
@@ -55,6 +59,48 @@ export async function createEmployee(data: {
   }
 }
 
+export async function updateEmployeeAction(
+  _: ActionResponse,
+  formData: FormData,
+): Promise<ActionResponse> {
+  const formEmployee = {
+    id: Number(formData.get("id")),
+    firstName: formData.get("firstName") as string,
+    lastName: formData.get("lastName") as string,
+    email: formData.get("email") as string,
+    phone: formData.get("phone") as string,
+    departmentId: formData.get("departmentId")
+      ? Number(formData.get("departmentId"))
+      : null,
+  };
+
+  const validationResult = employeeSchema.safeParse(formEmployee);
+  if (!validationResult.success) {
+    return {
+      success: false,
+      errors: validationResult.error.flatten().fieldErrors,
+    };
+  }
+
+  try {
+    await updateEmployee(formEmployee.id, validationResult.data);
+
+    revalidatePath(`/dashboard/employees/edit/${formEmployee.id}`);
+
+    return {
+      success: true,
+      message: "Employee updated successfully",
+    };
+  } catch (error) {
+    console.log("Error occured on updating employee: " + error);
+
+    return {
+      success: false,
+      message: "Failed to update employee",
+    };
+  }
+}
+
 export async function deleteEmployee(_: ActionResponse, formData: FormData) {
   const idFromForm = formData.get("id");
   if (!idFromForm) {
@@ -80,7 +126,6 @@ export async function deleteEmployee(_: ActionResponse, formData: FormData) {
       },
     });
 
-    // refresh page
     revalidatePath("/dashboard/employees");
 
     return {

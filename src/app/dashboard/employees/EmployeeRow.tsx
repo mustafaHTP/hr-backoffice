@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { deleteEmployee } from "@/app/actions/employees";
+import Link from "next/link";
 
 export default function EmployeeRow({ emp }) {
   const [state, formAction, isPending] = useActionState(deleteEmployee, {
@@ -33,6 +34,16 @@ export default function EmployeeRow({ emp }) {
             {isPending ? "Deleting..." : "Delete"}
           </button>
         </form>
+
+        <Link href={`/dashboard/employees/edit/${emp.id}`}>
+          <button
+            type="submit"
+            disabled={isPending}
+            className="rounded-full bg-red-600 px-4 py-2 text-sm text-white disabled:bg-gray-400"
+          >
+            Edit
+          </button>
+        </Link>
 
         {state?.message && (
           <p className={state.success ? "text-green-500" : "text-red-500"}>
