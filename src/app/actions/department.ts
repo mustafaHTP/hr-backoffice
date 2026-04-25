@@ -2,9 +2,12 @@
 
 import z from "zod";
 import { ActionResponse } from "./employees";
-import { createDepartment, deleteDepartment } from "@/lib/dal/department";
+import {
+  createDepartment,
+  deleteDepartment,
+  updateDepartment,
+} from "@/lib/dal/department";
 import { isNumber } from "@/lib/utils";
-import { revalidatePath } from "next/cache";
 
 const departmentSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -41,6 +44,47 @@ export async function createDepartmentAction(
     return {
       success: false,
       message: "Failed to create department",
+    };
+  }
+}
+
+export async function updateDepartmentAction(
+  formData: FormData,
+): Promise<ActionResponse> {
+  const departmentForm = {
+    id: formData.get("id") ? Number(formData.get("id")) : null,
+    name: formData.get("name"),
+    description: formData.get("description"),
+  };
+
+  if (!departmentForm.id) {
+    return {
+      success: false,
+      message: "Id is not in form",
+    };
+  }
+
+  const validationResult = departmentSchema.safeParse(departmentForm);
+  if (!validationResult.success) {
+    return {
+      success: false,
+      errors: validationResult.error.flatten().fieldErrors,
+    };
+  }
+
+  try {
+    await updateDepartment(departmentForm.id, validationResult.data);
+
+    return {
+      success: true,
+      message: "Department updated successfully",
+    };
+  } catch (error) {
+    console.log("Failed to updaate department: " + error);
+
+    return {
+      success: false,
+      message: "Failed to update employee",
     };
   }
 }

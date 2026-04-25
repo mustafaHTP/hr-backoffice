@@ -2,6 +2,7 @@
 
 import { deleteDepartmentAction } from "@/app/actions/department";
 import { ActionResponse } from "@/app/actions/employees";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useActionState } from "react";
 
@@ -48,6 +49,16 @@ export default function DepartmentRow({ department }) {
             {isPending ? "Deleting..." : "Delete"}
           </button>
         </form>
+
+        <Link href={`/dashboard/departments/edit/${department.id}`}>
+          <button
+            type="submit"
+            disabled={isPending}
+            className="rounded-full bg-red-600 px-4 py-2 text-sm text-white disabled:bg-gray-400"
+          >
+            Edit
+          </button>
+        </Link>
       </td>
     </tr>
   );
