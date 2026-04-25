@@ -1,7 +1,7 @@
 "use client";
 
 import { updateDepartmentAction } from "@/app/actions/department";
-import { ActionResponse } from "@/app/actions/employees";
+import { ActionResponse } from "@/app/actions/employee";
 import { useRouter } from "next/navigation";
 import { useActionState } from "react";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { updateEmployeeAction } from "@/app/actions/employees";
+import { updateEmployeeAction } from "@/app/actions/employee";
 import { useRouter } from "next/navigation";
 import { useActionState } from "react";
 

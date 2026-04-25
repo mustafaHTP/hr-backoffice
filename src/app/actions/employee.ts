@@ -1,10 +1,9 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import z, { number, success } from "zod";
+import z from "zod";
 import { isNumber } from "@/lib/utils";
 import { updateEmployee } from "@/lib/dal/employee";
-import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 
 // ? Move somewhere else
@@ -24,7 +23,7 @@ export type ActionResponse = {
   errors?: Record<string, string[]>;
 };
 
-export async function createEmployee(data: {
+export async function createEmployeeAction(data: {
   firstName: string;
   lastName: string;
   email: string;
@@ -101,7 +100,10 @@ export async function updateEmployeeAction(
   }
 }
 
-export async function deleteEmployee(_: ActionResponse, formData: FormData) {
+export async function deleteEmployeeAction(
+  _: ActionResponse,
+  formData: FormData,
+) {
   const idFromForm = formData.get("id");
   if (!idFromForm) {
     return {

@@ -1,7 +1,7 @@
 "use client";
 
 import { deleteDepartmentAction } from "@/app/actions/department";
-import { ActionResponse } from "@/app/actions/employees";
+import { ActionResponse } from "@/app/actions/employee";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useActionState } from "react";

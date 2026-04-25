@@ -1,7 +1,7 @@
 "use server";
 
 import z from "zod";
-import { ActionResponse } from "./employees";
+import { ActionResponse } from "./employee";
 import {
   createDepartment,
   deleteDepartment,

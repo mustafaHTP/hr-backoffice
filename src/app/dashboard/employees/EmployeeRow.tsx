@@ -1,11 +1,11 @@
 "use client";
 
 import { useActionState } from "react";
-import { deleteEmployee } from "@/app/actions/employees";
+import { deleteEmployeeAction } from "@/app/actions/employee";
 import Link from "next/link";
 
 export default function EmployeeRow({ emp }) {
-  const [state, formAction, isPending] = useActionState(deleteEmployee, {
+  const [state, formAction, isPending] = useActionState(deleteEmployeeAction, {
     success: false,
     message: "",
   });

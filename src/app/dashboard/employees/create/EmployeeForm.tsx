@@ -1,6 +1,6 @@
 "use client";
 
-import { ActionResponse, createEmployee } from "@/app/actions/employees";
+import { ActionResponse, createEmployeeAction } from "@/app/actions/employee";
 import { useRouter } from "next/navigation";
 import { useActionState } from "react";
 
@@ -24,7 +24,7 @@ export default function EmployeeForm({ departments }) {
         ? Number(formData.get("departmentId"))
         : null,
     };
-    const result = await createEmployee(data);
+    const result = await createEmployeeAction(data);
 
     if (result.success) {
       router.refresh();

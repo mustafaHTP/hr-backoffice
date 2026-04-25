@@ -1,4 +1,4 @@
-import { EmployeeSchema } from "@/app/actions/employees";
+import { EmployeeSchema } from "@/app/actions/employee";
 import { prisma } from "@/lib/prisma";
 
 export async function getEmployees() {
