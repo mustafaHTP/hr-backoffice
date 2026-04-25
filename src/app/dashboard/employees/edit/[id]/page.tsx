@@ -1,6 +1,6 @@
 import { getDepartments } from "@/lib/dal/department";
 import EmployeeForm from "./EmployeeForm";
-import { getEmployee } from "@/lib/dal";
+import { getEmployee } from "@/lib/dal/employee";
 
 export default async function EmployeeEditPage({ params }) {
   const departments = await getDepartments();

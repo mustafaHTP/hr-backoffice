@@ -1,4 +1,4 @@
-import { getEmployees } from "@/lib/dal";
+import { getEmployees } from "@/lib/dal/employee";
 import Link from "next/link";
 import EmployeeRow from "./EmployeeRow";
 

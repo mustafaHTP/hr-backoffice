@@ -3,7 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import z, { number, success } from "zod";
 import { isNumber } from "@/lib/utils";
-import { updateEmployee } from "@/lib/dal";
+import { updateEmployee } from "@/lib/dal/employee";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 
