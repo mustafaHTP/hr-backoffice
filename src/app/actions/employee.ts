@@ -1,21 +1,10 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import z from "zod";
 import { isNumber } from "@/lib/utils";
 import { updateEmployee } from "@/lib/dal/employee";
 import { revalidatePath } from "next/cache";
-
-// ? Move somewhere else
-const employeeSchema = z.object({
-  firstName: z.string().min(1, "First name is required"),
-  lastName: z.string().min(1, "Last name is required"),
-  email: z.string().email("Invalid email"),
-  phone: z.string().optional(),
-  departmentId: z.number().optional().nullable(),
-});
-
-export type EmployeeSchema = z.infer<typeof employeeSchema>;
+import { employeeSchema } from "@/lib/schemas/employee";
 
 export type ActionResponse = {
   success: boolean;
@@ -30,18 +19,18 @@ export async function createEmployeeAction(data: {
   phone?: string;
   departmentId?: number | null;
 }): Promise<ActionResponse> {
-  const parsed = employeeSchema.safeParse(data);
+  const validationResult = employeeSchema.safeParse(data);
 
-  if (!parsed.success) {
+  if (!validationResult.success) {
     return {
       success: false,
-      errors: parsed.error.flatten().fieldErrors,
+      errors: validationResult.error.flatten().fieldErrors,
     };
   }
 
   try {
     await prisma.employee.create({
-      data: parsed.data,
+      data: validationResult.data,
     });
 
     return {

@@ -1,20 +1,13 @@
 "use server";
 
-import z from "zod";
 import { ActionResponse } from "./employee";
 import {
   createDepartment,
   deleteDepartment,
   updateDepartment,
 } from "@/lib/dal/department";
+import { departmentSchema } from "@/lib/schemas/department";
 import { isNumber } from "@/lib/utils";
-
-const departmentSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  description: z.string().optional(),
-});
-
-export type DepartmentSchema = z.infer<typeof departmentSchema>;
 
 export async function createDepartmentAction(
   formData: FormData,
