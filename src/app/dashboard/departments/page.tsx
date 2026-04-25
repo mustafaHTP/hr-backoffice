@@ -1,5 +1,6 @@
 import { getDepartments } from "@/lib/dal";
 import Link from "next/link";
+import DepartmentRow from "./DepartmentRow";
 
 export default async function DeparmentsPage() {
   const departments = await getDepartments();
@@ -33,23 +34,13 @@ export default async function DeparmentsPage() {
                 <tr className="text-zinc-500 dark:text-zinc-400">
                   <th className="px-6 py-4 font-medium">Name</th>
                   <th className="px-6 py-4 font-medium">Description</th>
+                  <th className="px-6 py-4 font-medium">Actions</th>
                 </tr>
               </thead>
 
               <tbody>
                 {departments.map((dpt) => (
-                  <tr
-                    key={dpt.id}
-                    className="border-b border-zinc-100 last:border-0 hover:bg-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-800/40 transition"
-                  >
-                    <td className="px-6 py-4 font-medium text-zinc-950 dark:text-white">
-                      {dpt.name}
-                    </td>
-
-                    <td className="px-6 py-4 text-zinc-600 dark:text-zinc-300">
-                      {dpt.description ?? "No Description"}
-                    </td>
-                  </tr>
+                  <DepartmentRow key={dpt.id} department={dpt} />
                 ))}
               </tbody>
             </table>

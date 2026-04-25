@@ -2,7 +2,9 @@
 
 import z from "zod";
 import { ActionResponse } from "./employees";
-import { createDepartment } from "@/lib/dal/department";
+import { createDepartment, deleteDepartment } from "@/lib/dal/department";
+import { isNumber } from "@/lib/utils";
+import { revalidatePath } from "next/cache";
 
 const departmentSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -39,6 +41,43 @@ export async function createDepartmentAction(
     return {
       success: false,
       message: "Failed to create department",
+    };
+  }
+}
+
+export async function deleteDepartmentAction(
+  formData: FormData,
+): Promise<ActionResponse> {
+  const idFromForm = formData.get("id");
+  if (!idFromForm) {
+    return {
+      success: false,
+      message: "Id data is not in form",
+    };
+  }
+
+  if (!isNumber(idFromForm.toString())) {
+    return {
+      success: false,
+      message: "Id data is NaN",
+    };
+  }
+
+  const id = Number(idFromForm);
+
+  try {
+    await deleteDepartment(id);
+
+    return {
+      success: true,
+      message: "Department deleted successfully",
+    };
+  } catch (error) {
+    console.log("Failed to delete department: " + error);
+
+    return {
+      success: false,
+      message: "Failed to delete department",
     };
   }
 }
