@@ -17,18 +17,6 @@ export async function getEmployees() {
   }
 }
 
-export async function getDepartments() {
-  try {
-    const departments = await prisma.department.findMany();
-
-    return departments;
-  } catch (error) {
-    console.log("Errow fetching departments: " + error);
-
-    throw new Error("Failed to get departments");
-  }
-}
-
 export async function updateEmployee(id: number, employee: EmployeeSchema) {
   try {
     await prisma.employee.update({

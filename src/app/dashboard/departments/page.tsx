@@ -1,6 +1,6 @@
-import { getDepartments } from "@/lib/dal";
 import Link from "next/link";
 import DepartmentRow from "./DepartmentRow";
+import { getDepartments } from "@/lib/dal/department";
 
 export default async function DeparmentsPage() {
   const departments = await getDepartments();

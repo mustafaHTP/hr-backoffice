@@ -1,6 +1,18 @@
 import { DepartmentSchema } from "@/app/actions/department";
 import { prisma } from "../prisma";
 
+export async function getDepartments() {
+  try {
+    const departments = await prisma.department.findMany();
+
+    return departments;
+  } catch (error) {
+    console.log("Errow fetching departments: " + error);
+
+    throw new Error("Failed to get departments");
+  }
+}
+
 export async function createDepartment(department: DepartmentSchema) {
   try {
     await prisma.department.create({
