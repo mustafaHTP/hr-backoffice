@@ -5,12 +5,7 @@ import { isNumber } from "@/lib/utils";
 import { updateEmployee } from "@/lib/dal/employee";
 import { revalidatePath } from "next/cache";
 import { employeeSchema } from "@/lib/schemas/employee";
-
-export type ActionResponse = {
-  success: boolean;
-  message?: string;
-  errors?: Record<string, string[]>;
-};
+import { ActionResponse } from "@/types/action-response";
 
 export async function createEmployeeAction(data: {
   firstName: string;

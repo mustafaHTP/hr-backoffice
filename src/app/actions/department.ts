@@ -1,6 +1,5 @@
 "use server";
 
-import { ActionResponse } from "./employee";
 import {
   createDepartment,
   deleteDepartment,
@@ -8,6 +7,7 @@ import {
 } from "@/lib/dal/department";
 import { departmentSchema } from "@/lib/schemas/department";
 import { isNumber } from "@/lib/utils";
+import { ActionResponse } from "@/types/action-response";
 
 export async function createDepartmentAction(
   formData: FormData,
