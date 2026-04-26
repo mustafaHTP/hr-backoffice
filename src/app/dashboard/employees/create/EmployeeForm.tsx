@@ -1,38 +1,31 @@
 "use client";
 
-import { ActionResponse, createEmployeeAction } from "@/app/actions/employee";
+import { createEmployeeAction } from "@/app/actions/employee";
+import { ActionResponse } from "@/types/action-response";
 import { useRouter } from "next/navigation";
 import { useActionState } from "react";
-
-const initialState: ActionResponse = {
-  success: false,
-  message: "",
-};
 
 export default function EmployeeForm({ departments }) {
   const router = useRouter();
   const [state, formAction, isPending] = useActionState<
     ActionResponse,
     FormData
-  >(async (_, formData) => {
-    const data = {
-      firstName: formData.get("firstName") as string,
-      lastName: formData.get("lastName") as string,
-      email: formData.get("email") as string,
-      phone: formData.get("phone") as string,
-      departmentId: formData.get("departmentId")
-        ? Number(formData.get("departmentId"))
-        : null,
-    };
-    const result = await createEmployeeAction(data);
+  >(
+    async (_, formData) => {
+      const result = await createEmployeeAction(formData);
 
-    if (result.success) {
-      router.refresh();
-      router.push("/dashboard/employees");
-    }
+      if (result.success) {
+        router.refresh();
+        router.push("/dashboard/employees");
+      }
 
-    return result;
-  }, initialState);
+      return result;
+    },
+    {
+      success: false,
+      message: "",
+    },
+  );
 
   return (
     <div className="max-w-2xl space-y-6">

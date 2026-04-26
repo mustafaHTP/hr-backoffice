@@ -2,19 +2,25 @@
 
 import { prisma } from "@/lib/prisma";
 import { isNumber } from "@/lib/utils";
-import { updateEmployee } from "@/lib/dal/employee";
+import { createEmployee, updateEmployee } from "@/lib/dal/employee";
 import { revalidatePath } from "next/cache";
 import { employeeSchema } from "@/lib/schemas/employee";
 import { ActionResponse } from "@/types/action-response";
 
-export async function createEmployeeAction(data: {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone?: string;
-  departmentId?: number | null;
-}): Promise<ActionResponse> {
-  const validationResult = employeeSchema.safeParse(data);
+export async function createEmployeeAction(
+  formData: FormData,
+): Promise<ActionResponse> {
+  const employeeData = {
+    firstName: formData.get("firstName") as string,
+    lastName: formData.get("lastName") as string,
+    email: formData.get("email") as string,
+    phone: formData.get("phone") as string,
+    departmentId: formData.get("departmentId")
+      ? Number(formData.get("departmentId"))
+      : null,
+  };
+
+  const validationResult = employeeSchema.safeParse(employeeData);
 
   if (!validationResult.success) {
     return {
@@ -24,9 +30,7 @@ export async function createEmployeeAction(data: {
   }
 
   try {
-    await prisma.employee.create({
-      data: validationResult.data,
-    });
+    await createEmployee(validationResult.data);
 
     return {
       success: true,

@@ -1,5 +1,5 @@
-import { EmployeeSchema } from "@/app/actions/employee";
 import { prisma } from "@/lib/prisma";
+import { EmployeeSchema } from "../schemas/employee";
 
 export async function getEmployees() {
   try {
@@ -14,6 +14,18 @@ export async function getEmployees() {
     console.log("Error fetching employees:" + error);
 
     throw new Error("Failed to get employees");
+  }
+}
+
+export async function createEmployee(employee: EmployeeSchema) {
+  try {
+    await prisma.employee.create({
+      data: employee,
+    });
+  } catch (error) {
+    console.log("Error creating employee: " + error);
+
+    throw new Error("Failed to create employee");
   }
 }
 
