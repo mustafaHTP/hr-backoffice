@@ -19,8 +19,8 @@ export default async function DeparmentsPage() {
         </div>
 
         <Link href="/dashboard/departments/create">
-          <button className="rounded-full bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-violet-800 transition">
-            + Add Department
+          <button className="flex items-center space-x-1 rounded-full bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700 cursor-pointer transition">
+            <span>+ Add Department</span>
           </button>
         </Link>
       </div>

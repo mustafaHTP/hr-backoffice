@@ -26,7 +26,7 @@ export default function EmployeeRow({ employee }) {
   );
 
   return (
-    <tr>
+    <tr className="border-b border-zinc-100 last:border-0 hover:bg-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-800/40 transition">
       <td className="px-6 py-4 font-medium text-zinc-950 dark:text-white">
         {employee.firstName} {employee.lastName}
       </td>
@@ -44,7 +44,7 @@ export default function EmployeeRow({ employee }) {
             <button
               type="submit"
               disabled={isPending}
-              className="flex items-center space-x-1 rounded-full bg-amber-600 px-4 py-2 text-sm text-white disabled:bg-gray-400"
+              className="flex items-center space-x-1 rounded-full bg-amber-600 px-4 py-2 text-sm text-white disabled:bg-gray-400 hover:bg-amber-700 disabled:cursor-not-allowed cursor-pointer"
             >
               <Pencil1Icon />
               <span>Edit</span>
@@ -56,7 +56,7 @@ export default function EmployeeRow({ employee }) {
             <button
               type="submit"
               disabled={isPending}
-              className="flex items-center space-x-1 rounded-full bg-red-600 px-4 py-2 text-sm text-white disabled:bg-gray-400"
+              className="flex items-center space-x-1 rounded-full bg-red-600 px-4 py-2 text-sm text-white disabled:bg-gray-400 hover:bg-red-700 disabled:cursor-not-allowed cursor-pointer"
             >
               <TrashIcon />
               <span>{isPending ? "Deleting..." : "Delete"}</span>
