@@ -1,5 +1,5 @@
-import { DepartmentSchema } from "@/app/actions/department";
 import { prisma } from "../prisma";
+import { DepartmentSchema } from "../schemas/department";
 
 export async function getDepartments() {
   try {
