@@ -1,8 +1,11 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
 import { isNumber } from "@/lib/utils";
-import { createEmployee, updateEmployee } from "@/lib/dal/employee";
+import {
+  createEmployee,
+  deleteEmployee,
+  updateEmployee,
+} from "@/lib/dal/employee";
 import { revalidatePath } from "next/cache";
 import { employeeSchema } from "@/lib/schemas/employee";
 import { ActionResponse } from "@/types/action-response";
@@ -88,10 +91,7 @@ export async function updateEmployeeAction(
   }
 }
 
-export async function deleteEmployeeAction(
-  _: ActionResponse,
-  formData: FormData,
-) {
+export async function deleteEmployeeAction(formData: FormData) {
   const idFromForm = formData.get("id");
   if (!idFromForm) {
     return {
@@ -110,13 +110,7 @@ export async function deleteEmployeeAction(
   const id = Number(idFromForm);
 
   try {
-    await prisma.employee.delete({
-      where: {
-        id: id,
-      },
-    });
-
-    revalidatePath("/dashboard/employees");
+    await deleteEmployee(id);
 
     return {
       success: true,

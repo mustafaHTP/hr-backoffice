@@ -3,29 +3,43 @@
 import { useActionState } from "react";
 import { deleteEmployeeAction } from "@/app/actions/employee";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { ActionResponse } from "@/types/action-response";
 
-export default function EmployeeRow({ emp }) {
-  const [state, formAction, isPending] = useActionState(deleteEmployeeAction, {
-    success: false,
-    message: "",
-  });
+export default function EmployeeRow({ employee }) {
+  const router = useRouter();
+  const [state, formAction, isPending] = useActionState<
+    ActionResponse,
+    FormData
+  >(
+    async (_, formData) => {
+      const response = await deleteEmployeeAction(formData);
+      router.refresh();
+
+      return response;
+    },
+    {
+      success: false,
+      message: "",
+    },
+  );
 
   return (
     <tr>
       <td className="px-6 py-4 font-medium text-zinc-950 dark:text-white">
-        {emp.firstName} {emp.lastName}
+        {employee.firstName} {employee.lastName}
       </td>
 
       <td className="px-6 py-4 text-zinc-600 dark:text-zinc-300">
-        {emp.email}
+        {employee.email}
       </td>
 
       <td className="px-6 py-4 text-zinc-600 dark:text-zinc-300">
-        {emp.department?.name ?? "Unassigned"}
+        {employee.department?.name ?? "Unassigned"}
       </td>
       <td>
         <form action={formAction}>
-          <input type="hidden" name="id" value={emp.id} />
+          <input type="hidden" name="id" value={employee.id} />
           <button
             type="submit"
             disabled={isPending}
@@ -35,7 +49,7 @@ export default function EmployeeRow({ emp }) {
           </button>
         </form>
 
-        <Link href={`/dashboard/employees/edit/${emp.id}`}>
+        <Link href={`/dashboard/employees/edit/${employee.id}`}>
           <button
             type="submit"
             disabled={isPending}

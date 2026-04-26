@@ -41,7 +41,7 @@ export default async function EmployeesPage() {
 
               <tbody>
                 {employees.map((emp) => (
-                  <EmployeeRow key={emp.id} emp={emp} />
+                  <EmployeeRow key={emp.id} employee={emp} />
                 ))}
               </tbody>
             </table>

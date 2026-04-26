@@ -59,3 +59,17 @@ export async function getEmployee(id: number) {
     throw new Error(`Failed to get employee with id: ${id}`);
   }
 }
+
+export async function deleteEmployee(id: number) {
+  try {
+    await prisma.employee.delete({
+      where: {
+        id: id,
+      },
+    });
+  } catch (error) {
+    console.log("Failed to delete employee: " + error);
+
+    throw new Error("Failed to delete employee with id: " + id);
+  }
+}
