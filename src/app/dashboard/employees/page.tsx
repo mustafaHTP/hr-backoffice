@@ -19,7 +19,7 @@ export default async function EmployeesPage() {
         </div>
 
         <Link href="/dashboard/employees/create">
-          <button className="rounded-full bg-violet-950 px-4 py-2 text-sm font-semibold text-white hover:bg-violet-800 transition">
+          <button className="rounded-full bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-violet-800 transition">
             + Add Employee
           </button>
         </Link>

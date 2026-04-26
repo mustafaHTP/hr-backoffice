@@ -5,6 +5,7 @@ import { deleteEmployeeAction } from "@/app/actions/employee";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ActionResponse } from "@/types/action-response";
+import { TrashIcon, Pencil1Icon } from "@radix-ui/react-icons";
 
 export default function EmployeeRow({ employee }) {
   const router = useRouter();
@@ -39,26 +40,28 @@ export default function EmployeeRow({ employee }) {
       </td>
       <td>
         <div className="flex space-x-2">
+          <Link href={`/dashboard/employees/edit/${employee.id}`}>
+            <button
+              type="submit"
+              disabled={isPending}
+              className="flex items-center space-x-1 rounded-full bg-amber-600 px-4 py-2 text-sm text-white disabled:bg-gray-400"
+            >
+              <Pencil1Icon />
+              <span>Edit</span>
+            </button>
+          </Link>
+
           <form action={formAction}>
             <input type="hidden" name="id" value={employee.id} />
             <button
               type="submit"
               disabled={isPending}
-              className="rounded-full bg-red-600 px-4 py-2 text-sm text-white disabled:bg-gray-400"
+              className="flex items-center space-x-1 rounded-full bg-red-600 px-4 py-2 text-sm text-white disabled:bg-gray-400"
             >
-              {isPending ? "Deleting..." : "Delete"}
+              <TrashIcon />
+              <span>{isPending ? "Deleting..." : "Delete"}</span>
             </button>
           </form>
-
-          <Link href={`/dashboard/employees/edit/${employee.id}`}>
-            <button
-              type="submit"
-              disabled={isPending}
-              className="rounded-full bg-red-600 px-4 py-2 text-sm text-white disabled:bg-gray-400"
-            >
-              Edit
-            </button>
-          </Link>
         </div>
 
         {state?.message && (
