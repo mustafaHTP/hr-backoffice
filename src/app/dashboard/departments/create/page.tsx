@@ -1,7 +1,7 @@
 "use client";
 
 import { createDepartmentAction } from "@/app/actions/department";
-import { ActionResponse } from "@/app/actions/employee";
+import { ActionResponse } from "@/types/action-response";
 import { useRouter } from "next/navigation";
 import { useActionState } from "react";
 
