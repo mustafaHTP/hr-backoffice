@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { NavItem } from "../components/DashboardNavLink";
+import DashboardNavbar from "../components/DashboardNavbar";
 
 export default function DashboardLayout({
   children,
@@ -24,7 +25,10 @@ export default function DashboardLayout({
       </aside>
 
       {/* Main */}
-      <main className="flex-1 p-6">{children}</main>
+      <main className="flex-1 flex flex-col">
+        <DashboardNavbar />
+        <div className="flex-1 p-6">{children}</div>
+      </main>
     </div>
   );
 }
