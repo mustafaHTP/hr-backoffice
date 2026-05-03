@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { NavItem } from "../components/DashboardNavLink";
 import DashboardNavbar from "../components/DashboardNavbar";
+import SidebarProfile from "../components/SidebarProfile";
 
 export default function DashboardLayout({
   children,
@@ -10,7 +11,7 @@ export default function DashboardLayout({
   return (
     <div className="flex min-h-screen bg-zinc-50 dark:bg-zinc-950">
       {/* Sidebar */}
-      <aside className="w-64 border-r border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+      <aside className="w-64 border-r border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 flex flex-col">
         <div className="p-6 border-b border-zinc-200 dark:border-zinc-800">
           <h2 className="text-sm font-semibold tracking-wide text-zinc-500 dark:text-zinc-400 uppercase">
             <Link href="/dashboard">HR Dashboard</Link>
@@ -22,6 +23,10 @@ export default function DashboardLayout({
           <NavItem href="/dashboard/employees" label="Employees" />
           <NavItem href="/dashboard/departments" label="Departments" />
         </nav>
+
+        <div className="flex-1" />
+
+        <SidebarProfile />
       </aside>
 
       {/* Main */}

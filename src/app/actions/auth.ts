@@ -1,6 +1,6 @@
 "use server";
 
-import { createSession, verifyPassword } from "@/lib/auth";
+import { createSession, deleteSession, verifyPassword } from "@/lib/auth";
 import { getUserByEmail } from "@/lib/dal/user";
 import { signInSchema, SignInSchema } from "@/lib/schemas/auth";
 import { ActionResponse } from "@/types/action-response";
@@ -59,6 +59,22 @@ export async function signInAction(
       success: false,
       message: "An error occurred while signing in",
       error: "Failed to sign in",
+    };
+  }
+}
+
+export async function signOutAction(): Promise<ActionResponse> {
+  try {
+    await deleteSession();
+    return {
+      success: true,
+      message: "Signed out successfully",
+    };
+  } catch (error) {
+    console.error("Sign out error: ", error);
+    return {
+      success: false,
+      error: "Signed out failed",
     };
   }
 }
