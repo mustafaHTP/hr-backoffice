@@ -1,17 +1,13 @@
-import { getSession } from "../auth";
 import { prisma } from "../prisma";
 
-export async function getCurrentUser() {
-  const session = await getSession();
-  if (!session) return null;
-
+export async function getUser(userId: number) {
   try {
-    const currentUser = await prisma.user.findUnique({
+    const user = await prisma.user.findUnique({
       where: {
-        id: session.userId,
+        id: userId,
       },
     });
-    return currentUser;
+    return user;
   } catch (error) {
     console.log("Error getting user by Id: ", error);
     return null;

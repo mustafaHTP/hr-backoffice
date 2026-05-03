@@ -1,5 +1,5 @@
 import { getSession } from "@/lib/auth";
-import { getUser } from "@/lib/user";
+import { getUser } from "@/lib/dal/user";
 
 export default async function DashboardNavbar() {
   const session = await getSession();

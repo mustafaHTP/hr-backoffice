@@ -1,6 +1,11 @@
 "use server";
 
-import { createSession, deleteSession, verifyPassword } from "@/lib/auth";
+import {
+  createSession,
+  deleteSession,
+  SessionInput,
+  verifyPassword,
+} from "@/lib/auth";
 import { getUserByEmail } from "@/lib/dal/user";
 import { signInSchema, SignInSchema } from "@/lib/schemas/auth";
 import { ActionResponse } from "@/types/action-response";
@@ -47,7 +52,12 @@ export async function signInAction(
       };
     }
 
-    await createSession(user.id);
+    const sessionInput: SessionInput = {
+      userId: user.id,
+      email: user.email,
+      role: user.role,
+    };
+    await createSession(sessionInput);
 
     return {
       success: true,

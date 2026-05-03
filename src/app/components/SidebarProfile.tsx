@@ -1,6 +1,6 @@
 import { getSession } from "@/lib/auth";
-import { getUser } from "@/lib/user";
 import SignOutButton from "./SignOutButton";
+import { getUser } from "@/lib/dal/user";
 
 export default async function SidebarProfile() {
   const session = await getSession();

@@ -1,4 +1,5 @@
-import jwt from "jsonwebtoken";
+import { Role } from "@/generated/prisma/enums";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import { cookies } from "next/headers";
 
 const SESSION_COOKIE_NAME = "auth_token";
@@ -7,10 +8,18 @@ const JWT_SECRET = process.env.JWT_SECRET ?? "change-me-to-a-secure-secret";
 
 export type JWTPayload = {
   userId: number;
+  email: string;
+  role: Role;
 };
 
-export function generateJWT(userId: number) {
-  return jwt.sign({ userId }, JWT_SECRET, {
+export type SessionInput = {
+  userId: number;
+  email: string;
+  role: Role;
+};
+
+export function generateJWT(payload: JwtPayload) {
+  return jwt.sign(payload, JWT_SECRET, {
     algorithm: "HS256",
     expiresIn: SESSION_MAX_AGE,
   });
@@ -27,9 +36,14 @@ export function verifyJWT(token: string): JWTPayload | null {
   }
 }
 
-export async function createSession(userId: number) {
+export async function createSession(sessionInput: SessionInput) {
   try {
-    const token = generateJWT(userId);
+    const jwtPayload: JWTPayload = {
+      userId: sessionInput.userId,
+      role: sessionInput.role,
+      email: sessionInput.email,
+    };
+    const token = generateJWT(jwtPayload);
     const cookieStore = await cookies();
     cookieStore.set({
       name: SESSION_COOKIE_NAME,
