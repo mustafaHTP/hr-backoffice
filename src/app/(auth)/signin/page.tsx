@@ -1,6 +1,33 @@
+"use client";
+
+import { signInAction } from "@/app/actions/auth";
+import { ActionResponse } from "@/types/action-response";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useActionState } from "react";
 
 export default function SignInPage() {
+  const router = useRouter();
+  const [state, formAction, isPending] = useActionState<
+    ActionResponse,
+    FormData
+  >(
+    async (_, formData) => {
+      const result = await signInAction(formData);
+
+      if (result.success) {
+        router.refresh();
+        router.push("/dashboard");
+      }
+
+      return result;
+    },
+    {
+      success: false,
+      message: "",
+    },
+  );
+
   return (
     <div className="min-h-screen bg-zinc-50 text-zinc-950 dark:bg-zinc-950 dark:text-white px-6 py-12">
       <div className="mx-auto w-full max-w-md rounded-3xl border border-zinc-200 bg-white p-8 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
@@ -11,7 +38,7 @@ export default function SignInPage() {
           </p>
         </div>
 
-        <form className="mt-6 space-y-4">
+        <form action={formAction} className="mt-6 space-y-4">
           <div>
             <label
               htmlFor="email"
@@ -46,9 +73,10 @@ export default function SignInPage() {
 
           <button
             type="submit"
+            disabled={isPending}
             className="flex w-full justify-center rounded-full bg-violet-950 px-6 py-3 text-sm font-semibold text-white transition hover:bg-violet-800"
           >
-            Sign In
+            {isPending ? "..." : "Sign In"}
           </button>
         </form>
 

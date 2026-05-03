@@ -68,3 +68,7 @@ export async function deleteSession() {
   const cookieStore = await cookies();
   cookieStore.delete(SESSION_COOKIE_NAME);
 }
+
+export function verifyPassword(password: string, realPassword: string) {
+  return realPassword === password;
+}

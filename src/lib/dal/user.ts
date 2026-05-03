@@ -17,3 +17,17 @@ export async function getCurrentUser() {
     return null;
   }
 }
+
+export async function getUserByEmail(email: string) {
+  try {
+    const user = prisma.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
+    return user;
+  } catch (error) {
+    console.error("Error getting user by email: ", error);
+    return null;
+  }
+}
