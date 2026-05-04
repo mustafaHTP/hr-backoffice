@@ -1,3 +1,4 @@
+import { hashPassword } from "@/lib/password";
 import { prisma } from "@/lib/prisma";
 
 async function main() {
@@ -128,12 +129,17 @@ async function main() {
   // Fetch created employees to link with users
   const createdEmployees = await prisma.employee.findMany();
 
+  const adminPassword = await hashPassword("admin123");
+  const hrPassword = await hashPassword("hr123");
+  const managerPassword = await hashPassword("manager123");
+  const employeePassword = await hashPassword("employee123");
+
   // Users
   // Admin user (only 1)
   await prisma.user.create({
     data: {
       email: "admin@company.com",
-      password: "admin123", // Note: In production, use bcrypt or similar for password hashing
+      password: adminPassword,
       role: "ADMIN",
     },
   });
@@ -143,7 +149,7 @@ async function main() {
     data: [
       {
         email: "hr.manager@company.com",
-        password: "hr123",
+        password: hrPassword,
         role: "HR",
         employeeId: createdEmployees.find(
           (e) => e.email === "michael.brown@company.com",
@@ -151,7 +157,7 @@ async function main() {
       },
       {
         email: "hr.specialist@company.com",
-        password: "hr123",
+        password: hrPassword,
         role: "HR",
         employeeId: createdEmployees.find(
           (e) => e.email === "hr.specialist@company.com",
@@ -159,7 +165,7 @@ async function main() {
       },
       {
         email: "hr.recruiter@company.com",
-        password: "hr123",
+        password: hrPassword,
         role: "HR",
         employeeId: createdEmployees.find(
           (e) => e.email === "hr.recruiter@company.com",
@@ -173,7 +179,7 @@ async function main() {
     data: [
       {
         email: "eng.manager@company.com",
-        password: "manager123",
+        password: managerPassword,
         role: "MANAGER",
         employeeId: createdEmployees.find(
           (e) => e.email === "jane.smith@company.com",
@@ -181,7 +187,7 @@ async function main() {
       },
       {
         email: "finance.manager@company.com",
-        password: "manager123",
+        password: managerPassword,
         role: "MANAGER",
         employeeId: createdEmployees.find(
           (e) => e.email === "emily.davis@company.com",
@@ -189,7 +195,7 @@ async function main() {
       },
       {
         email: "ops.manager@company.com",
-        password: "manager123",
+        password: managerPassword,
         role: "MANAGER",
         employeeId: createdEmployees.find(
           (e) => e.email === "ops.manager@company.com",
@@ -203,7 +209,7 @@ async function main() {
     data: [
       {
         email: "john.doe@company.com",
-        password: "employee123",
+        password: employeePassword,
         role: "EMPLOYEE",
         employeeId: createdEmployees.find(
           (e) => e.email === "john.doe@company.com",
@@ -211,7 +217,7 @@ async function main() {
       },
       {
         email: "david.wilson@company.com",
-        password: "employee123",
+        password: employeePassword,
         role: "EMPLOYEE",
         employeeId: createdEmployees.find(
           (e) => e.email === "david.wilson@company.com",
@@ -219,7 +225,7 @@ async function main() {
       },
       {
         email: "alice.johnson@company.com",
-        password: "employee123",
+        password: employeePassword,
         role: "EMPLOYEE",
         employeeId: createdEmployees.find(
           (e) => e.email === "alice.johnson@company.com",
@@ -227,7 +233,7 @@ async function main() {
       },
       {
         email: "bob.martin@company.com",
-        password: "employee123",
+        password: employeePassword,
         role: "EMPLOYEE",
         employeeId: createdEmployees.find(
           (e) => e.email === "bob.martin@company.com",
@@ -235,7 +241,7 @@ async function main() {
       },
       {
         email: "carol.white@company.com",
-        password: "employee123",
+        password: employeePassword,
         role: "EMPLOYEE",
         employeeId: createdEmployees.find(
           (e) => e.email === "carol.white@company.com",
@@ -243,7 +249,7 @@ async function main() {
       },
       {
         email: "frank.thomas@company.com",
-        password: "employee123",
+        password: employeePassword,
         role: "EMPLOYEE",
         employeeId: createdEmployees.find(
           (e) => e.email === "frank.thomas@company.com",
@@ -251,7 +257,7 @@ async function main() {
       },
       {
         email: "grace.anderson@company.com",
-        password: "employee123",
+        password: employeePassword,
         role: "EMPLOYEE",
         employeeId: createdEmployees.find(
           (e) => e.email === "grace.anderson@company.com",

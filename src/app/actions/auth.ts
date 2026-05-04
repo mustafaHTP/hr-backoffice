@@ -1,12 +1,8 @@
 "use server";
 
-import {
-  createSession,
-  deleteSession,
-  SessionPayload,
-  verifyPassword,
-} from "@/lib/auth";
+import { createSession, deleteSession, SessionPayload } from "@/lib/auth";
 import { getUserByEmail } from "@/lib/dal/user";
+import { verifyPassword } from "@/lib/password";
 import { signInSchema, SignInSchema } from "@/lib/schemas/auth";
 import { ActionResponse } from "@/types/action-response";
 
