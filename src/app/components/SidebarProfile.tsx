@@ -15,15 +15,15 @@ export default async function SidebarProfile() {
   }
 
   return (
-    <div className="border-t border-zinc-200 dark:border-zinc-800 p-4">
+    <div className="border-t border-white/10 p-4">
       <div className="mb-4">
-        <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wide">
+        <p className="text-xs font-semibold text-zinc-500 uppercase tracking-widest">
           Account
         </p>
-        <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-50 mt-1 truncate">
+        <p className="text-sm font-semibold text-white mt-2 truncate">
           {user.email}
         </p>
-        <p className="text-xs text-zinc-500 dark:text-zinc-500 mt-0.5 capitalize">
+        <p className="text-xs text-zinc-400 mt-1 capitalize">
           {user.role.toLowerCase()}
         </p>
       </div>

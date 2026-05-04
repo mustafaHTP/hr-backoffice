@@ -18,18 +18,13 @@ export default async function DashboardNavbar() {
   });
 
   return (
-    <div className="border-b border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-6 py-4">
-      <div className="flex items-center justify-between">
-        <div className="text-sm text-zinc-600 dark:text-zinc-400">
+    <div className="h-[72px] flex items-center border-b border-white/10 bg-zinc-900/50 backdrop-blur-md px-6">
+      <div className="flex items-center justify-between w-full">
+        <div className="text-sm text-zinc-300">
           <p className="font-medium">
-            Hello{" "}
-            <span className="font-semibold text-zinc-900 dark:text-zinc-50">
-              {userName}
-            </span>
+            Hello <span className="font-semibold text-white">{userName}</span>
           </p>
-          <p className="text-xs text-zinc-500 dark:text-zinc-500 mt-1">
-            Today is {today}
-          </p>
+          <p className="text-xs text-zinc-500 mt-0.5">Today is {today}</p>
         </div>
       </div>
     </div>

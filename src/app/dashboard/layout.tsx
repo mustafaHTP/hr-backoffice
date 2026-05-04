@@ -9,16 +9,21 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen bg-zinc-50 dark:bg-zinc-950">
+    <div className="flex min-h-screen bg-zinc-950">
       {/* Sidebar */}
-      <aside className="w-64 border-r border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 flex flex-col">
-        <div className="p-6 border-b border-zinc-200 dark:border-zinc-800">
-          <h2 className="text-sm font-semibold tracking-wide text-zinc-500 dark:text-zinc-400 uppercase">
-            <Link href="/dashboard">HR Dashboard</Link>
+      <aside className="sticky top-0 h-screen w-64 border-r border-white/10 bg-zinc-900/50 backdrop-blur-md flex flex-col">
+        <div className="h-[72px] flex items-center border-b border-white/10 px-6">
+          <h2 className="text-xs font-semibold tracking-widest text-violet-400 uppercase">
+            <Link
+              href="/dashboard"
+              className="transition hover:text-violet-300"
+            >
+              HR Dashboard
+            </Link>
           </h2>
         </div>
 
-        <nav className="flex flex-col gap-1 p-3">
+        <nav className="flex flex-col gap-2 p-4">
           <NavItem href="/dashboard" label="Home" />
           <NavItem href="/dashboard/employees" label="Employees" />
           <NavItem href="/dashboard/departments" label="Departments" />

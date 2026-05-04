@@ -11,10 +11,10 @@ export function NavItem({ href, label }: { href: string; label: string }) {
   return (
     <Link
       href={href}
-      className={`rounded-xl px-3 py-2 text-sm transition ${
+      className={`rounded-lg px-4 py-2.5 text-sm font-medium transition ${
         isActive
-          ? "bg-violet-950 text-white"
-          : "text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+          ? "bg-violet-600 text-white shadow-lg shadow-violet-500/20"
+          : "text-zinc-300 hover:bg-white/10"
       }`}
     >
       {label}
