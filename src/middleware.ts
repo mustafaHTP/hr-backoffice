@@ -4,8 +4,8 @@ import { getSession } from "./lib/auth";
 
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
-  const user = await getSession();
-  if (!user) {
+  const session = await getSession();
+  if (!session) {
     console.log("User NOT found");
     return NextResponse.redirect(new URL("/signin", request.url));
   }

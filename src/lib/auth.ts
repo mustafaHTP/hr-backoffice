@@ -1,84 +1,76 @@
 import { Role } from "@/generated/prisma/enums";
-import jwt, { JwtPayload } from "jsonwebtoken";
+import { JWTPayload, jwtVerify, SignJWT } from "jose";
 import { cookies } from "next/headers";
 
-const SESSION_COOKIE_NAME = "auth_token";
+const SESSION_COOKIE_NAME = "session";
 const SESSION_MAX_AGE = 60 * 60 * 24 * 7; // 7 days
-const JWT_SECRET = process.env.JWT_SECRET ?? "change-me-to-a-secure-secret";
+const SESSION_ALG = "HS256";
+const secretKey = process.env.SESSION_SECRET || "fallback-secret-for-dev-only";
+const encodedKey = new TextEncoder().encode(secretKey);
 
-export type JWTPayload = {
+export interface SessionPayload extends JWTPayload {
   userId: number;
   email: string;
   role: Role;
-};
+}
 
-export type SessionInput = {
-  userId: number;
-  email: string;
-  role: Role;
-};
+/**
+ * Encrypts payload into a JWT
+ */
+async function encrypt(payload: SessionPayload): Promise<string> {
+  return new SignJWT(payload)
+    .setProtectedHeader({ alg: SESSION_ALG })
+    .setIssuedAt()
+    .setExpirationTime(`${SESSION_MAX_AGE}s`)
+    .sign(encodedKey);
+}
 
-export function generateJWT(payload: JwtPayload) {
-  return jwt.sign(payload, JWT_SECRET, {
-    algorithm: "HS256",
-    expiresIn: SESSION_MAX_AGE,
+/**
+ * Decrypts and validates the JWT.
+ * Returns null instead of throwing to keep flow control clean.
+ */
+async function decrypt(
+  token: string | undefined,
+): Promise<SessionPayload | null> {
+  if (!token) return null;
+
+  try {
+    const { payload } = await jwtVerify(token, encodedKey, {
+      algorithms: [SESSION_ALG],
+    });
+    return payload as SessionPayload;
+  } catch {
+    // Silently fail on expired or malformed tokens
+    return null;
+  }
+}
+
+/**
+ * Creates a session and sets the cookie
+ */
+export async function createSession(payload: SessionPayload): Promise<void> {
+  const session = await encrypt(payload);
+  const cookieStore = await cookies();
+
+  cookieStore.set(SESSION_COOKIE_NAME, session, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    maxAge: SESSION_MAX_AGE,
+    path: "/",
+    sameSite: "lax",
   });
 }
 
-export function verifyJWT(token: string): JWTPayload | null {
-  try {
-    const payload = jwt.verify(token, JWT_SECRET) as JWTPayload;
-    return payload;
-  } catch (error) {
-    console.error("JWT verification failed: ", error);
-
-    return null;
-  }
+/**
+ * Retrieves and verifies the session.
+ */
+export async function getSession(): Promise<SessionPayload | null> {
+  const cookieStore = await cookies();
+  const token = cookieStore.get(SESSION_COOKIE_NAME)?.value;
+  return await decrypt(token);
 }
 
-export async function createSession(sessionInput: SessionInput) {
-  try {
-    const jwtPayload: JWTPayload = {
-      userId: sessionInput.userId,
-      role: sessionInput.role,
-      email: sessionInput.email,
-    };
-    const token = generateJWT(jwtPayload);
-    const cookieStore = await cookies();
-    cookieStore.set({
-      name: SESSION_COOKIE_NAME,
-      value: token,
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      maxAge: SESSION_MAX_AGE,
-      path: "/",
-      sameSite: "lax",
-    });
-
-    return true;
-  } catch (error) {
-    console.error("Error creating session: ", error);
-
-    return false;
-  }
-}
-
-export async function getSession() {
-  try {
-    const cookieStore = await cookies();
-    const token = cookieStore.get(SESSION_COOKIE_NAME)?.value;
-
-    if (!token) return null;
-    const payload = verifyJWT(token);
-
-    return payload ? { userId: payload.userId } : null;
-  } catch (error) {
-    console.error("Error getting session: ", error);
-    return null;
-  }
-}
-
-export async function deleteSession() {
+export async function deleteSession(): Promise<void> {
   const cookieStore = await cookies();
   cookieStore.delete(SESSION_COOKIE_NAME);
 }

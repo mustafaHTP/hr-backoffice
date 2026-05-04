@@ -3,7 +3,7 @@
 import {
   createSession,
   deleteSession,
-  SessionInput,
+  SessionPayload,
   verifyPassword,
 } from "@/lib/auth";
 import { getUserByEmail } from "@/lib/dal/user";
@@ -52,7 +52,7 @@ export async function signInAction(
       };
     }
 
-    const sessionInput: SessionInput = {
+    const sessionInput: SessionPayload = {
       userId: user.id,
       email: user.email,
       role: user.role,
