@@ -1,7 +1,12 @@
 import { Role } from "@/generated/prisma/enums";
+import bcrypt, { compare, compareSync, hash } from "bcryptjs";
 import { JWTPayload, jwtVerify, SignJWT } from "jose";
 import { cookies } from "next/headers";
 
+/**
+ * Cost factor of hashing
+ */
+const PASSWORD_HASH_ROUNDS = 10;
 const SESSION_COOKIE_NAME = "session";
 const SESSION_MAX_AGE = 60 * 60 * 24 * 7; // 7 days
 const SESSION_ALG = "HS256";
@@ -75,6 +80,11 @@ export async function deleteSession(): Promise<void> {
   cookieStore.delete(SESSION_COOKIE_NAME);
 }
 
-export function verifyPassword(password: string, realPassword: string) {
-  return realPassword === password;
+export async function verifyPassword(password: string, hashedPassword: string) {
+  return await compare(password, hashedPassword);
+}
+
+export async function hashPassword(password: string) {
+  const salt = await bcrypt.genSalt(PASSWORD_HASH_ROUNDS);
+  await hash(password, salt);
 }
