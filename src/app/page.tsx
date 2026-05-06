@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import HomeNavBar from "./HomeNavBar";
+import HomeNavBar from "./_components/HomeNavBar";
 
 export default function Home() {
   return (

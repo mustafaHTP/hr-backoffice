@@ -1,5 +1,5 @@
 import Link from "next/link";
-import DepartmentRow from "./DepartmentRow";
+import DepartmentRow from "./_components/DepartmentRow";
 import { getDepartments } from "@/lib/dal/department";
 
 export default async function DeparmentsPage() {

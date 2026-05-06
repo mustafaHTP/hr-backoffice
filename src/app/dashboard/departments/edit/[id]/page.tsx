@@ -1,5 +1,5 @@
 import { getDepartment } from "@/lib/dal/department";
-import DepartmentEditForm from "./DepartmentEditForm";
+import DepartmentEditForm from "../_components/DepartmentEditForm";
 
 export default async function DepartmentEditPage({ params }) {
   const { id } = await params;

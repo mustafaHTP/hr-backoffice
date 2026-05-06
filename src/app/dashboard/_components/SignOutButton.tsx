@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
-import { signOutAction } from "../actions/auth";
+import { signOutAction } from "../../actions/auth";
 
 export default function SignOutButton() {
   const router = useRouter();

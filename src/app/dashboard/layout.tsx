@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { NavItem } from "../components/DashboardNavLink";
-import DashboardNavbar from "../components/DashboardNavbar";
-import SidebarProfile from "../components/SidebarProfile";
+import { NavItem } from "./_components/DashboardNavLink";
+import DashboardNavbar from "./_components/DashboardNavbar";
+import SidebarProfile from "./_components/SidebarProfile";
 
 export default function DashboardLayout({
   children,
