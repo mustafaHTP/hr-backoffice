@@ -8,8 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "db:seed": "prisma db seed",
-    "db:migrate": "prisma migrate dev",
-    "db:setup": "prisma migrate dev && prisma db seed"
+    "db:migrate": "prisma migrate dev && prisma generate",
+    "db:setup": "prisma migrate dev && prisma db seed",
+    "db:delete": "prisma migrate reset"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.7.0",
