@@ -1,5 +1,5 @@
 import { getDepartments } from "@/lib/dal/department";
-import EmployeeForm from "./EmployeeForm";
+import EmployeeForm from "./employee-form";
 import { getEmployeeTitles } from "@/lib/dal/employee-title";
 
 export default async function EmployeeCreatePage() {

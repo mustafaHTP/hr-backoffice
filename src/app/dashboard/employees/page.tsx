@@ -1,6 +1,6 @@
 import { getEmployees } from "@/lib/dal/employee";
 import Link from "next/link";
-import EmployeeRow from "./_components/EmployeeRow";
+import EmployeeRow from "./_components/employee-row";
 
 export default async function EmployeesPage() {
   const employees = await getEmployees();

@@ -1,6 +1,6 @@
 import { Role } from "@/generated/prisma/enums";
 import { getSession } from "@/lib/auth";
-import { NavItem } from "./DashboardNavLink";
+import { NavItem } from "./dashboard-navlink";
 
 type NavItemElement = {
   href: string;

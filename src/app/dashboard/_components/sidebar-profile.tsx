@@ -1,5 +1,5 @@
 import { getSession } from "@/lib/auth";
-import SignOutButton from "./SignOutButton";
+import SignOutButton from "./signout-button";
 import { getUser } from "@/lib/dal/user";
 
 export default async function SidebarProfile() {
