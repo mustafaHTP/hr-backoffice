@@ -5,6 +5,7 @@ async function main() {
   // Clean existing data (optional but useful in dev)
   await prisma.user.deleteMany();
   await prisma.employee.deleteMany();
+  await prisma.employeeTitle.deleteMany();
   await prisma.department.deleteMany();
 
   // Departments
@@ -29,6 +30,31 @@ async function main() {
     },
   });
 
+  // Employee Titles
+  const seniorEngineer = await prisma.employeeTitle.create({
+    data: { name: "Senior Software Engineer" },
+  });
+
+  const engineer = await prisma.employeeTitle.create({
+    data: { name: "Software Engineer" },
+  });
+
+  const manager = await prisma.employeeTitle.create({
+    data: { name: "Manager" },
+  });
+
+  const specialist = await prisma.employeeTitle.create({
+    data: { name: "Specialist" },
+  });
+
+  const recruiter = await prisma.employeeTitle.create({
+    data: { name: "Recruiter" },
+  });
+
+  const analyst = await prisma.employeeTitle.create({
+    data: { name: "Analyst" },
+  });
+
   // Employees
   const employees = await prisma.employee.createMany({
     data: [
@@ -38,6 +64,7 @@ async function main() {
         email: "john.doe@company.com",
         phone: "+90 555 111 2233",
         departmentId: engineering.id,
+        titleId: engineer.id,
       },
       {
         firstName: "Jane",
@@ -45,6 +72,7 @@ async function main() {
         email: "jane.smith@company.com",
         phone: "+90 555 222 3344",
         departmentId: engineering.id,
+        titleId: manager.id,
       },
       {
         firstName: "Michael",
@@ -52,6 +80,7 @@ async function main() {
         email: "michael.brown@company.com",
         phone: "+90 555 333 4455",
         departmentId: hr.id,
+        titleId: manager.id,
       },
       {
         firstName: "Emily",
@@ -59,6 +88,7 @@ async function main() {
         email: "emily.davis@company.com",
         phone: "+90 555 444 5566",
         departmentId: finance.id,
+        titleId: manager.id,
       },
       {
         firstName: "David",
@@ -66,6 +96,7 @@ async function main() {
         email: "david.wilson@company.com",
         phone: "+90 555 555 6677",
         departmentId: engineering.id,
+        titleId: seniorEngineer.id,
       },
       {
         firstName: "Sarah",
@@ -73,6 +104,7 @@ async function main() {
         email: "hr.specialist@company.com",
         phone: "+90 555 666 7788",
         departmentId: hr.id,
+        titleId: specialist.id,
       },
       {
         firstName: "Robert",
@@ -80,6 +112,7 @@ async function main() {
         email: "hr.recruiter@company.com",
         phone: "+90 555 777 8899",
         departmentId: hr.id,
+        titleId: recruiter.id,
       },
       {
         firstName: "James",
@@ -87,6 +120,7 @@ async function main() {
         email: "ops.manager@company.com",
         phone: "+90 555 888 9900",
         departmentId: engineering.id,
+        titleId: manager.id,
       },
       {
         firstName: "Alice",
@@ -94,6 +128,7 @@ async function main() {
         email: "alice.johnson@company.com",
         phone: "+90 555 111 0011",
         departmentId: engineering.id,
+        titleId: engineer.id,
       },
       {
         firstName: "Bob",
@@ -101,6 +136,7 @@ async function main() {
         email: "bob.martin@company.com",
         phone: "+90 555 222 0011",
         departmentId: finance.id,
+        titleId: analyst.id,
       },
       {
         firstName: "Carol",
@@ -108,6 +144,7 @@ async function main() {
         email: "carol.white@company.com",
         phone: "+90 555 333 0011",
         departmentId: hr.id,
+        titleId: specialist.id,
       },
       {
         firstName: "Frank",
@@ -115,6 +152,7 @@ async function main() {
         email: "frank.thomas@company.com",
         phone: "+90 555 444 0011",
         departmentId: engineering.id,
+        titleId: engineer.id,
       },
       {
         firstName: "Grace",
@@ -122,6 +160,7 @@ async function main() {
         email: "grace.anderson@company.com",
         phone: "+90 555 555 0011",
         departmentId: finance.id,
+        titleId: analyst.id,
       },
     ],
   });
