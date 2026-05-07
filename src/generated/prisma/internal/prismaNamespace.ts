@@ -385,6 +385,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   Department: 'Department',
+  EmployeeTitle: 'EmployeeTitle',
   Employee: 'Employee',
   User: 'User'
 } as const
@@ -402,7 +403,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "department" | "employee" | "user"
+    modelProps: "department" | "employeeTitle" | "employee" | "user"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -477,6 +478,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.DepartmentCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.DepartmentCountAggregateOutputType> | number
+        }
+      }
+    }
+    EmployeeTitle: {
+      payload: Prisma.$EmployeeTitlePayload<ExtArgs>
+      fields: Prisma.EmployeeTitleFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.EmployeeTitleFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeTitlePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.EmployeeTitleFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeTitlePayload>
+        }
+        findFirst: {
+          args: Prisma.EmployeeTitleFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeTitlePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.EmployeeTitleFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeTitlePayload>
+        }
+        findMany: {
+          args: Prisma.EmployeeTitleFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeTitlePayload>[]
+        }
+        create: {
+          args: Prisma.EmployeeTitleCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeTitlePayload>
+        }
+        createMany: {
+          args: Prisma.EmployeeTitleCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.EmployeeTitleCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeTitlePayload>[]
+        }
+        delete: {
+          args: Prisma.EmployeeTitleDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeTitlePayload>
+        }
+        update: {
+          args: Prisma.EmployeeTitleUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeTitlePayload>
+        }
+        deleteMany: {
+          args: Prisma.EmployeeTitleDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.EmployeeTitleUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.EmployeeTitleUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeTitlePayload>[]
+        }
+        upsert: {
+          args: Prisma.EmployeeTitleUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeTitlePayload>
+        }
+        aggregate: {
+          args: Prisma.EmployeeTitleAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateEmployeeTitle>
+        }
+        groupBy: {
+          args: Prisma.EmployeeTitleGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EmployeeTitleGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.EmployeeTitleCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EmployeeTitleCountAggregateOutputType> | number
         }
       }
     }
@@ -677,14 +752,24 @@ export const DepartmentScalarFieldEnum = {
 export type DepartmentScalarFieldEnum = (typeof DepartmentScalarFieldEnum)[keyof typeof DepartmentScalarFieldEnum]
 
 
+export const EmployeeTitleScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  createdAt: 'createdAt'
+} as const
+
+export type EmployeeTitleScalarFieldEnum = (typeof EmployeeTitleScalarFieldEnum)[keyof typeof EmployeeTitleScalarFieldEnum]
+
+
 export const EmployeeScalarFieldEnum = {
   id: 'id',
   firstName: 'firstName',
   lastName: 'lastName',
   email: 'email',
   phone: 'phone',
-  createdAt: 'createdAt',
-  departmentId: 'departmentId'
+  titleId: 'titleId',
+  departmentId: 'departmentId',
+  createdAt: 'createdAt'
 } as const
 
 export type EmployeeScalarFieldEnum = (typeof EmployeeScalarFieldEnum)[keyof typeof EmployeeScalarFieldEnum]
@@ -896,6 +981,7 @@ export type PrismaClientOptions = ({
 }
 export type GlobalOmitConfig = {
   department?: Prisma.DepartmentOmit
+  employeeTitle?: Prisma.EmployeeTitleOmit
   employee?: Prisma.EmployeeOmit
   user?: Prisma.UserOmit
 }

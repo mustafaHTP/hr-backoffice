@@ -47,6 +47,11 @@ export { Prisma }
  */
 export type Department = Prisma.DepartmentModel
 /**
+ * Model EmployeeTitle
+ * 
+ */
+export type EmployeeTitle = Prisma.EmployeeTitleModel
+/**
  * Model Employee
  * 
  */

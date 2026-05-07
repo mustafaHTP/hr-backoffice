@@ -52,6 +52,7 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   Department: 'Department',
+  EmployeeTitle: 'EmployeeTitle',
   Employee: 'Employee',
   User: 'User'
 } as const
@@ -82,14 +83,24 @@ export const DepartmentScalarFieldEnum = {
 export type DepartmentScalarFieldEnum = (typeof DepartmentScalarFieldEnum)[keyof typeof DepartmentScalarFieldEnum]
 
 
+export const EmployeeTitleScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  createdAt: 'createdAt'
+} as const
+
+export type EmployeeTitleScalarFieldEnum = (typeof EmployeeTitleScalarFieldEnum)[keyof typeof EmployeeTitleScalarFieldEnum]
+
+
 export const EmployeeScalarFieldEnum = {
   id: 'id',
   firstName: 'firstName',
   lastName: 'lastName',
   email: 'email',
   phone: 'phone',
-  createdAt: 'createdAt',
-  departmentId: 'departmentId'
+  titleId: 'titleId',
+  departmentId: 'departmentId',
+  createdAt: 'createdAt'
 } as const
 
 export type EmployeeScalarFieldEnum = (typeof EmployeeScalarFieldEnum)[keyof typeof EmployeeScalarFieldEnum]

@@ -28,6 +28,13 @@ model Department {
   employees Employee[]
 }
 
+model EmployeeTitle {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
+  employees Employee[]
+  createdAt DateTime   @default(now())
+}
+
 model Employee {
   id        Int     @id @default(autoincrement())
   firstName String
@@ -37,9 +44,13 @@ model Employee {
 
   user User?
 
-  createdAt    DateTime    @default(now())
+  titleId Int?
+  title   EmployeeTitle? @relation(fields: [titleId], references: [id])
+
   department   Department? @relation(fields: [departmentId], references: [id])
   departmentId Int?
+
+  createdAt DateTime @default(now())
 }
 
 model User {
