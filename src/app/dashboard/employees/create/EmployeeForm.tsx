@@ -5,7 +5,7 @@ import { ActionResponse } from "@/types/action-response";
 import { useRouter } from "next/navigation";
 import { useActionState } from "react";
 
-export default function EmployeeForm({ departments }) {
+export default function EmployeeForm({ departments, employeeTitles }) {
   const router = useRouter();
   const [state, formAction, isPending] = useActionState<
     ActionResponse,
@@ -134,6 +134,24 @@ export default function EmployeeForm({ departments }) {
               {departments.map((dept) => (
                 <option key={dept.id} value={dept.id}>
                   {dept.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Title */}
+          <div>
+            <select
+              name="titleId"
+              disabled={isPending}
+              className="w-full rounded-xl border border-zinc-200 px-4 py-2 bg-white dark:border-zinc-800 dark:bg-zinc-900"
+            >
+              <option disabled value="">
+                Select Title
+              </option>
+              {employeeTitles.map((et) => (
+                <option key={et.id} value={et.id}>
+                  {et.name}
                 </option>
               ))}
             </select>

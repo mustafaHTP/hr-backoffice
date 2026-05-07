@@ -6,6 +6,7 @@ export const employeeSchema = z.object({
   email: z.string().email("Invalid email"),
   phone: z.string().optional(),
   departmentId: z.number().optional().nullable(),
+  titleId: z.number().optional().nullable(),
 });
 
 export type EmployeeSchema = z.infer<typeof employeeSchema>;
