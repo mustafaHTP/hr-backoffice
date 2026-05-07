@@ -28,7 +28,10 @@ export default function EmployeeRow({ employee }) {
   return (
     <tr className="border-b border-zinc-100 last:border-0 hover:bg-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-800/40 transition">
       <td className="px-6 py-4 font-medium text-zinc-950 dark:text-white">
-        {employee.firstName} {employee.lastName}
+        <div>
+          {employee.firstName} {employee.lastName}
+        </div>
+        <div>{employee.title?.name ?? "Unassigned"}</div>
       </td>
 
       <td className="px-6 py-4 text-zinc-600 dark:text-zinc-300">
@@ -36,7 +39,7 @@ export default function EmployeeRow({ employee }) {
       </td>
 
       <td className="px-6 py-4 text-zinc-600 dark:text-zinc-300">
-        {employee.department?.name ?? "Unassigned"}
+        {employee.phone ?? "Unassigned"}
       </td>
       <td>
         <div className="flex space-x-2">

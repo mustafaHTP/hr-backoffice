@@ -7,6 +7,7 @@ export async function getEmployees(): Promise<Employee[]> {
     const employees = await prisma.employee.findMany({
       include: {
         department: true,
+        title: true,
       },
     });
 

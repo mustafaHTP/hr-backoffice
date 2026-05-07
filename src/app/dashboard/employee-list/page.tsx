@@ -25,9 +25,9 @@ export default async function EmployeeListPage() {
             <table className="w-full text-left text-sm">
               <thead className="border-b border-zinc-200 dark:border-zinc-800">
                 <tr className="text-zinc-500 dark:text-zinc-400">
-                  <th className="px-6 py-4 font-medium">Name</th>
+                  <th className="px-6 py-4 font-medium">Full Name</th>
                   <th className="px-6 py-4 font-medium">Email</th>
-                  <th className="px-6 py-4 font-medium">Department</th>
+                  <th className="px-6 py-4 font-medium">Phone</th>
                 </tr>
               </thead>
 
