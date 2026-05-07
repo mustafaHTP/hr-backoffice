@@ -65,6 +65,9 @@ export async function updateEmployeeAction(
     departmentId: formData.get("departmentId")
       ? Number(formData.get("departmentId"))
       : null,
+    titleId: (formData.get("titleId") as string)
+      ? Number(formData.get("titleId"))
+      : null,
   };
 
   const validationResult = employeeSchema.safeParse(formEmployee);

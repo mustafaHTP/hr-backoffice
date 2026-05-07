@@ -123,9 +123,7 @@ export default function EmployeeForm({
               className="w-full rounded-xl border border-zinc-200 px-4 py-2 bg-white dark:border-zinc-800 dark:bg-zinc-900"
               defaultValue={employee.departmentId}
             >
-              <option disabled value="">
-                Select Department
-              </option>
+              <option value="">Select Department</option>
               {departments.map((dept) => (
                 <option key={dept.id} value={dept.id}>
                   {dept.name}
@@ -142,9 +140,7 @@ export default function EmployeeForm({
               className="w-full rounded-xl border border-zinc-200 px-4 py-2 bg-white dark:border-zinc-800 dark:bg-zinc-900"
               defaultValue={employee.titleId}
             >
-              <option disabled value="">
-                Select Title
-              </option>
+              <option value="">Select Title</option>
               {employeeTitles.map((et) => (
                 <option key={et.id} value={et.id}>
                   {et.name}
