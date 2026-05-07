@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { NavItem } from "./_components/DashboardNavLink";
 import DashboardNavbar from "./_components/DashboardNavbar";
 import SidebarProfile from "./_components/SidebarProfile";
+import DashboardSidebarNav from "./_components/DashboardSidebarNav";
 
 export default function DashboardLayout({
   children,
@@ -23,11 +23,7 @@ export default function DashboardLayout({
           </h2>
         </div>
 
-        <nav className="flex flex-col gap-2 p-4">
-          <NavItem href="/dashboard" label="Home" />
-          <NavItem href="/dashboard/employees" label="Employees" />
-          <NavItem href="/dashboard/departments" label="Departments" />
-        </nav>
+        <DashboardSidebarNav />
 
         <div className="flex-1" />
 

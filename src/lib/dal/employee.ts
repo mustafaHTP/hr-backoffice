@@ -1,7 +1,8 @@
 import { prisma } from "@/lib/prisma";
 import { EmployeeSchema } from "../schemas/employee";
+import { Employee } from "@/generated/prisma/client";
 
-export async function getEmployees() {
+export async function getEmployees(): Promise<Employee[]> {
   try {
     const employees = await prisma.employee.findMany({
       include: {
