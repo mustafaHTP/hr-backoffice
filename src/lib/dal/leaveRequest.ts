@@ -1,3 +1,4 @@
+import { LeaveStatus } from "@/generated/prisma/enums";
 import { prisma } from "../prisma";
 
 export async function getLeaveRequests() {
@@ -39,5 +40,28 @@ export async function getLeaveRequest(id: number) {
     console.log(`Error fetching leave request with id : ${id}` + error);
 
     throw new Error(`Failed to get leave request for id: ${id}`);
+  }
+}
+
+export async function getLeaveRequestsByEmployeeId(employeeId: number) {
+  try {
+    const leaveRequests = await prisma.leaveRequest.findMany({
+      where: {
+        employeeId: employeeId,
+      },
+      include: {
+        leaveType: true,
+      },
+    });
+
+    return leaveRequests;
+  } catch (error) {
+    console.log(
+      `Error fetching leave requests for employee id : ${employeeId}` + error,
+    );
+
+    throw new Error(
+      `Failed to get leave request for employee id: ${employeeId}`,
+    );
   }
 }

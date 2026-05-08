@@ -33,6 +33,14 @@ export default async function DashboardSidebarNav() {
       label: "Leave Requests",
       canShow: session.role === Role.MANAGER || session.role === Role.ADMIN,
     },
+    {
+      href: "/dashboard/leave-request-list",
+      label: "My Leave Requests",
+      canShow:
+        session.role === Role.EMPLOYEE ||
+        session.role === Role.HR ||
+        session.role === Role.MANAGER,
+    },
   ];
 
   return (
