@@ -28,6 +28,11 @@ export default async function DashboardSidebarNav() {
       label: "Employees",
       canShow: session.role === Role.EMPLOYEE,
     },
+    {
+      href: "/dashboard/leave-requests",
+      label: "Leave Requests",
+      canShow: session.role === Role.MANAGER || session.role === Role.ADMIN,
+    },
   ];
 
   return (
