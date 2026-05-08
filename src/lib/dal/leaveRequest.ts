@@ -16,3 +16,28 @@ export async function getLeaveRequests() {
     throw new Error("Failed to get leave requests");
   }
 }
+
+export async function getLeaveRequest(id: number) {
+  try {
+    const leaveRequest = await prisma.leaveRequest.findUnique({
+      where: {
+        id: id,
+      },
+      include: {
+        employee: {
+          include: {
+            department: true,
+            title: true,
+          },
+        },
+        leaveType: true,
+      },
+    });
+
+    return leaveRequest;
+  } catch (error) {
+    console.log(`Error fetching leave request with id : ${id}` + error);
+
+    throw new Error(`Failed to get leave request for id: ${id}`);
+  }
+}

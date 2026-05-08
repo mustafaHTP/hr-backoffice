@@ -1,5 +1,6 @@
 import { getLeaveRequests } from "@/lib/dal/leaveRequest";
 import LeaveStatusBadge from "./_components/leave-status-badge";
+import Link from "next/link";
 
 export default async function LeaveRequestsPage() {
   const leaveRequests = await getLeaveRequests();
@@ -36,18 +37,28 @@ export default async function LeaveRequestsPage() {
                 {leaveRequests.map((lq) => (
                   <tr
                     key={lq.id}
-                    className="border-b border-zinc-100 last:border-0 hover:bg-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-800/40 transition"
+                    className="group hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition"
                   >
-                    <td className="px-6 py-4 font-medium text-zinc-950 dark:text-white">
-                      {lq.employee.firstName + " " + lq.employee.lastName}
+                    <td className="px-6 py-4 font-medium">
+                      <Link
+                        href={`/dashboard/leave-requests/${lq.id}`}
+                        className="group-hover:underline"
+                      >
+                        {lq.employee.firstName + " " + lq.employee.lastName}
+                      </Link>
                     </td>
-                    <td className="px-6 py-4 font-medium text-zinc-950 dark:text-white">
+
+                    <td className="px-6 py-4 text-zinc-950 dark:text-white">
                       {lq.leaveType.name}
                     </td>
-                    <td className="px-6 py-4 font-medium text-zinc-950 dark:text-white">
-                      <LeaveStatusBadge status={lq.status} />
+
+                    <td className="px-6 py-4">
+                      <Link href={`/dashboard/leave-requests/${lq.id}`}>
+                        <LeaveStatusBadge status={lq.status} />
+                      </Link>
                     </td>
-                    <td className="px-6 py-4 font-medium text-zinc-950 dark:text-white">
+
+                    <td className="px-6 py-4 text-zinc-950 dark:text-white">
                       {lq.totalDays}
                     </td>
                   </tr>
