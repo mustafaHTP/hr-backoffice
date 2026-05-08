@@ -26,18 +26,29 @@ export default async function LeaveRequestsPage() {
                 <tr className="text-zinc-500 dark:text-zinc-400">
                   <th className="px-6 py-4 font-medium">Full Name</th>
                   <th className="px-6 py-4 font-medium">Leave Type</th>
+                  <th className="px-6 py-4 font-medium">Status</th>
                   <th className="px-6 py-4 font-medium">Days</th>
                 </tr>
               </thead>
 
               <tbody>
                 {leaveRequests.map((lq) => (
-                  <tr key={lq.id}>
-                    <td>
+                  <tr
+                    key={lq.id}
+                    className="border-b border-zinc-100 last:border-0 hover:bg-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-800/40 transition"
+                  >
+                    <td className="px-6 py-4 font-medium text-zinc-950 dark:text-white">
                       {lq.employee.firstName + " " + lq.employee.lastName}
                     </td>
-                    <td>{lq.leaveType.name}</td>
-                    <td>{lq.totalDays}</td>
+                    <td className="px-6 py-4 font-medium text-zinc-950 dark:text-white">
+                      {lq.leaveType.name}
+                    </td>
+                    <td className="px-6 py-4 font-medium text-zinc-950 dark:text-white">
+                      {lq.status}
+                    </td>
+                    <td className="px-6 py-4 font-medium text-zinc-950 dark:text-white">
+                      {lq.totalDays}
+                    </td>
                   </tr>
                 ))}
               </tbody>
