@@ -1,4 +1,4 @@
-import { getLeaveRequests } from "@/lib/dal/leaveRequest";
+import { getLeaveRequests } from "@/lib/dal/leave-request";
 import LeaveStatusBadge from "./_components/leave-status-badge";
 import Link from "next/link";
 

@@ -1,4 +1,4 @@
-import { getLeaveRequest } from "@/lib/dal/leaveRequest";
+import { getLeaveRequest } from "@/lib/dal/leave-request";
 import {
   PersonIcon,
   FileTextIcon,

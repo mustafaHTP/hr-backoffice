@@ -1,6 +1,6 @@
 import { getCurrentUser } from "@/app/actions/user";
 import { getEmployee } from "@/lib/dal/employee";
-import { getLeaveRequestsByEmployeeId } from "@/lib/dal/leaveRequest";
+import { getLeaveRequestsByEmployeeId } from "@/lib/dal/leave-request";
 import LeaveStatusBadge from "../leave-requests/_components/leave-status-badge";
 import Link from "next/link";
 
