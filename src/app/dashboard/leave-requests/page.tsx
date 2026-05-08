@@ -1,4 +1,5 @@
 import { getLeaveRequests } from "@/lib/dal/leaveRequest";
+import LeaveStatusBadge from "./_components/leave-status-badge";
 
 export default async function LeaveRequestsPage() {
   const leaveRequests = await getLeaveRequests();
@@ -44,7 +45,7 @@ export default async function LeaveRequestsPage() {
                       {lq.leaveType.name}
                     </td>
                     <td className="px-6 py-4 font-medium text-zinc-950 dark:text-white">
-                      {lq.status}
+                      <LeaveStatusBadge status={lq.status} />
                     </td>
                     <td className="px-6 py-4 font-medium text-zinc-950 dark:text-white">
                       {lq.totalDays}
