@@ -3,6 +3,8 @@ import { prisma } from "@/lib/prisma";
 
 async function main() {
   // Clean existing data (optional but useful in dev)
+  await prisma.leaveRequest.deleteMany();
+  await prisma.leaveType.deleteMany();
   await prisma.user.deleteMany();
   await prisma.employee.deleteMany();
   await prisma.employeeTitle.deleteMany();
@@ -301,6 +303,122 @@ async function main() {
         employeeId: createdEmployees.find(
           (e) => e.email === "grace.anderson@company.com",
         )?.id,
+      },
+    ],
+  });
+
+  // ── Leave Types ──────────────────────────────────────────────
+  const annualLeave = await prisma.leaveType.create({
+    data: { name: "Annual Leave", isPaid: true, hasLimit: true, dayLimit: 20 },
+  });
+
+  const sickLeave = await prisma.leaveType.create({
+    data: { name: "Sick Leave", isPaid: true, hasLimit: true, dayLimit: 10 },
+  });
+
+  const unpaidLeave = await prisma.leaveType.create({
+    data: { name: "Unpaid Leave", isPaid: false, hasLimit: false },
+  });
+
+  const maternityLeave = await prisma.leaveType.create({
+    data: {
+      name: "Maternity Leave",
+      isPaid: true,
+      hasLimit: true,
+      dayLimit: 90,
+    },
+  });
+
+  const bereavementLeave = await prisma.leaveType.create({
+    data: {
+      name: "Bereavement Leave",
+      isPaid: true,
+      hasLimit: true,
+      dayLimit: 5,
+    },
+  });
+
+  // ── Leave Requests ────────────────────────────────────────────
+  const allEmployees = await prisma.employee.findMany();
+  const find = (email: string) => allEmployees.find((e) => e.email === email)!;
+
+  await prisma.leaveRequest.createMany({
+    data: [
+      // PENDING
+      {
+        employeeId: find("john.doe@company.com").id,
+        leaveTypeId: annualLeave.id,
+        startDate: new Date("2025-06-02"),
+        endDate: new Date("2025-06-06"),
+        totalDays: 5,
+        status: "PENDING",
+        description: "Family vacation planned in advance.",
+      },
+      {
+        employeeId: find("frank.thomas@company.com").id,
+        leaveTypeId: sickLeave.id,
+        startDate: new Date("2025-05-26"),
+        endDate: new Date("2025-05-27"),
+        totalDays: 2,
+        status: "PENDING",
+        description: "Feeling unwell, doctor's appointment scheduled.",
+      },
+      // APPROVED
+      {
+        employeeId: find("alice.johnson@company.com").id,
+        leaveTypeId: sickLeave.id,
+        startDate: new Date("2025-05-19"),
+        endDate: new Date("2025-05-20"),
+        totalDays: 2,
+        status: "APPROVED",
+        description: "Flu symptoms.",
+      },
+      {
+        employeeId: find("david.wilson@company.com").id,
+        leaveTypeId: annualLeave.id,
+        startDate: new Date("2025-07-14"),
+        endDate: new Date("2025-07-25"),
+        totalDays: 10,
+        status: "APPROVED",
+        description: "Summer holiday.",
+      },
+      {
+        employeeId: find("grace.anderson@company.com").id,
+        leaveTypeId: bereavementLeave.id,
+        startDate: new Date("2025-05-12"),
+        endDate: new Date("2025-05-14"),
+        totalDays: 3,
+        status: "APPROVED",
+        description: "Attending a family funeral.",
+      },
+      // REJECTED
+      {
+        employeeId: find("bob.martin@company.com").id,
+        leaveTypeId: unpaidLeave.id,
+        startDate: new Date("2025-08-04"),
+        endDate: new Date("2025-08-08"),
+        totalDays: 5,
+        status: "REJECTED",
+        description: "Personal errands.",
+      },
+      // CANCELLED
+      {
+        employeeId: find("carol.white@company.com").id,
+        leaveTypeId: annualLeave.id,
+        startDate: new Date("2025-06-16"),
+        endDate: new Date("2025-06-20"),
+        totalDays: 5,
+        status: "CANCELLED",
+        description: "Annual leave — cancelled due to change of plans.",
+      },
+      {
+        employeeId: find("jane.smith@company.com").id,
+        leaveTypeId: maternityLeave.id,
+        startDate: new Date("2025-09-01"),
+        endDate: new Date("2025-11-29"),
+        totalDays: 90,
+        status: "APPROVED",
+        description: "Maternity leave.",
       },
     ],
   });
