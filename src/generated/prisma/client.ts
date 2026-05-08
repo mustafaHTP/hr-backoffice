@@ -61,3 +61,13 @@ export type Employee = Prisma.EmployeeModel
  * 
  */
 export type User = Prisma.UserModel
+/**
+ * Model LeaveRequest
+ * 
+ */
+export type LeaveRequest = Prisma.LeaveRequestModel
+/**
+ * Model LeaveType
+ * 
+ */
+export type LeaveType = Prisma.LeaveTypeModel
