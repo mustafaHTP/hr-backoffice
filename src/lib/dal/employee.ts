@@ -52,6 +52,10 @@ export async function getEmployee(id: number) {
       where: {
         id: id,
       },
+      include: {
+        department: true,
+        title: true,
+      },
     });
 
     return employee;

@@ -31,7 +31,7 @@ export default function EmployeeRow({ employee }) {
         <div>
           <Link
             className="underline text-cyan-400"
-            href={`/dashboard/employees/${employee.id}`}
+            href={`/dashboard/employees/${employee.id}/profile`}
           >
             {employee.firstName} {employee.lastName}
           </Link>
