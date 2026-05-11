@@ -6,7 +6,7 @@ import {
   updateDepartment,
 } from "@/lib/dal/department";
 import { departmentSchema } from "@/lib/schemas/department";
-import { isNumber } from "@/lib/utils";
+import { isNumber } from "@/lib/utility";
 import { ActionResponse } from "@/types/action-response";
 
 export async function createDepartmentAction(

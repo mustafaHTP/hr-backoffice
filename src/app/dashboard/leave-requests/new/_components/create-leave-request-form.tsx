@@ -1,12 +1,17 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { LeaveType } from "@/generated/prisma/client";
+import { CalendarIcon } from "@radix-ui/react-icons";
+import { format } from "date-fns/format";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-
-type LeaveType = {
-  id: number;
-  name: string;
-};
 
 type CreateLeaveRequestFormProps = {
   leaveTypes: LeaveType[];
@@ -57,23 +62,57 @@ export default function CreateLeaveRequestForm({
           {/* Leave period */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <input
-                type="date"
-                name="startDate"
-                className="w-full rounded-xl border border-zinc-200 px-4 py-2 bg-white dark:border-zinc-800 dark:bg-zinc-900"
-                value={startDate.toDateString()}
-                onChange={(e) => console.log("Start date changed")}
-              />
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    data-empty={!startDate}
+                    className="w-[280px] justify-start text-left font-normal data-[empty=true]:text-muted-foreground"
+                  >
+                    <CalendarIcon />
+                    {startDate ? (
+                      format(startDate, "PPP")
+                    ) : (
+                      <span>Pick a date</span>
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0">
+                  <Calendar
+                    required
+                    mode="single"
+                    selected={startDate}
+                    onSelect={setStartDate}
+                  />
+                </PopoverContent>
+              </Popover>
             </div>
 
             <div>
-              <input
-                type="date"
-                name="endDate"
-                className="w-full rounded-xl border border-zinc-200 px-4 py-2 bg-white dark:border-zinc-800 dark:bg-zinc-900"
-                value={endDate.toDateString()}
-                onChange={(e) => console.log("sadsa")}
-              />
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    data-empty={!endDate}
+                    className="w-[280px] justify-start text-left font-normal data-[empty=true]:text-muted-foreground"
+                  >
+                    <CalendarIcon />
+                    {endDate ? (
+                      format(endDate, "PPP")
+                    ) : (
+                      <span>Pick a date</span>
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0">
+                  <Calendar
+                    required
+                    mode="single"
+                    selected={endDate}
+                    onSelect={setEndDate}
+                  />
+                </PopoverContent>
+              </Popover>
             </div>
           </div>
 

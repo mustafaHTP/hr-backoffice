@@ -1,6 +1,6 @@
 "use server";
 
-import { isNumber } from "@/lib/utils";
+import { isNumber } from "@/lib/utility";
 import {
   createEmployee,
   deleteEmployee,
