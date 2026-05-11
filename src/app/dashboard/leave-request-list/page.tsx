@@ -29,6 +29,12 @@ export default async function LeaveRequestListPage() {
             You can manage all leave requests of employees in your organization
           </p>
         </div>
+
+        <Link href="/dashboard/leave-requests/new">
+          <button className="flex items-center space-x-1 rounded-full bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700 cursor-pointer transition">
+            <span>+ Create Leave Request</span>
+          </button>
+        </Link>
       </div>
 
       {/* Card */}
