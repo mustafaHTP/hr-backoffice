@@ -25,6 +25,15 @@ export default function CreateLeaveRequestForm({
   const [startDate, setStartDate] = useState(today);
   const [endDate, setEndDate] = useState(today);
 
+  function handleStartDateSelection(selectedDate: Date) {
+    // if start date is later than end date, update end date
+    if (selectedDate > endDate) {
+      setEndDate(selectedDate);
+    }
+
+    setStartDate(selectedDate);
+  }
+
   return (
     <div className="max-w-2xl space-y-6">
       {/* Header */}
@@ -79,10 +88,12 @@ export default function CreateLeaveRequestForm({
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0">
                   <Calendar
+                    defaultMonth={startDate}
+                    disabled={{ before: today }}
                     required
                     mode="single"
                     selected={startDate}
-                    onSelect={setStartDate}
+                    onSelect={handleStartDateSelection}
                   />
                 </PopoverContent>
               </Popover>
@@ -106,6 +117,8 @@ export default function CreateLeaveRequestForm({
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0">
                   <Calendar
+                    defaultMonth={endDate}
+                    disabled={{ before: today }}
                     required
                     mode="single"
                     selected={endDate}
