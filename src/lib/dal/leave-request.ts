@@ -1,5 +1,22 @@
 import { LeaveStatus } from "@/generated/prisma/enums";
 import { prisma } from "../prisma";
+import {
+  leaveRequestSchema,
+  LeaveRequestSchema,
+} from "../schemas/leave-request";
+import { LeaveRequest } from "@/generated/prisma/client";
+
+export async function createLeaveRequest(leaveRequest) {
+  try {
+    await prisma.leaveRequest.create({
+      data: leaveRequest,
+    });
+  } catch (error) {
+    console.log("Error creating leave request:" + error);
+
+    throw new Error("Failed to create leave request");
+  }
+}
 
 export async function getLeaveRequests() {
   try {

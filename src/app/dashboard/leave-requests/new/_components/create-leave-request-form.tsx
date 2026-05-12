@@ -1,5 +1,6 @@
 "use client";
 
+import createLeaveRequestAction from "@/app/actions/leave-request";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -7,31 +8,79 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { LeaveType } from "@/generated/prisma/client";
+import { Employee, LeaveType } from "@/generated/prisma/client";
+import { inclusiveDayCount } from "@/lib/utility";
+import { ActionResponse } from "@/types/action-response";
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { format } from "date-fns/format";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { FormEvent, startTransition, useActionState, useState } from "react";
 
 type CreateLeaveRequestFormProps = {
   leaveTypes: LeaveType[];
+  employee: Employee;
 };
 
 export default function CreateLeaveRequestForm({
   leaveTypes,
+  employee,
 }: CreateLeaveRequestFormProps) {
   const router = useRouter();
   const today = new Date();
   const [startDate, setStartDate] = useState(today);
   const [endDate, setEndDate] = useState(today);
+  const [leaveTypeId, setLeaveTypeId] = useState("");
+  const [description, setDescription] = useState("");
+  const [state, formAction, isPending] = useActionState<
+    ActionResponse,
+    FormData
+  >(
+    async (_, formData) => {
+      const result = await createLeaveRequestAction(formData);
+      if (result.success) {
+        router.push("/dashboard/leave-request-list");
 
-  function handleStartDateSelection(selectedDate: Date) {
-    // if start date is later than end date, update end date
+        console.log(result);
+
+        return result;
+      } else {
+        return result;
+      }
+    },
+    {
+      success: false,
+      message: "",
+    },
+  );
+
+  function handleStartDateSelection(selectedDate: Date | undefined) {
+    if (!selectedDate) return;
     if (selectedDate > endDate) {
       setEndDate(selectedDate);
     }
-
     setStartDate(selectedDate);
+  }
+
+  function handleEndDateSelection(selectedDate: Date | undefined) {
+    if (!selectedDate) return;
+    if (selectedDate < startDate) {
+      setStartDate(selectedDate);
+    }
+    setEndDate(selectedDate);
+  }
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const formData = new FormData();
+    formData.set("employeeId", String(employee.id));
+    formData.set("leaveTypeId", leaveTypeId);
+    formData.set("startDate", startDate.toISOString());
+    formData.set("endDate", endDate.toISOString());
+    formData.set("description", description);
+    formData.set("totalDays", String(inclusiveDayCount(startDate, endDate)));
+    startTransition(() => {
+      formAction(formData);
+    });
   }
 
   return (
@@ -48,13 +97,14 @@ export default function CreateLeaveRequestForm({
 
       {/* Card */}
       <div className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
-        <form className="space-y-4">
-          {/* <input type="hidden" name="id" value={employee.id} /> */}
-
+        <form onSubmit={handleSubmit} className="space-y-4">
           {/* Leave Types */}
           <div>
             <select
               name="leaveTypeId"
+              value={leaveTypeId}
+              onChange={(e) => setLeaveTypeId(e.target.value)}
+              required
               className="w-full rounded-xl border border-zinc-200 px-4 py-2 bg-white dark:border-zinc-800 dark:bg-zinc-900"
             >
               <option value="" disabled>
@@ -118,11 +168,11 @@ export default function CreateLeaveRequestForm({
                 <PopoverContent className="w-auto p-0">
                   <Calendar
                     defaultMonth={endDate}
-                    disabled={{ before: today }}
+                    disabled={{ before: startDate }}
                     required
                     mode="single"
                     selected={endDate}
-                    onSelect={setEndDate}
+                    onSelect={handleEndDateSelection}
                   />
                 </PopoverContent>
               </Popover>
@@ -133,6 +183,8 @@ export default function CreateLeaveRequestForm({
           <div>
             <textarea
               name="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
               placeholder="Description (optional)"
               rows={4}
               className="w-full rounded-xl border border-zinc-200 px-4 py-2 bg-white dark:border-zinc-800 dark:bg-zinc-900"
@@ -151,7 +203,8 @@ export default function CreateLeaveRequestForm({
 
             <button
               type="submit"
-              className="rounded-full bg-violet-950 px-6 py-2 text-sm font-semibold text-white hover:bg-violet-800 transition"
+              disabled={isPending}
+              className="rounded-full bg-violet-950 px-6 py-2 text-sm font-semibold text-white hover:bg-violet-800 transition disabled:opacity-50"
             >
               Create Leave Request
             </button>
