@@ -1,5 +1,6 @@
 "use client";
 
+import { Department } from "@/generated/prisma/client";
 import { deleteDepartmentAction } from "@/app/actions/department";
 import { ActionResponse } from "@/types/action-response";
 import Link from "next/link";
@@ -7,7 +8,11 @@ import { useRouter } from "next/navigation";
 import { useActionState } from "react";
 import { TrashIcon, Pencil1Icon } from "@radix-ui/react-icons";
 
-export default function DepartmentRow({ department }) {
+export default function DepartmentRow({
+  department,
+}: {
+  department: Department;
+}) {
   const router = useRouter();
   const [state, formAction, isPending] = useActionState<
     ActionResponse,

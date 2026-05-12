@@ -1,6 +1,8 @@
 "use client";
 
 import { updateEmployeeAction } from "@/app/actions/employee";
+import type { EmployeeWithDeptTitle } from "@/lib/dal/employee";
+import { Department, EmployeeTitle } from "@/generated/prisma/client";
 import { useRouter } from "next/navigation";
 import { useActionState } from "react";
 
@@ -8,6 +10,10 @@ export default function EmployeeForm({
   employee,
   departments,
   employeeTitles,
+}: {
+  employee: EmployeeWithDeptTitle;
+  departments: Department[];
+  employeeTitles: EmployeeTitle[];
 }) {
   const router = useRouter();
   const [state, formAction, isPending] = useActionState(updateEmployeeAction, {
@@ -106,7 +112,7 @@ export default function EmployeeForm({
                   ? "border-red-500"
                   : "border-zinc-200 dark:border-zinc-800"
               }`}
-              defaultValue={employee.phone}
+              defaultValue={employee.phone ?? ""}
             />
             {state?.errors?.phone && (
               <p className="mt-1 text-sm text-red-500">
@@ -121,10 +127,10 @@ export default function EmployeeForm({
               name="departmentId"
               disabled={isPending}
               className="w-full rounded-xl border border-zinc-200 px-4 py-2 bg-white dark:border-zinc-800 dark:bg-zinc-900"
-              defaultValue={employee.departmentId}
+              defaultValue={employee.departmentId ?? ""}
             >
               <option value="">Select Department</option>
-              {departments.map((dept) => (
+              {departments.map((dept: Department) => (
                 <option key={dept.id} value={dept.id}>
                   {dept.name}
                 </option>
@@ -138,10 +144,10 @@ export default function EmployeeForm({
               name="titleId"
               disabled={isPending}
               className="w-full rounded-xl border border-zinc-200 px-4 py-2 bg-white dark:border-zinc-800 dark:bg-zinc-900"
-              defaultValue={employee.titleId}
+              defaultValue={employee.titleId ?? ""}
             >
               <option value="">Select Title</option>
-              {employeeTitles.map((et) => (
+              {employeeTitles.map((et: EmployeeTitle) => (
                 <option key={et.id} value={et.id}>
                   {et.name}
                 </option>

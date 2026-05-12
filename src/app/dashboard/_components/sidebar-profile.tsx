@@ -9,7 +9,11 @@ export default async function SidebarProfile() {
     return null;
   }
 
-  const user = await getUser(session.userId);
+  const userResult = await getUser(session.userId);
+  if (!userResult.isSuccess()) {
+    return null;
+  }
+  const user = userResult.getData();
   if (!user) {
     return null;
   }

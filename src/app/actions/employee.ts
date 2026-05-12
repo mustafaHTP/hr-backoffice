@@ -35,21 +35,18 @@ export async function createEmployeeAction(
     };
   }
 
-  try {
-    await createEmployee(validationResult.data);
-
-    return {
-      success: true,
-      message: "Employee created successfully",
-    };
-  } catch (err) {
-    console.log("Error occured on create employee: " + err);
-
+  const createResult = await createEmployee(validationResult.data);
+  if (!createResult.isSuccess()) {
     return {
       success: false,
-      message: "Failed to create employee",
+      message: createResult.getError() ?? "Failed to create employee",
     };
   }
+
+  return {
+    success: true,
+    message: "Employee created successfully",
+  };
 }
 
 export async function updateEmployeeAction(
@@ -78,23 +75,23 @@ export async function updateEmployeeAction(
     };
   }
 
-  try {
-    await updateEmployee(formEmployee.id, validationResult.data);
-
-    revalidatePath(`/dashboard/employees/edit/${formEmployee.id}`);
-
-    return {
-      success: true,
-      message: "Employee updated successfully",
-    };
-  } catch (error) {
-    console.log("Error occured on updating employee: " + error);
-
+  const updateResult = await updateEmployee(
+    formEmployee.id,
+    validationResult.data,
+  );
+  if (!updateResult.isSuccess()) {
     return {
       success: false,
-      message: "Failed to update employee",
+      message: updateResult.getError() ?? "Failed to update employee",
     };
   }
+
+  revalidatePath(`/dashboard/employees/edit/${formEmployee.id}`);
+
+  return {
+    success: true,
+    message: "Employee updated successfully",
+  };
 }
 
 export async function deleteEmployeeAction(formData: FormData) {
@@ -115,19 +112,16 @@ export async function deleteEmployeeAction(formData: FormData) {
 
   const id = Number(idFromForm);
 
-  try {
-    await deleteEmployee(id);
-
-    return {
-      success: true,
-      message: "Employee deleted successfully",
-    };
-  } catch (error) {
-    console.log("Failed to delete employee: " + error);
-
+  const deleteResult = await deleteEmployee(id);
+  if (!deleteResult.isSuccess()) {
     return {
       success: false,
-      message: "Failed to delete employee",
+      message: deleteResult.getError() ?? "Failed to delete employee",
     };
   }
+
+  return {
+    success: true,
+    message: "Employee deleted successfully",
+  };
 }

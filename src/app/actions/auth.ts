@@ -23,7 +23,9 @@ export async function signInAction(
       };
     }
 
-    const user = await getUserByEmail(signInFormData.email);
+    const userResult = await getUserByEmail(signInFormData.email);
+    const user =
+      userResult.isSuccess() ? userResult.getData() ?? null : null;
     if (!user) {
       return {
         success: false,

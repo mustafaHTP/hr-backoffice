@@ -25,20 +25,18 @@ export async function createDepartmentAction(
     };
   }
 
-  try {
-    await createDepartment(validationResult.data);
-    return {
-      success: true,
-      message: "Department created successfully",
-    };
-  } catch (error) {
-    console.log("Error occured on create department: " + error);
-
+  const createResult = await createDepartment(validationResult.data);
+  if (!createResult.isSuccess()) {
     return {
       success: false,
-      message: "Failed to create department",
+      message: createResult.getError() ?? "Failed to create department",
     };
   }
+
+  return {
+    success: true,
+    message: "Department created successfully",
+  };
 }
 
 export async function updateDepartmentAction(
@@ -65,21 +63,21 @@ export async function updateDepartmentAction(
     };
   }
 
-  try {
-    await updateDepartment(departmentForm.id, validationResult.data);
-
-    return {
-      success: true,
-      message: "Department updated successfully",
-    };
-  } catch (error) {
-    console.log("Failed to updaate department: " + error);
-
+  const updateResult = await updateDepartment(
+    departmentForm.id,
+    validationResult.data,
+  );
+  if (!updateResult.isSuccess()) {
     return {
       success: false,
-      message: "Failed to update employee",
+      message: updateResult.getError() ?? "Failed to update department",
     };
   }
+
+  return {
+    success: true,
+    message: "Department updated successfully",
+  };
 }
 
 export async function deleteDepartmentAction(
@@ -102,19 +100,16 @@ export async function deleteDepartmentAction(
 
   const id = Number(idFromForm);
 
-  try {
-    await deleteDepartment(id);
-
-    return {
-      success: true,
-      message: "Department deleted successfully",
-    };
-  } catch (error) {
-    console.log("Failed to delete department: " + error);
-
+  const deleteResult = await deleteDepartment(id);
+  if (!deleteResult.isSuccess()) {
     return {
       success: false,
-      message: "Failed to delete department",
+      message: deleteResult.getError() ?? "Failed to delete department",
     };
   }
+
+  return {
+    success: true,
+    message: "Department deleted successfully",
+  };
 }

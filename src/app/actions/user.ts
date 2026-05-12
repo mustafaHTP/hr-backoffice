@@ -9,10 +9,10 @@ export async function getCurrentUser() {
     return null;
   }
 
-  const user = await getUser(session.userId);
-  if (!user) {
+  const userResult = await getUser(session.userId);
+  if (!userResult.isSuccess()) {
     return null;
   }
 
-  return user;
+  return userResult.getData() ?? null;
 }

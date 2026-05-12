@@ -1,8 +1,15 @@
+import { Employee, Prisma } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
+import { DalResponse } from "@/types/dal-response";
 import { EmployeeSchema } from "../schemas/employee";
-import { Employee } from "@/generated/prisma/client";
 
-export async function getEmployees(): Promise<Employee[]> {
+export type EmployeeWithDeptTitle = Prisma.EmployeeGetPayload<{
+  include: { department: true; title: true };
+}>;
+
+export async function getEmployees(): Promise<
+  DalResponse<EmployeeWithDeptTitle[]>
+> {
   try {
     const employees = await prisma.employee.findMany({
       include: {
@@ -11,27 +18,34 @@ export async function getEmployees(): Promise<Employee[]> {
       },
     });
 
-    return employees;
+    return DalResponse.Success(employees);
   } catch (error) {
     console.log("Error fetching employees:" + error);
 
-    throw new Error("Failed to get employees");
+    return DalResponse.Failure();
   }
 }
 
-export async function createEmployee(employee: EmployeeSchema) {
+export async function createEmployee(
+  employee: EmployeeSchema,
+): Promise<DalResponse<Employee>> {
   try {
     await prisma.employee.create({
       data: employee,
     });
+
+    return DalResponse.Success();
   } catch (error) {
     console.log("Error creating employee: " + error);
 
-    throw new Error("Failed to create employee");
+    return DalResponse.Failure();
   }
 }
 
-export async function updateEmployee(id: number, employee: EmployeeSchema) {
+export async function updateEmployee(
+  id: number,
+  employee: EmployeeSchema,
+): Promise<DalResponse<Employee>> {
   try {
     await prisma.employee.update({
       where: {
@@ -39,14 +53,18 @@ export async function updateEmployee(id: number, employee: EmployeeSchema) {
       },
       data: employee,
     });
+
+    return DalResponse.Success();
   } catch (error) {
     console.log("Error updating employee: " + error);
 
-    throw new Error("Failed to update employee with id: " + id);
+    return DalResponse.Failure();
   }
 }
 
-export async function getEmployee(id: number) {
+export async function getEmployee(
+  id: number,
+): Promise<DalResponse<EmployeeWithDeptTitle>> {
   try {
     const employee = await prisma.employee.findFirst({
       where: {
@@ -58,24 +76,28 @@ export async function getEmployee(id: number) {
       },
     });
 
-    return employee;
+    return DalResponse.Success(employee);
   } catch (error) {
     console.log("Error fetching to get employee: " + error);
 
-    throw new Error(`Failed to get employee with id: ${id}`);
+    return DalResponse.Failure();
   }
 }
 
-export async function deleteEmployee(id: number) {
+export async function deleteEmployee(
+  id: number,
+): Promise<DalResponse<Employee>> {
   try {
     await prisma.employee.delete({
       where: {
         id: id,
       },
     });
+
+    return DalResponse.Success();
   } catch (error) {
     console.log("Failed to delete employee: " + error);
 
-    throw new Error("Failed to delete employee with id: " + id);
+    return DalResponse.Failure();
   }
 }

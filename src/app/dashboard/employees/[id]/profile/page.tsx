@@ -1,13 +1,24 @@
 import { getEmployee } from "@/lib/dal/employee";
+import { notFound } from "next/navigation";
 import { getInitials } from "@/lib/utility";
 import * as Avatar from "@radix-ui/react-avatar";
 import Link from "next/link";
 
-export default async function EmployeeProfilePage({ params }) {
+type EmployeeProfilePageProps = {
+  params: Promise<{ id: string }>;
+};
+
+export default async function EmployeeProfilePage({
+  params,
+}: EmployeeProfilePageProps) {
   const { id } = await params;
-  const employee = await getEmployee(Number(id));
+  const employeeResult = await getEmployee(Number(id));
+  if (!employeeResult.isSuccess()) {
+    notFound();
+  }
+  const employee = employeeResult.getData();
   if (!employee) {
-    throw new Error(`Employee with ${id} not found `);
+    notFound();
   }
 
   const fullName = `${employee.firstName} ${employee.lastName}`.trim();

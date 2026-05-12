@@ -11,11 +11,19 @@ export default async function LeaveRequestListPage() {
   if (!user.employeeId)
     throw new Error("No employee is associated with current user");
 
-  const employee = await getEmployee(user.employeeId);
-  if (!employee)
+  const employeeResult = await getEmployee(user.employeeId);
+  if (!employeeResult.isSuccess()) {
     throw new Error("No employee found corresponding to current user!");
+  }
+  const employee = employeeResult.getData();
+  if (!employee) {
+    throw new Error("No employee found corresponding to current user!");
+  }
 
-  const leaveRequests = await getLeaveRequestsByEmployeeId(employee.id);
+  const leaveRequestsResult = await getLeaveRequestsByEmployeeId(employee.id);
+  const leaveRequests = leaveRequestsResult.isSuccess()
+    ? (leaveRequestsResult.getData() ?? [])
+    : [];
 
   return (
     <div className="space-y-6">

@@ -3,7 +3,10 @@ import Link from "next/link";
 import EmployeeRow from "./_components/employee-row";
 
 export default async function EmployeesPage() {
-  const employees = await getEmployees();
+  const employeesResult = await getEmployees();
+  const employees = employeesResult.isSuccess()
+    ? (employeesResult.getData() ?? [])
+    : [];
 
   return (
     <div className="space-y-6">

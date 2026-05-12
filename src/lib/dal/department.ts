@@ -1,45 +1,57 @@
+import { Department } from "@/generated/prisma/client";
+import { DalResponse } from "@/types/dal-response";
 import { prisma } from "../prisma";
 import { DepartmentSchema } from "../schemas/department";
 
-export async function getDepartments() {
+export async function getDepartments(): Promise<DalResponse<Department[]>> {
   try {
     const departments = await prisma.department.findMany();
 
-    return departments;
+    return DalResponse.Success(departments);
   } catch (error) {
     console.log("Errow fetching departments: " + error);
 
-    throw new Error("Failed to get departments");
+    return DalResponse.Failure();
   }
 }
 
-export async function createDepartment(department: DepartmentSchema) {
+export async function createDepartment(
+  department: DepartmentSchema,
+): Promise<DalResponse<Department>> {
   try {
     await prisma.department.create({
       data: department,
     });
+
+    return DalResponse.Success();
   } catch (error) {
     console.log("Failed to create department: " + error);
 
-    throw new Error("Failed to create department");
+    return DalResponse.Failure();
   }
 }
 
-export async function deleteDepartment(id: number) {
+export async function deleteDepartment(
+  id: number,
+): Promise<DalResponse<Department>> {
   try {
     await prisma.department.delete({
       where: {
         id: id,
       },
     });
+
+    return DalResponse.Success();
   } catch (error) {
     console.log("Failed to delete department: " + error);
 
-    throw new Error("Failed to delete department");
+    return DalResponse.Failure();
   }
 }
 
-export async function getDepartment(id: number) {
+export async function getDepartment(
+  id: number,
+): Promise<DalResponse<Department>> {
   try {
     const department = await prisma.department.findFirst({
       where: {
@@ -47,18 +59,18 @@ export async function getDepartment(id: number) {
       },
     });
 
-    return department;
+    return DalResponse.Success(department);
   } catch (error) {
     console.log("Failed to get department" + error);
 
-    throw new Error(`Failed to get department with id: ${id}`);
+    return DalResponse.Failure();
   }
 }
 
 export async function updateDepartment(
   id: number,
   deparment: DepartmentSchema,
-) {
+): Promise<DalResponse<Department>> {
   try {
     await prisma.department.update({
       where: {
@@ -66,9 +78,11 @@ export async function updateDepartment(
       },
       data: deparment,
     });
+
+    return DalResponse.Success();
   } catch (error) {
     console.log("Failed to update department" + error);
 
-    throw new Error(`Failed to update department with id: ${id}`);
+    return DalResponse.Failure();
   }
 }

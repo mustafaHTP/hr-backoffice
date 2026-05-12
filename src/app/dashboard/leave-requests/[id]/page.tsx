@@ -8,9 +8,18 @@ import {
 import LeaveStatusBadge from "../_components/leave-status-badge";
 import Link from "next/link";
 
-export default async function LeaveRequestPage({ params }) {
+type LeaveRequestPageProps = {
+  params: Promise<{ id: string }>;
+};
+
+export default async function LeaveRequestPage({
+  params,
+}: LeaveRequestPageProps) {
   const { id } = await params;
-  const leaveRequest = await getLeaveRequest(Number(id));
+  const leaveRequestResult = await getLeaveRequest(Number(id));
+  const leaveRequest = leaveRequestResult.isSuccess()
+    ? leaveRequestResult.getData()
+    : null;
   if (!leaveRequest) throw new Error("Leave request not found");
 
   return (

@@ -6,8 +6,11 @@ export default async function DashboardNavbar() {
   let userName = "Guest";
 
   if (session?.userId) {
-    const user = await getUser(session.userId);
-    userName = user?.email || "User";
+    const userResult = await getUser(session.userId);
+    if (userResult.isSuccess()) {
+      const user = userResult.getData();
+      userName = user?.email || "User";
+    }
   }
 
   const today = new Date().toLocaleDateString("en-US", {

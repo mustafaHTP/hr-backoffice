@@ -1,11 +1,18 @@
 "use client";
 
 import { createEmployeeAction } from "@/app/actions/employee";
+import { Department, EmployeeTitle } from "@/generated/prisma/client";
 import { ActionResponse } from "@/types/action-response";
 import { useRouter } from "next/navigation";
 import { useActionState } from "react";
 
-export default function EmployeeForm({ departments, employeeTitles }) {
+export default function EmployeeForm({
+  departments,
+  employeeTitles,
+}: {
+  departments: Department[];
+  employeeTitles: EmployeeTitle[];
+}) {
   const router = useRouter();
   const [state, formAction, isPending] = useActionState<
     ActionResponse,
@@ -131,7 +138,7 @@ export default function EmployeeForm({ departments, employeeTitles }) {
               <option disabled value="">
                 Select Department
               </option>
-              {departments.map((dept) => (
+              {departments.map((dept: Department) => (
                 <option key={dept.id} value={dept.id}>
                   {dept.name}
                 </option>
@@ -149,7 +156,7 @@ export default function EmployeeForm({ departments, employeeTitles }) {
               <option disabled value="">
                 Select Title
               </option>
-              {employeeTitles.map((et) => (
+              {employeeTitles.map((et: EmployeeTitle) => (
                 <option key={et.id} value={et.id}>
                   {et.name}
                 </option>

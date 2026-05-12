@@ -3,7 +3,10 @@ import DepartmentRow from "./_components/department-row";
 import { getDepartments } from "@/lib/dal/department";
 
 export default async function DeparmentsPage() {
-  const departments = await getDepartments();
+  const departmentsResult = await getDepartments();
+  const departments = departmentsResult.isSuccess()
+    ? (departmentsResult.getData() ?? [])
+    : [];
 
   return (
     <div className="space-y-6">

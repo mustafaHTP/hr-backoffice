@@ -1,11 +1,16 @@
 "use client";
 
 import { updateDepartmentAction } from "@/app/actions/department";
+import { Department } from "@/generated/prisma/client";
 import { ActionResponse } from "@/types/action-response";
 import { useRouter } from "next/navigation";
 import { useActionState } from "react";
 
-export default function DepartmentEditForm({ department }) {
+export default function DepartmentEditForm({
+  department,
+}: {
+  department: Department;
+}) {
   console.log(department);
 
   const router = useRouter();
@@ -78,7 +83,7 @@ export default function DepartmentEditForm({ department }) {
               disabled={isPending}
               className={`w-full rounded-xl border px-4 py-2 bg-white dark:bg-zinc-900
               ${state?.errors?.description ? "border-red-500" : "border-zinc-200 dark:border-zinc-800"}`}
-              defaultValue={department.description}
+              defaultValue={department.description ?? ""}
             />
             {state?.errors?.description && (
               <p className="mt-1 text-sm text-red-500">

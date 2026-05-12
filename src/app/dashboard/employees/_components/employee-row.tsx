@@ -5,9 +5,14 @@ import { deleteEmployeeAction } from "@/app/actions/employee";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ActionResponse } from "@/types/action-response";
+import type { EmployeeWithDeptTitle } from "@/lib/dal/employee";
 import { TrashIcon, Pencil1Icon } from "@radix-ui/react-icons";
 
-export default function EmployeeRow({ employee }) {
+export default function EmployeeRow({
+  employee,
+}: {
+  employee: EmployeeWithDeptTitle;
+}) {
   const router = useRouter();
   const [state, formAction, isPending] = useActionState<
     ActionResponse,
