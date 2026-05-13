@@ -7,11 +7,11 @@ export async function getDepartments(): Promise<DalResponse<Department[]>> {
   try {
     const departments = await prisma.department.findMany();
 
-    return DalResponse.Success(departments);
+    return DalResponse.success(departments);
   } catch (error) {
     console.log("Errow fetching departments: " + error);
 
-    return DalResponse.Failure();
+    return DalResponse.failure();
   }
 }
 
@@ -23,11 +23,11 @@ export async function createDepartment(
       data: department,
     });
 
-    return DalResponse.Success();
+    return DalResponse.success();
   } catch (error) {
     console.log("Failed to create department: " + error);
 
-    return DalResponse.Failure();
+    return DalResponse.failure();
   }
 }
 
@@ -41,11 +41,11 @@ export async function deleteDepartment(
       },
     });
 
-    return DalResponse.Success();
+    return DalResponse.success();
   } catch (error) {
     console.log("Failed to delete department: " + error);
 
-    return DalResponse.Failure();
+    return DalResponse.failure();
   }
 }
 
@@ -59,11 +59,11 @@ export async function getDepartment(
       },
     });
 
-    return DalResponse.Success(department);
+    return DalResponse.success(department);
   } catch (error) {
     console.log("Failed to get department" + error);
 
-    return DalResponse.Failure();
+    return DalResponse.failure();
   }
 }
 
@@ -79,10 +79,10 @@ export async function updateDepartment(
       data: deparment,
     });
 
-    return DalResponse.Success();
+    return DalResponse.success();
   } catch (error) {
     console.log("Failed to update department" + error);
 
-    return DalResponse.Failure();
+    return DalResponse.failure();
   }
 }

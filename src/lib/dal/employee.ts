@@ -18,11 +18,11 @@ export async function getEmployees(): Promise<
       },
     });
 
-    return DalResponse.Success(employees);
+    return DalResponse.success(employees);
   } catch (error) {
     console.log("Error fetching employees:" + error);
 
-    return DalResponse.Failure();
+    return DalResponse.failure();
   }
 }
 
@@ -34,11 +34,11 @@ export async function createEmployee(
       data: employee,
     });
 
-    return DalResponse.Success();
+    return DalResponse.success();
   } catch (error) {
     console.log("Error creating employee: " + error);
 
-    return DalResponse.Failure();
+    return DalResponse.failure();
   }
 }
 
@@ -54,11 +54,11 @@ export async function updateEmployee(
       data: employee,
     });
 
-    return DalResponse.Success();
+    return DalResponse.success();
   } catch (error) {
     console.log("Error updating employee: " + error);
 
-    return DalResponse.Failure();
+    return DalResponse.failure();
   }
 }
 
@@ -76,11 +76,11 @@ export async function getEmployee(
       },
     });
 
-    return DalResponse.Success(employee);
+    return DalResponse.success(employee);
   } catch (error) {
     console.log("Error fetching to get employee: " + error);
 
-    return DalResponse.Failure();
+    return DalResponse.failure();
   }
 }
 
@@ -94,10 +94,10 @@ export async function deleteEmployee(
       },
     });
 
-    return DalResponse.Success();
+    return DalResponse.success();
   } catch (error) {
     console.log("Failed to delete employee: " + error);
 
-    return DalResponse.Failure();
+    return DalResponse.failure();
   }
 }

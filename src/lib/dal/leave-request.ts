@@ -27,11 +27,11 @@ export async function createLeaveRequest(
       data: leaveRequest,
     });
 
-    return DalResponse.Success();
+    return DalResponse.success();
   } catch (error) {
     console.log("Error creating leave request:" + error);
 
-    return DalResponse.Failure();
+    return DalResponse.failure();
   }
 }
 
@@ -46,11 +46,11 @@ export async function getLeaveRequests(): Promise<
       },
     });
 
-    return DalResponse.Success(leaveRequests);
+    return DalResponse.success(leaveRequests);
   } catch (error) {
     console.log("Error fetching leave requests:" + error);
 
-    return DalResponse.Failure();
+    return DalResponse.failure();
   }
 }
 
@@ -73,11 +73,11 @@ export async function getLeaveRequest(
       },
     });
 
-    return DalResponse.Success(leaveRequest);
+    return DalResponse.success(leaveRequest);
   } catch (error) {
     console.log(`Error fetching leave request with id : ${id}` + error);
 
-    return DalResponse.Failure();
+    return DalResponse.failure();
   }
 }
 
@@ -94,12 +94,12 @@ export async function getLeaveRequestsByEmployeeId(
       },
     });
 
-    return DalResponse.Success(leaveRequests);
+    return DalResponse.success(leaveRequests);
   } catch (error) {
     console.log(
       `Error fetching leave requests for employee id : ${employeeId}` + error,
     );
 
-    return DalResponse.Failure();
+    return DalResponse.failure();
   }
 }

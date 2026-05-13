@@ -8,10 +8,10 @@ export async function getEmployeeTitles(): Promise<
   try {
     const employeeTitles = await prisma.employeeTitle.findMany();
 
-    return DalResponse.Success(employeeTitles);
+    return DalResponse.success(employeeTitles);
   } catch (error) {
     console.log("Errow fetching employee titles: " + error);
 
-    return DalResponse.Failure();
+    return DalResponse.failure();
   }
 }

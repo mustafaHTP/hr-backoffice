@@ -6,10 +6,10 @@ export async function getLeaveTypes(): Promise<DalResponse<LeaveType[]>> {
   try {
     const leaveTypes = await prisma.leaveType.findMany();
 
-    return DalResponse.Success(leaveTypes);
+    return DalResponse.success(leaveTypes);
   } catch (error) {
     console.log("Error fetching leave types:" + error);
 
-    return DalResponse.Failure();
+    return DalResponse.failure();
   }
 }

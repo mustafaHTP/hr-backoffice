@@ -10,11 +10,11 @@ export async function getUser(userId: number): Promise<DalResponse<User>> {
       },
     });
 
-    return DalResponse.Success(user);
+    return DalResponse.success(user);
   } catch (error) {
     console.log("Error getting user by Id: ", error);
 
-    return DalResponse.Failure();
+    return DalResponse.failure();
   }
 }
 
@@ -28,10 +28,10 @@ export async function getUserByEmail(
       },
     });
 
-    return DalResponse.Success(user);
+    return DalResponse.success(user);
   } catch (error) {
     console.error("Error getting user by email: ", error);
 
-    return DalResponse.Failure();
+    return DalResponse.failure();
   }
 }

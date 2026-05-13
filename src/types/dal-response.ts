@@ -13,11 +13,11 @@ export class DalResponse<T> {
     this._error = error;
   }
 
-  public static Success<T>(data?: T | null) {
+  public static success<T>(data?: T | null) {
     return new DalResponse<T>(true, data ?? null, null);
   }
 
-  public static Failure<T>(error?: string | null) {
+  public static failure<T>(error?: string | null) {
     return new DalResponse<T>(false, null, error ?? null);
   }
 
