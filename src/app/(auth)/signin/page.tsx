@@ -1,10 +1,12 @@
 "use client";
 
 import { signInAction } from "@/app/actions/auth";
+import { NotificationService as ToastService } from "@/lib/toast-service";
 import { ActionResponse } from "@/types/action-response";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useActionState } from "react";
+import { toast } from "react-toastify";
 
 export default function SignInPage() {
   const router = useRouter();
@@ -16,8 +18,11 @@ export default function SignInPage() {
       const result = await signInAction(formData);
 
       if (result.success) {
+        ToastService.success("Login is successful");
         router.refresh();
         router.push("/dashboard");
+      } else {
+        ToastService.error("Email or password is invalid");
       }
 
       return result;
