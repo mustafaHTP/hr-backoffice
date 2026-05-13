@@ -5,11 +5,7 @@ import { getEmployee } from "@/lib/dal/employee";
 import { getCurrentUser } from "@/app/actions/user";
 
 export default async function CreateLeaveRequestPage() {
-  const leaveTypesResult = await getLeaveTypes();
-  if (!leaveTypesResult.isSuccess()) {
-    throw new Error("Failed to load leave types");
-  }
-  const leaveTypes = leaveTypesResult.getData() ?? [];
+  const leaveTypes = await getLeaveTypes();
 
   const user = await getCurrentUser();
   if (!user) {
@@ -20,11 +16,7 @@ export default async function CreateLeaveRequestPage() {
     throw new Error("Current user has no associated employee");
   }
 
-  const employeeResult = await getEmployee(user.employeeId);
-  if (!employeeResult.isSuccess()) {
-    throw new Error("Failed to get employee");
-  }
-  const employee = employeeResult.getData();
+  const employee = await getEmployee(user.employeeId);
   if (!employee) {
     throw new Error("Failed to get employee");
   }

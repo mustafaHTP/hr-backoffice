@@ -1,37 +1,28 @@
 import { User } from "@/generated/prisma/client";
-import { DalResponse } from "@/types/dal-response";
 import { prisma } from "../prisma";
 
-export async function getUser(userId: number): Promise<DalResponse<User>> {
+export async function getUser(userId: number): Promise<User | null> {
   try {
-    const user = await prisma.user.findUnique({
+    return await prisma.user.findUnique({
       where: {
         id: userId,
       },
     });
-
-    return DalResponse.success(user);
   } catch (error) {
-    console.log("Error getting user by Id: ", error);
-
-    return DalResponse.failure();
+    console.error("Error getting user by id:", error);
+    throw error;
   }
 }
 
-export async function getUserByEmail(
-  email: string,
-): Promise<DalResponse<User>> {
+export async function getUserByEmail(email: string): Promise<User | null> {
   try {
-    const user = await prisma.user.findUnique({
+    return await prisma.user.findUnique({
       where: {
         email: email,
       },
     });
-
-    return DalResponse.success(user);
   } catch (error) {
-    console.error("Error getting user by email: ", error);
-
-    return DalResponse.failure();
+    console.error("Error getting user by email:", error);
+    throw error;
   }
 }

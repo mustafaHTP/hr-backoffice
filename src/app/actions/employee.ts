@@ -10,6 +10,10 @@ import { revalidatePath } from "next/cache";
 import { employeeSchema } from "@/lib/schemas/employee";
 import { ActionResponse } from "@/types/action-response";
 
+function dalErrorMessage(error: unknown, fallback: string): string {
+  return error instanceof Error ? error.message : fallback;
+}
+
 export async function createEmployeeAction(
   formData: FormData,
 ): Promise<ActionResponse> {
@@ -35,11 +39,12 @@ export async function createEmployeeAction(
     };
   }
 
-  const createResult = await createEmployee(validationResult.data);
-  if (!createResult.isSuccess()) {
+  try {
+    await createEmployee(validationResult.data);
+  } catch (error) {
     return {
       success: false,
-      message: createResult.getError() ?? "Failed to create employee",
+      message: dalErrorMessage(error, "Failed to create employee"),
     };
   }
 
@@ -75,14 +80,12 @@ export async function updateEmployeeAction(
     };
   }
 
-  const updateResult = await updateEmployee(
-    formEmployee.id,
-    validationResult.data,
-  );
-  if (!updateResult.isSuccess()) {
+  try {
+    await updateEmployee(formEmployee.id, validationResult.data);
+  } catch (error) {
     return {
       success: false,
-      message: updateResult.getError() ?? "Failed to update employee",
+      message: dalErrorMessage(error, "Failed to update employee"),
     };
   }
 
@@ -112,11 +115,12 @@ export async function deleteEmployeeAction(formData: FormData) {
 
   const id = Number(idFromForm);
 
-  const deleteResult = await deleteEmployee(id);
-  if (!deleteResult.isSuccess()) {
+  try {
+    await deleteEmployee(id);
+  } catch (error) {
     return {
       success: false,
-      message: deleteResult.getError() ?? "Failed to delete employee",
+      message: dalErrorMessage(error, "Failed to delete employee"),
     };
   }
 

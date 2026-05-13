@@ -12,11 +12,7 @@ export default async function EmployeeProfilePage({
   params,
 }: EmployeeProfilePageProps) {
   const { id } = await params;
-  const employeeResult = await getEmployee(Number(id));
-  if (!employeeResult.isSuccess()) {
-    notFound();
-  }
-  const employee = employeeResult.getData();
+  const employee = await getEmployee(Number(id));
   if (!employee) {
     notFound();
   }

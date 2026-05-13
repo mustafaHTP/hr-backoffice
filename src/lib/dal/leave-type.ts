@@ -1,15 +1,11 @@
 import { LeaveType } from "@/generated/prisma/client";
-import { DalResponse } from "@/types/dal-response";
 import { prisma } from "../prisma";
 
-export async function getLeaveTypes(): Promise<DalResponse<LeaveType[]>> {
+export async function getLeaveTypes(): Promise<LeaveType[]> {
   try {
-    const leaveTypes = await prisma.leaveType.findMany();
-
-    return DalResponse.success(leaveTypes);
+    return await prisma.leaveType.findMany();
   } catch (error) {
-    console.log("Error fetching leave types:" + error);
-
-    return DalResponse.failure();
+    console.error("Error fetching leave types:", error);
+    throw error;
   }
 }

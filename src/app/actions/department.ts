@@ -9,6 +9,10 @@ import { departmentSchema } from "@/lib/schemas/department";
 import { isNumber } from "@/lib/utility";
 import { ActionResponse } from "@/types/action-response";
 
+function dalErrorMessage(error: unknown, fallback: string): string {
+  return error instanceof Error ? error.message : fallback;
+}
+
 export async function createDepartmentAction(
   formData: FormData,
 ): Promise<ActionResponse> {
@@ -25,11 +29,12 @@ export async function createDepartmentAction(
     };
   }
 
-  const createResult = await createDepartment(validationResult.data);
-  if (!createResult.isSuccess()) {
+  try {
+    await createDepartment(validationResult.data);
+  } catch (error) {
     return {
       success: false,
-      message: createResult.getError() ?? "Failed to create department",
+      message: dalErrorMessage(error, "Failed to create department"),
     };
   }
 
@@ -63,14 +68,12 @@ export async function updateDepartmentAction(
     };
   }
 
-  const updateResult = await updateDepartment(
-    departmentForm.id,
-    validationResult.data,
-  );
-  if (!updateResult.isSuccess()) {
+  try {
+    await updateDepartment(departmentForm.id, validationResult.data);
+  } catch (error) {
     return {
       success: false,
-      message: updateResult.getError() ?? "Failed to update department",
+      message: dalErrorMessage(error, "Failed to update department"),
     };
   }
 
@@ -100,11 +103,12 @@ export async function deleteDepartmentAction(
 
   const id = Number(idFromForm);
 
-  const deleteResult = await deleteDepartment(id);
-  if (!deleteResult.isSuccess()) {
+  try {
+    await deleteDepartment(id);
+  } catch (error) {
     return {
       success: false,
-      message: deleteResult.getError() ?? "Failed to delete department",
+      message: dalErrorMessage(error, "Failed to delete department"),
     };
   }
 

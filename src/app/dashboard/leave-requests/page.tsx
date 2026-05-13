@@ -3,10 +3,7 @@ import LeaveStatusBadge from "./_components/leave-status-badge";
 import Link from "next/link";
 
 export default async function LeaveRequestsPage() {
-  const leaveRequestsResult = await getLeaveRequests();
-  const leaveRequests = leaveRequestsResult.isSuccess()
-    ? (leaveRequestsResult.getData() ?? [])
-    : [];
+  const leaveRequests = await getLeaveRequests();
 
   return (
     <div className="space-y-6">

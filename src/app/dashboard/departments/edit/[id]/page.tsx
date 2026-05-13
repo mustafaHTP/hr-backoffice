@@ -10,11 +10,7 @@ export default async function DepartmentEditPage({
   params,
 }: DepartmentEditPageProps) {
   const { id } = await params;
-  const departmentResult = await getDepartment(Number(id));
-  if (!departmentResult.isSuccess()) {
-    notFound();
-  }
-  const department = departmentResult.getData();
+  const department = await getDepartment(Number(id));
   if (!department) {
     notFound();
   }

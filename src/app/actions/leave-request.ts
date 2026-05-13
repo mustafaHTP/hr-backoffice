@@ -34,12 +34,15 @@ export default async function createLeaveRequestAction(
     };
   }
 
-  const createResult = await createLeaveRequest(validationResult.data);
-  if (!createResult.isSuccess()) {
+  try {
+    await createLeaveRequest(validationResult.data);
+  } catch (error) {
     return {
       success: false,
       error:
-        createResult.getError() ?? "Error occurred on creating leave request",
+        error instanceof Error
+          ? error.message
+          : "Error occurred on creating leave request",
     };
   }
 

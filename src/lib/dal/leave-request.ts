@@ -1,5 +1,4 @@
-import { LeaveRequest, Prisma } from "@/generated/prisma/client";
-import { DalResponse } from "@/types/dal-response";
+import { Prisma } from "@/generated/prisma/client";
 import { LeaveRequestSchema } from "../schemas/leave-request";
 import { prisma } from "../prisma";
 
@@ -21,44 +20,38 @@ export type LeaveRequestWithLeaveType = Prisma.LeaveRequestGetPayload<{
 
 export async function createLeaveRequest(
   leaveRequest: LeaveRequestSchema,
-): Promise<DalResponse<LeaveRequest>> {
+): Promise<void> {
   try {
     await prisma.leaveRequest.create({
       data: leaveRequest,
     });
-
-    return DalResponse.success();
   } catch (error) {
-    console.log("Error creating leave request:" + error);
-
-    return DalResponse.failure();
+    console.error("Error creating leave request:", error);
+    throw error;
   }
 }
 
 export async function getLeaveRequests(): Promise<
-  DalResponse<LeaveRequestWithEmployeeAndLeaveType[]>
+  LeaveRequestWithEmployeeAndLeaveType[]
 > {
   try {
-    const leaveRequests = await prisma.leaveRequest.findMany({
+    return await prisma.leaveRequest.findMany({
       include: {
         leaveType: true,
         employee: true,
       },
     });
-
-    return DalResponse.success(leaveRequests);
   } catch (error) {
-    console.log("Error fetching leave requests:" + error);
-
-    return DalResponse.failure();
+    console.error("Error fetching leave requests:", error);
+    throw error;
   }
 }
 
 export async function getLeaveRequest(
   id: number,
-): Promise<DalResponse<LeaveRequestDetail | null>> {
+): Promise<LeaveRequestDetail | null> {
   try {
-    const leaveRequest = await prisma.leaveRequest.findUnique({
+    return await prisma.leaveRequest.findUnique({
       where: {
         id: id,
       },
@@ -72,20 +65,17 @@ export async function getLeaveRequest(
         leaveType: true,
       },
     });
-
-    return DalResponse.success(leaveRequest);
   } catch (error) {
-    console.log(`Error fetching leave request with id : ${id}` + error);
-
-    return DalResponse.failure();
+    console.error(`Error fetching leave request with id ${id}:`, error);
+    throw error;
   }
 }
 
 export async function getLeaveRequestsByEmployeeId(
   employeeId: number,
-): Promise<DalResponse<LeaveRequestWithLeaveType[]>> {
+): Promise<LeaveRequestWithLeaveType[]> {
   try {
-    const leaveRequests = await prisma.leaveRequest.findMany({
+    return await prisma.leaveRequest.findMany({
       where: {
         employeeId: employeeId,
       },
@@ -93,13 +83,11 @@ export async function getLeaveRequestsByEmployeeId(
         leaveType: true,
       },
     });
-
-    return DalResponse.success(leaveRequests);
   } catch (error) {
-    console.log(
-      `Error fetching leave requests for employee id : ${employeeId}` + error,
+    console.error(
+      `Error fetching leave requests for employee id ${employeeId}:`,
+      error,
     );
-
-    return DalResponse.failure();
+    throw error;
   }
 }

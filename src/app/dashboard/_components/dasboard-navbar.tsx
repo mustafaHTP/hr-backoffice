@@ -6,10 +6,13 @@ export default async function DashboardNavbar() {
   let userName = "Guest";
 
   if (session?.userId) {
-    const userResult = await getUser(session.userId);
-    if (userResult.isSuccess()) {
-      const user = userResult.getData();
-      userName = user?.email || "User";
+    try {
+      const user = await getUser(session.userId);
+      if (user) {
+        userName = user.email || "User";
+      }
+    } catch {
+      // keep Guest
     }
   }
 

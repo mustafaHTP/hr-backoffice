@@ -12,21 +12,12 @@ export default async function EmployeeEditPage({
   params,
 }: EmployeeEditPageProps) {
   const { id } = await params;
-  const departmentsResult = await getDepartments();
-  const employeeTitlesResult = await getEmployeeTitles();
-  const employeeResult = await getEmployee(Number(id));
+  const [departments, employeeTitles, employee] = await Promise.all([
+    getDepartments(),
+    getEmployeeTitles(),
+    getEmployee(Number(id)),
+  ]);
 
-  if (
-    !departmentsResult.isSuccess() ||
-    !employeeTitlesResult.isSuccess() ||
-    !employeeResult.isSuccess()
-  ) {
-    notFound();
-  }
-
-  const departments = departmentsResult.getData() ?? [];
-  const employeeTitles = employeeTitlesResult.getData() ?? [];
-  const employee = employeeResult.getData();
   if (!employee) {
     notFound();
   }

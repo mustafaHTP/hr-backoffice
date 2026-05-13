@@ -16,10 +16,7 @@ export default async function LeaveRequestPage({
   params,
 }: LeaveRequestPageProps) {
   const { id } = await params;
-  const leaveRequestResult = await getLeaveRequest(Number(id));
-  const leaveRequest = leaveRequestResult.isSuccess()
-    ? leaveRequestResult.getData()
-    : null;
+  const leaveRequest = await getLeaveRequest(Number(id));
   if (!leaveRequest) throw new Error("Leave request not found");
 
   return (

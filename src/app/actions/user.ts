@@ -9,10 +9,9 @@ export async function getCurrentUser() {
     return null;
   }
 
-  const userResult = await getUser(session.userId);
-  if (!userResult.isSuccess()) {
+  try {
+    return await getUser(session.userId);
+  } catch {
     return null;
   }
-
-  return userResult.getData() ?? null;
 }

@@ -1,17 +1,11 @@
 import { EmployeeTitle } from "@/generated/prisma/client";
-import { DalResponse } from "@/types/dal-response";
 import { prisma } from "../prisma";
 
-export async function getEmployeeTitles(): Promise<
-  DalResponse<EmployeeTitle[]>
-> {
+export async function getEmployeeTitles(): Promise<EmployeeTitle[]> {
   try {
-    const employeeTitles = await prisma.employeeTitle.findMany();
-
-    return DalResponse.success(employeeTitles);
+    return await prisma.employeeTitle.findMany();
   } catch (error) {
-    console.log("Errow fetching employee titles: " + error);
-
-    return DalResponse.failure();
+    console.error("Error fetching employee titles:", error);
+    throw error;
   }
 }
