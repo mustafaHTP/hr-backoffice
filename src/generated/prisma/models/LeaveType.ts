@@ -28,72 +28,98 @@ export type AggregateLeaveType = {
 
 export type LeaveTypeAvgAggregateOutputType = {
   id: number | null
-  dayLimit: number | null
+  perRequestMaxDays: number | null
+  periodQuantity: number | null
+  periodMaxDays: number | null
 }
 
 export type LeaveTypeSumAggregateOutputType = {
   id: number | null
-  dayLimit: number | null
+  perRequestMaxDays: number | null
+  periodQuantity: number | null
+  periodMaxDays: number | null
 }
 
 export type LeaveTypeMinAggregateOutputType = {
   id: number | null
   name: string | null
   isPaid: boolean | null
-  hasLimit: boolean | null
-  dayLimit: number | null
+  limitScope: $Enums.LimitScope | null
+  perRequestMaxDays: number | null
+  periodType: $Enums.PeriodType | null
+  periodQuantity: number | null
+  periodMaxDays: number | null
 }
 
 export type LeaveTypeMaxAggregateOutputType = {
   id: number | null
   name: string | null
   isPaid: boolean | null
-  hasLimit: boolean | null
-  dayLimit: number | null
+  limitScope: $Enums.LimitScope | null
+  perRequestMaxDays: number | null
+  periodType: $Enums.PeriodType | null
+  periodQuantity: number | null
+  periodMaxDays: number | null
 }
 
 export type LeaveTypeCountAggregateOutputType = {
   id: number
   name: number
   isPaid: number
-  hasLimit: number
-  dayLimit: number
+  limitScope: number
+  perRequestMaxDays: number
+  periodType: number
+  periodQuantity: number
+  periodMaxDays: number
   _all: number
 }
 
 
 export type LeaveTypeAvgAggregateInputType = {
   id?: true
-  dayLimit?: true
+  perRequestMaxDays?: true
+  periodQuantity?: true
+  periodMaxDays?: true
 }
 
 export type LeaveTypeSumAggregateInputType = {
   id?: true
-  dayLimit?: true
+  perRequestMaxDays?: true
+  periodQuantity?: true
+  periodMaxDays?: true
 }
 
 export type LeaveTypeMinAggregateInputType = {
   id?: true
   name?: true
   isPaid?: true
-  hasLimit?: true
-  dayLimit?: true
+  limitScope?: true
+  perRequestMaxDays?: true
+  periodType?: true
+  periodQuantity?: true
+  periodMaxDays?: true
 }
 
 export type LeaveTypeMaxAggregateInputType = {
   id?: true
   name?: true
   isPaid?: true
-  hasLimit?: true
-  dayLimit?: true
+  limitScope?: true
+  perRequestMaxDays?: true
+  periodType?: true
+  periodQuantity?: true
+  periodMaxDays?: true
 }
 
 export type LeaveTypeCountAggregateInputType = {
   id?: true
   name?: true
   isPaid?: true
-  hasLimit?: true
-  dayLimit?: true
+  limitScope?: true
+  perRequestMaxDays?: true
+  periodType?: true
+  periodQuantity?: true
+  periodMaxDays?: true
   _all?: true
 }
 
@@ -187,8 +213,11 @@ export type LeaveTypeGroupByOutputType = {
   id: number
   name: string
   isPaid: boolean
-  hasLimit: boolean
-  dayLimit: number | null
+  limitScope: $Enums.LimitScope
+  perRequestMaxDays: number | null
+  periodType: $Enums.PeriodType | null
+  periodQuantity: number | null
+  periodMaxDays: number | null
   _count: LeaveTypeCountAggregateOutputType | null
   _avg: LeaveTypeAvgAggregateOutputType | null
   _sum: LeaveTypeSumAggregateOutputType | null
@@ -218,8 +247,11 @@ export type LeaveTypeWhereInput = {
   id?: Prisma.IntFilter<"LeaveType"> | number
   name?: Prisma.StringFilter<"LeaveType"> | string
   isPaid?: Prisma.BoolFilter<"LeaveType"> | boolean
-  hasLimit?: Prisma.BoolFilter<"LeaveType"> | boolean
-  dayLimit?: Prisma.IntNullableFilter<"LeaveType"> | number | null
+  limitScope?: Prisma.EnumLimitScopeFilter<"LeaveType"> | $Enums.LimitScope
+  perRequestMaxDays?: Prisma.IntNullableFilter<"LeaveType"> | number | null
+  periodType?: Prisma.EnumPeriodTypeNullableFilter<"LeaveType"> | $Enums.PeriodType | null
+  periodQuantity?: Prisma.IntNullableFilter<"LeaveType"> | number | null
+  periodMaxDays?: Prisma.IntNullableFilter<"LeaveType"> | number | null
   leaveRequests?: Prisma.LeaveRequestListRelationFilter
 }
 
@@ -227,8 +259,11 @@ export type LeaveTypeOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   isPaid?: Prisma.SortOrder
-  hasLimit?: Prisma.SortOrder
-  dayLimit?: Prisma.SortOrderInput | Prisma.SortOrder
+  limitScope?: Prisma.SortOrder
+  perRequestMaxDays?: Prisma.SortOrderInput | Prisma.SortOrder
+  periodType?: Prisma.SortOrderInput | Prisma.SortOrder
+  periodQuantity?: Prisma.SortOrderInput | Prisma.SortOrder
+  periodMaxDays?: Prisma.SortOrderInput | Prisma.SortOrder
   leaveRequests?: Prisma.LeaveRequestOrderByRelationAggregateInput
 }
 
@@ -239,8 +274,11 @@ export type LeaveTypeWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.LeaveTypeWhereInput[]
   NOT?: Prisma.LeaveTypeWhereInput | Prisma.LeaveTypeWhereInput[]
   isPaid?: Prisma.BoolFilter<"LeaveType"> | boolean
-  hasLimit?: Prisma.BoolFilter<"LeaveType"> | boolean
-  dayLimit?: Prisma.IntNullableFilter<"LeaveType"> | number | null
+  limitScope?: Prisma.EnumLimitScopeFilter<"LeaveType"> | $Enums.LimitScope
+  perRequestMaxDays?: Prisma.IntNullableFilter<"LeaveType"> | number | null
+  periodType?: Prisma.EnumPeriodTypeNullableFilter<"LeaveType"> | $Enums.PeriodType | null
+  periodQuantity?: Prisma.IntNullableFilter<"LeaveType"> | number | null
+  periodMaxDays?: Prisma.IntNullableFilter<"LeaveType"> | number | null
   leaveRequests?: Prisma.LeaveRequestListRelationFilter
 }, "id" | "name">
 
@@ -248,8 +286,11 @@ export type LeaveTypeOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   isPaid?: Prisma.SortOrder
-  hasLimit?: Prisma.SortOrder
-  dayLimit?: Prisma.SortOrderInput | Prisma.SortOrder
+  limitScope?: Prisma.SortOrder
+  perRequestMaxDays?: Prisma.SortOrderInput | Prisma.SortOrder
+  periodType?: Prisma.SortOrderInput | Prisma.SortOrder
+  periodQuantity?: Prisma.SortOrderInput | Prisma.SortOrder
+  periodMaxDays?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.LeaveTypeCountOrderByAggregateInput
   _avg?: Prisma.LeaveTypeAvgOrderByAggregateInput
   _max?: Prisma.LeaveTypeMaxOrderByAggregateInput
@@ -264,15 +305,21 @@ export type LeaveTypeScalarWhereWithAggregatesInput = {
   id?: Prisma.IntWithAggregatesFilter<"LeaveType"> | number
   name?: Prisma.StringWithAggregatesFilter<"LeaveType"> | string
   isPaid?: Prisma.BoolWithAggregatesFilter<"LeaveType"> | boolean
-  hasLimit?: Prisma.BoolWithAggregatesFilter<"LeaveType"> | boolean
-  dayLimit?: Prisma.IntNullableWithAggregatesFilter<"LeaveType"> | number | null
+  limitScope?: Prisma.EnumLimitScopeWithAggregatesFilter<"LeaveType"> | $Enums.LimitScope
+  perRequestMaxDays?: Prisma.IntNullableWithAggregatesFilter<"LeaveType"> | number | null
+  periodType?: Prisma.EnumPeriodTypeNullableWithAggregatesFilter<"LeaveType"> | $Enums.PeriodType | null
+  periodQuantity?: Prisma.IntNullableWithAggregatesFilter<"LeaveType"> | number | null
+  periodMaxDays?: Prisma.IntNullableWithAggregatesFilter<"LeaveType"> | number | null
 }
 
 export type LeaveTypeCreateInput = {
   name: string
   isPaid: boolean
-  hasLimit: boolean
-  dayLimit?: number | null
+  limitScope?: $Enums.LimitScope
+  perRequestMaxDays?: number | null
+  periodType?: $Enums.PeriodType | null
+  periodQuantity?: number | null
+  periodMaxDays?: number | null
   leaveRequests?: Prisma.LeaveRequestCreateNestedManyWithoutLeaveTypeInput
 }
 
@@ -280,16 +327,22 @@ export type LeaveTypeUncheckedCreateInput = {
   id?: number
   name: string
   isPaid: boolean
-  hasLimit: boolean
-  dayLimit?: number | null
+  limitScope?: $Enums.LimitScope
+  perRequestMaxDays?: number | null
+  periodType?: $Enums.PeriodType | null
+  periodQuantity?: number | null
+  periodMaxDays?: number | null
   leaveRequests?: Prisma.LeaveRequestUncheckedCreateNestedManyWithoutLeaveTypeInput
 }
 
 export type LeaveTypeUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   isPaid?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  hasLimit?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  dayLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  limitScope?: Prisma.EnumLimitScopeFieldUpdateOperationsInput | $Enums.LimitScope
+  perRequestMaxDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  periodType?: Prisma.NullableEnumPeriodTypeFieldUpdateOperationsInput | $Enums.PeriodType | null
+  periodQuantity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  periodMaxDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   leaveRequests?: Prisma.LeaveRequestUpdateManyWithoutLeaveTypeNestedInput
 }
 
@@ -297,8 +350,11 @@ export type LeaveTypeUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   isPaid?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  hasLimit?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  dayLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  limitScope?: Prisma.EnumLimitScopeFieldUpdateOperationsInput | $Enums.LimitScope
+  perRequestMaxDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  periodType?: Prisma.NullableEnumPeriodTypeFieldUpdateOperationsInput | $Enums.PeriodType | null
+  periodQuantity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  periodMaxDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   leaveRequests?: Prisma.LeaveRequestUncheckedUpdateManyWithoutLeaveTypeNestedInput
 }
 
@@ -306,23 +362,32 @@ export type LeaveTypeCreateManyInput = {
   id?: number
   name: string
   isPaid: boolean
-  hasLimit: boolean
-  dayLimit?: number | null
+  limitScope?: $Enums.LimitScope
+  perRequestMaxDays?: number | null
+  periodType?: $Enums.PeriodType | null
+  periodQuantity?: number | null
+  periodMaxDays?: number | null
 }
 
 export type LeaveTypeUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   isPaid?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  hasLimit?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  dayLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  limitScope?: Prisma.EnumLimitScopeFieldUpdateOperationsInput | $Enums.LimitScope
+  perRequestMaxDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  periodType?: Prisma.NullableEnumPeriodTypeFieldUpdateOperationsInput | $Enums.PeriodType | null
+  periodQuantity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  periodMaxDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type LeaveTypeUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   isPaid?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  hasLimit?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  dayLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  limitScope?: Prisma.EnumLimitScopeFieldUpdateOperationsInput | $Enums.LimitScope
+  perRequestMaxDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  periodType?: Prisma.NullableEnumPeriodTypeFieldUpdateOperationsInput | $Enums.PeriodType | null
+  periodQuantity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  periodMaxDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type LeaveTypeScalarRelationFilter = {
@@ -334,34 +399,47 @@ export type LeaveTypeCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   isPaid?: Prisma.SortOrder
-  hasLimit?: Prisma.SortOrder
-  dayLimit?: Prisma.SortOrder
+  limitScope?: Prisma.SortOrder
+  perRequestMaxDays?: Prisma.SortOrder
+  periodType?: Prisma.SortOrder
+  periodQuantity?: Prisma.SortOrder
+  periodMaxDays?: Prisma.SortOrder
 }
 
 export type LeaveTypeAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  dayLimit?: Prisma.SortOrder
+  perRequestMaxDays?: Prisma.SortOrder
+  periodQuantity?: Prisma.SortOrder
+  periodMaxDays?: Prisma.SortOrder
 }
 
 export type LeaveTypeMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   isPaid?: Prisma.SortOrder
-  hasLimit?: Prisma.SortOrder
-  dayLimit?: Prisma.SortOrder
+  limitScope?: Prisma.SortOrder
+  perRequestMaxDays?: Prisma.SortOrder
+  periodType?: Prisma.SortOrder
+  periodQuantity?: Prisma.SortOrder
+  periodMaxDays?: Prisma.SortOrder
 }
 
 export type LeaveTypeMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   isPaid?: Prisma.SortOrder
-  hasLimit?: Prisma.SortOrder
-  dayLimit?: Prisma.SortOrder
+  limitScope?: Prisma.SortOrder
+  perRequestMaxDays?: Prisma.SortOrder
+  periodType?: Prisma.SortOrder
+  periodQuantity?: Prisma.SortOrder
+  periodMaxDays?: Prisma.SortOrder
 }
 
 export type LeaveTypeSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  dayLimit?: Prisma.SortOrder
+  perRequestMaxDays?: Prisma.SortOrder
+  periodQuantity?: Prisma.SortOrder
+  periodMaxDays?: Prisma.SortOrder
 }
 
 export type LeaveTypeCreateNestedOneWithoutLeaveRequestsInput = {
@@ -382,19 +460,33 @@ export type BoolFieldUpdateOperationsInput = {
   set?: boolean
 }
 
+export type EnumLimitScopeFieldUpdateOperationsInput = {
+  set?: $Enums.LimitScope
+}
+
+export type NullableEnumPeriodTypeFieldUpdateOperationsInput = {
+  set?: $Enums.PeriodType | null
+}
+
 export type LeaveTypeCreateWithoutLeaveRequestsInput = {
   name: string
   isPaid: boolean
-  hasLimit: boolean
-  dayLimit?: number | null
+  limitScope?: $Enums.LimitScope
+  perRequestMaxDays?: number | null
+  periodType?: $Enums.PeriodType | null
+  periodQuantity?: number | null
+  periodMaxDays?: number | null
 }
 
 export type LeaveTypeUncheckedCreateWithoutLeaveRequestsInput = {
   id?: number
   name: string
   isPaid: boolean
-  hasLimit: boolean
-  dayLimit?: number | null
+  limitScope?: $Enums.LimitScope
+  perRequestMaxDays?: number | null
+  periodType?: $Enums.PeriodType | null
+  periodQuantity?: number | null
+  periodMaxDays?: number | null
 }
 
 export type LeaveTypeCreateOrConnectWithoutLeaveRequestsInput = {
@@ -416,16 +508,22 @@ export type LeaveTypeUpdateToOneWithWhereWithoutLeaveRequestsInput = {
 export type LeaveTypeUpdateWithoutLeaveRequestsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   isPaid?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  hasLimit?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  dayLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  limitScope?: Prisma.EnumLimitScopeFieldUpdateOperationsInput | $Enums.LimitScope
+  perRequestMaxDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  periodType?: Prisma.NullableEnumPeriodTypeFieldUpdateOperationsInput | $Enums.PeriodType | null
+  periodQuantity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  periodMaxDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type LeaveTypeUncheckedUpdateWithoutLeaveRequestsInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   isPaid?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  hasLimit?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  dayLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  limitScope?: Prisma.EnumLimitScopeFieldUpdateOperationsInput | $Enums.LimitScope
+  perRequestMaxDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  periodType?: Prisma.NullableEnumPeriodTypeFieldUpdateOperationsInput | $Enums.PeriodType | null
+  periodQuantity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  periodMaxDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 
@@ -463,8 +561,11 @@ export type LeaveTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   id?: boolean
   name?: boolean
   isPaid?: boolean
-  hasLimit?: boolean
-  dayLimit?: boolean
+  limitScope?: boolean
+  perRequestMaxDays?: boolean
+  periodType?: boolean
+  periodQuantity?: boolean
+  periodMaxDays?: boolean
   leaveRequests?: boolean | Prisma.LeaveType$leaveRequestsArgs<ExtArgs>
   _count?: boolean | Prisma.LeaveTypeCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["leaveType"]>
@@ -473,27 +574,36 @@ export type LeaveTypeSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   id?: boolean
   name?: boolean
   isPaid?: boolean
-  hasLimit?: boolean
-  dayLimit?: boolean
+  limitScope?: boolean
+  perRequestMaxDays?: boolean
+  periodType?: boolean
+  periodQuantity?: boolean
+  periodMaxDays?: boolean
 }, ExtArgs["result"]["leaveType"]>
 
 export type LeaveTypeSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
   isPaid?: boolean
-  hasLimit?: boolean
-  dayLimit?: boolean
+  limitScope?: boolean
+  perRequestMaxDays?: boolean
+  periodType?: boolean
+  periodQuantity?: boolean
+  periodMaxDays?: boolean
 }, ExtArgs["result"]["leaveType"]>
 
 export type LeaveTypeSelectScalar = {
   id?: boolean
   name?: boolean
   isPaid?: boolean
-  hasLimit?: boolean
-  dayLimit?: boolean
+  limitScope?: boolean
+  perRequestMaxDays?: boolean
+  periodType?: boolean
+  periodQuantity?: boolean
+  periodMaxDays?: boolean
 }
 
-export type LeaveTypeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "isPaid" | "hasLimit" | "dayLimit", ExtArgs["result"]["leaveType"]>
+export type LeaveTypeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "isPaid" | "limitScope" | "perRequestMaxDays" | "periodType" | "periodQuantity" | "periodMaxDays", ExtArgs["result"]["leaveType"]>
 export type LeaveTypeInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   leaveRequests?: boolean | Prisma.LeaveType$leaveRequestsArgs<ExtArgs>
   _count?: boolean | Prisma.LeaveTypeCountOutputTypeDefaultArgs<ExtArgs>
@@ -510,8 +620,11 @@ export type $LeaveTypePayload<ExtArgs extends runtime.Types.Extensions.InternalA
     id: number
     name: string
     isPaid: boolean
-    hasLimit: boolean
-    dayLimit: number | null
+    limitScope: $Enums.LimitScope
+    perRequestMaxDays: number | null
+    periodType: $Enums.PeriodType | null
+    periodQuantity: number | null
+    periodMaxDays: number | null
   }, ExtArgs["result"]["leaveType"]>
   composites: {}
 }
@@ -939,8 +1052,11 @@ export interface LeaveTypeFieldRefs {
   readonly id: Prisma.FieldRef<"LeaveType", 'Int'>
   readonly name: Prisma.FieldRef<"LeaveType", 'String'>
   readonly isPaid: Prisma.FieldRef<"LeaveType", 'Boolean'>
-  readonly hasLimit: Prisma.FieldRef<"LeaveType", 'Boolean'>
-  readonly dayLimit: Prisma.FieldRef<"LeaveType", 'Int'>
+  readonly limitScope: Prisma.FieldRef<"LeaveType", 'LimitScope'>
+  readonly perRequestMaxDays: Prisma.FieldRef<"LeaveType", 'Int'>
+  readonly periodType: Prisma.FieldRef<"LeaveType", 'PeriodType'>
+  readonly periodQuantity: Prisma.FieldRef<"LeaveType", 'Int'>
+  readonly periodMaxDays: Prisma.FieldRef<"LeaveType", 'Int'>
 }
     
 

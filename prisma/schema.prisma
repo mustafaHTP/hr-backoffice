@@ -72,18 +72,36 @@ model LeaveRequest {
   startDate   DateTime
   endDate     DateTime
   status      LeaveStatus @default(PENDING)
-  totalDays   Int?
+  totalDays   Int
   leaveTypeId Int
   leaveType   LeaveType   @relation(fields: [leaveTypeId], references: [id])
   employeeId  Int
   employee    Employee    @relation(fields: [employeeId], references: [id])
 }
 
+enum LimitScope {
+  NONE
+  PER_REQUEST
+  PER_PERIOD
+}
+
+enum PeriodType {
+  WEEKLY
+  MONTHLY
+  YEARLY
+}
+
 model LeaveType {
-  id            Int            @id @default(autoincrement())
-  name          String         @unique
-  isPaid        Boolean
-  hasLimit      Boolean
-  dayLimit      Int?
+  id         Int        @id @default(autoincrement())
+  name       String     @unique
+  isPaid     Boolean
+  limitScope LimitScope @default(NONE)
+
+  perRequestMaxDays Int?
+
+  periodType     PeriodType?
+  periodQuantity Int?
+  periodMaxDays  Int?
+
   leaveRequests LeaveRequest[]
 }

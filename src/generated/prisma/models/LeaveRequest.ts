@@ -222,7 +222,7 @@ export type LeaveRequestGroupByOutputType = {
   startDate: Date
   endDate: Date
   status: $Enums.LeaveStatus
-  totalDays: number | null
+  totalDays: number
   leaveTypeId: number
   employeeId: number
   _count: LeaveRequestCountAggregateOutputType | null
@@ -257,7 +257,7 @@ export type LeaveRequestWhereInput = {
   startDate?: Prisma.DateTimeFilter<"LeaveRequest"> | Date | string
   endDate?: Prisma.DateTimeFilter<"LeaveRequest"> | Date | string
   status?: Prisma.EnumLeaveStatusFilter<"LeaveRequest"> | $Enums.LeaveStatus
-  totalDays?: Prisma.IntNullableFilter<"LeaveRequest"> | number | null
+  totalDays?: Prisma.IntFilter<"LeaveRequest"> | number
   leaveTypeId?: Prisma.IntFilter<"LeaveRequest"> | number
   employeeId?: Prisma.IntFilter<"LeaveRequest"> | number
   leaveType?: Prisma.XOR<Prisma.LeaveTypeScalarRelationFilter, Prisma.LeaveTypeWhereInput>
@@ -271,7 +271,7 @@ export type LeaveRequestOrderByWithRelationInput = {
   startDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  totalDays?: Prisma.SortOrderInput | Prisma.SortOrder
+  totalDays?: Prisma.SortOrder
   leaveTypeId?: Prisma.SortOrder
   employeeId?: Prisma.SortOrder
   leaveType?: Prisma.LeaveTypeOrderByWithRelationInput
@@ -288,7 +288,7 @@ export type LeaveRequestWhereUniqueInput = Prisma.AtLeast<{
   startDate?: Prisma.DateTimeFilter<"LeaveRequest"> | Date | string
   endDate?: Prisma.DateTimeFilter<"LeaveRequest"> | Date | string
   status?: Prisma.EnumLeaveStatusFilter<"LeaveRequest"> | $Enums.LeaveStatus
-  totalDays?: Prisma.IntNullableFilter<"LeaveRequest"> | number | null
+  totalDays?: Prisma.IntFilter<"LeaveRequest"> | number
   leaveTypeId?: Prisma.IntFilter<"LeaveRequest"> | number
   employeeId?: Prisma.IntFilter<"LeaveRequest"> | number
   leaveType?: Prisma.XOR<Prisma.LeaveTypeScalarRelationFilter, Prisma.LeaveTypeWhereInput>
@@ -302,7 +302,7 @@ export type LeaveRequestOrderByWithAggregationInput = {
   startDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  totalDays?: Prisma.SortOrderInput | Prisma.SortOrder
+  totalDays?: Prisma.SortOrder
   leaveTypeId?: Prisma.SortOrder
   employeeId?: Prisma.SortOrder
   _count?: Prisma.LeaveRequestCountOrderByAggregateInput
@@ -322,7 +322,7 @@ export type LeaveRequestScalarWhereWithAggregatesInput = {
   startDate?: Prisma.DateTimeWithAggregatesFilter<"LeaveRequest"> | Date | string
   endDate?: Prisma.DateTimeWithAggregatesFilter<"LeaveRequest"> | Date | string
   status?: Prisma.EnumLeaveStatusWithAggregatesFilter<"LeaveRequest"> | $Enums.LeaveStatus
-  totalDays?: Prisma.IntNullableWithAggregatesFilter<"LeaveRequest"> | number | null
+  totalDays?: Prisma.IntWithAggregatesFilter<"LeaveRequest"> | number
   leaveTypeId?: Prisma.IntWithAggregatesFilter<"LeaveRequest"> | number
   employeeId?: Prisma.IntWithAggregatesFilter<"LeaveRequest"> | number
 }
@@ -333,7 +333,7 @@ export type LeaveRequestCreateInput = {
   startDate: Date | string
   endDate: Date | string
   status?: $Enums.LeaveStatus
-  totalDays?: number | null
+  totalDays: number
   leaveType: Prisma.LeaveTypeCreateNestedOneWithoutLeaveRequestsInput
   employee: Prisma.EmployeeCreateNestedOneWithoutLeaveRequestsInput
 }
@@ -345,7 +345,7 @@ export type LeaveRequestUncheckedCreateInput = {
   startDate: Date | string
   endDate: Date | string
   status?: $Enums.LeaveStatus
-  totalDays?: number | null
+  totalDays: number
   leaveTypeId: number
   employeeId: number
 }
@@ -356,7 +356,7 @@ export type LeaveRequestUpdateInput = {
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
-  totalDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalDays?: Prisma.IntFieldUpdateOperationsInput | number
   leaveType?: Prisma.LeaveTypeUpdateOneRequiredWithoutLeaveRequestsNestedInput
   employee?: Prisma.EmployeeUpdateOneRequiredWithoutLeaveRequestsNestedInput
 }
@@ -368,7 +368,7 @@ export type LeaveRequestUncheckedUpdateInput = {
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
-  totalDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalDays?: Prisma.IntFieldUpdateOperationsInput | number
   leaveTypeId?: Prisma.IntFieldUpdateOperationsInput | number
   employeeId?: Prisma.IntFieldUpdateOperationsInput | number
 }
@@ -380,7 +380,7 @@ export type LeaveRequestCreateManyInput = {
   startDate: Date | string
   endDate: Date | string
   status?: $Enums.LeaveStatus
-  totalDays?: number | null
+  totalDays: number
   leaveTypeId: number
   employeeId: number
 }
@@ -391,7 +391,7 @@ export type LeaveRequestUpdateManyMutationInput = {
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
-  totalDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalDays?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type LeaveRequestUncheckedUpdateManyInput = {
@@ -401,7 +401,7 @@ export type LeaveRequestUncheckedUpdateManyInput = {
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
-  totalDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalDays?: Prisma.IntFieldUpdateOperationsInput | number
   leaveTypeId?: Prisma.IntFieldUpdateOperationsInput | number
   employeeId?: Prisma.IntFieldUpdateOperationsInput | number
 }
@@ -560,7 +560,7 @@ export type LeaveRequestCreateWithoutEmployeeInput = {
   startDate: Date | string
   endDate: Date | string
   status?: $Enums.LeaveStatus
-  totalDays?: number | null
+  totalDays: number
   leaveType: Prisma.LeaveTypeCreateNestedOneWithoutLeaveRequestsInput
 }
 
@@ -571,7 +571,7 @@ export type LeaveRequestUncheckedCreateWithoutEmployeeInput = {
   startDate: Date | string
   endDate: Date | string
   status?: $Enums.LeaveStatus
-  totalDays?: number | null
+  totalDays: number
   leaveTypeId: number
 }
 
@@ -611,7 +611,7 @@ export type LeaveRequestScalarWhereInput = {
   startDate?: Prisma.DateTimeFilter<"LeaveRequest"> | Date | string
   endDate?: Prisma.DateTimeFilter<"LeaveRequest"> | Date | string
   status?: Prisma.EnumLeaveStatusFilter<"LeaveRequest"> | $Enums.LeaveStatus
-  totalDays?: Prisma.IntNullableFilter<"LeaveRequest"> | number | null
+  totalDays?: Prisma.IntFilter<"LeaveRequest"> | number
   leaveTypeId?: Prisma.IntFilter<"LeaveRequest"> | number
   employeeId?: Prisma.IntFilter<"LeaveRequest"> | number
 }
@@ -622,7 +622,7 @@ export type LeaveRequestCreateWithoutLeaveTypeInput = {
   startDate: Date | string
   endDate: Date | string
   status?: $Enums.LeaveStatus
-  totalDays?: number | null
+  totalDays: number
   employee: Prisma.EmployeeCreateNestedOneWithoutLeaveRequestsInput
 }
 
@@ -633,7 +633,7 @@ export type LeaveRequestUncheckedCreateWithoutLeaveTypeInput = {
   startDate: Date | string
   endDate: Date | string
   status?: $Enums.LeaveStatus
-  totalDays?: number | null
+  totalDays: number
   employeeId: number
 }
 
@@ -670,7 +670,7 @@ export type LeaveRequestCreateManyEmployeeInput = {
   startDate: Date | string
   endDate: Date | string
   status?: $Enums.LeaveStatus
-  totalDays?: number | null
+  totalDays: number
   leaveTypeId: number
 }
 
@@ -680,7 +680,7 @@ export type LeaveRequestUpdateWithoutEmployeeInput = {
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
-  totalDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalDays?: Prisma.IntFieldUpdateOperationsInput | number
   leaveType?: Prisma.LeaveTypeUpdateOneRequiredWithoutLeaveRequestsNestedInput
 }
 
@@ -691,7 +691,7 @@ export type LeaveRequestUncheckedUpdateWithoutEmployeeInput = {
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
-  totalDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalDays?: Prisma.IntFieldUpdateOperationsInput | number
   leaveTypeId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
@@ -702,7 +702,7 @@ export type LeaveRequestUncheckedUpdateManyWithoutEmployeeInput = {
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
-  totalDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalDays?: Prisma.IntFieldUpdateOperationsInput | number
   leaveTypeId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
@@ -713,7 +713,7 @@ export type LeaveRequestCreateManyLeaveTypeInput = {
   startDate: Date | string
   endDate: Date | string
   status?: $Enums.LeaveStatus
-  totalDays?: number | null
+  totalDays: number
   employeeId: number
 }
 
@@ -723,7 +723,7 @@ export type LeaveRequestUpdateWithoutLeaveTypeInput = {
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
-  totalDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalDays?: Prisma.IntFieldUpdateOperationsInput | number
   employee?: Prisma.EmployeeUpdateOneRequiredWithoutLeaveRequestsNestedInput
 }
 
@@ -734,7 +734,7 @@ export type LeaveRequestUncheckedUpdateWithoutLeaveTypeInput = {
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
-  totalDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalDays?: Prisma.IntFieldUpdateOperationsInput | number
   employeeId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
@@ -745,7 +745,7 @@ export type LeaveRequestUncheckedUpdateManyWithoutLeaveTypeInput = {
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumLeaveStatusFieldUpdateOperationsInput | $Enums.LeaveStatus
-  totalDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalDays?: Prisma.IntFieldUpdateOperationsInput | number
   employeeId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
@@ -832,7 +832,7 @@ export type $LeaveRequestPayload<ExtArgs extends runtime.Types.Extensions.Intern
     startDate: Date
     endDate: Date
     status: $Enums.LeaveStatus
-    totalDays: number | null
+    totalDays: number
     leaveTypeId: number
     employeeId: number
   }, ExtArgs["result"]["leaveRequest"]>

@@ -27,3 +27,21 @@ export const LeaveStatus = {
 } as const
 
 export type LeaveStatus = (typeof LeaveStatus)[keyof typeof LeaveStatus]
+
+
+export const LimitScope = {
+  NONE: 'NONE',
+  PER_REQUEST: 'PER_REQUEST',
+  PER_PERIOD: 'PER_PERIOD'
+} as const
+
+export type LimitScope = (typeof LimitScope)[keyof typeof LimitScope]
+
+
+export const PeriodType = {
+  WEEKLY: 'WEEKLY',
+  MONTHLY: 'MONTHLY',
+  YEARLY: 'YEARLY'
+} as const
+
+export type PeriodType = (typeof PeriodType)[keyof typeof PeriodType]

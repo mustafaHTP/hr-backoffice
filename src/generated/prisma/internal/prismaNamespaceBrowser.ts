@@ -138,8 +138,11 @@ export const LeaveTypeScalarFieldEnum = {
   id: 'id',
   name: 'name',
   isPaid: 'isPaid',
-  hasLimit: 'hasLimit',
-  dayLimit: 'dayLimit'
+  limitScope: 'limitScope',
+  perRequestMaxDays: 'perRequestMaxDays',
+  periodType: 'periodType',
+  periodQuantity: 'periodQuantity',
+  periodMaxDays: 'periodMaxDays'
 } as const
 
 export type LeaveTypeScalarFieldEnum = (typeof LeaveTypeScalarFieldEnum)[keyof typeof LeaveTypeScalarFieldEnum]

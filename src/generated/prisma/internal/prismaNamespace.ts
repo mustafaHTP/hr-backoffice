@@ -955,8 +955,11 @@ export const LeaveTypeScalarFieldEnum = {
   id: 'id',
   name: 'name',
   isPaid: 'isPaid',
-  hasLimit: 'hasLimit',
-  dayLimit: 'dayLimit'
+  limitScope: 'limitScope',
+  perRequestMaxDays: 'perRequestMaxDays',
+  periodType: 'periodType',
+  periodQuantity: 'periodQuantity',
+  periodMaxDays: 'periodMaxDays'
 } as const
 
 export type LeaveTypeScalarFieldEnum = (typeof LeaveTypeScalarFieldEnum)[keyof typeof LeaveTypeScalarFieldEnum]
@@ -1066,6 +1069,34 @@ export type ListEnumLeaveStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$
  * Reference to a field of type 'Boolean'
  */
 export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
+ * Reference to a field of type 'LimitScope'
+ */
+export type EnumLimitScopeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LimitScope'>
+    
+
+
+/**
+ * Reference to a field of type 'LimitScope[]'
+ */
+export type ListEnumLimitScopeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LimitScope[]'>
+    
+
+
+/**
+ * Reference to a field of type 'PeriodType'
+ */
+export type EnumPeriodTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PeriodType'>
+    
+
+
+/**
+ * Reference to a field of type 'PeriodType[]'
+ */
+export type ListEnumPeriodTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PeriodType[]'>
     
 
 

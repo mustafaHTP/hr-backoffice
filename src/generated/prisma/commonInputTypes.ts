@@ -203,12 +203,46 @@ export type BoolFilter<$PrismaModel = never> = {
   not?: Prisma.NestedBoolFilter<$PrismaModel> | boolean
 }
 
+export type EnumLimitScopeFilter<$PrismaModel = never> = {
+  equals?: $Enums.LimitScope | Prisma.EnumLimitScopeFieldRefInput<$PrismaModel>
+  in?: $Enums.LimitScope[] | Prisma.ListEnumLimitScopeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.LimitScope[] | Prisma.ListEnumLimitScopeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumLimitScopeFilter<$PrismaModel> | $Enums.LimitScope
+}
+
+export type EnumPeriodTypeNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.PeriodType | Prisma.EnumPeriodTypeFieldRefInput<$PrismaModel> | null
+  in?: $Enums.PeriodType[] | Prisma.ListEnumPeriodTypeFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.PeriodType[] | Prisma.ListEnumPeriodTypeFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumPeriodTypeNullableFilter<$PrismaModel> | $Enums.PeriodType | null
+}
+
 export type BoolWithAggregatesFilter<$PrismaModel = never> = {
   equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel>
   not?: Prisma.NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedBoolFilter<$PrismaModel>
   _max?: Prisma.NestedBoolFilter<$PrismaModel>
+}
+
+export type EnumLimitScopeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.LimitScope | Prisma.EnumLimitScopeFieldRefInput<$PrismaModel>
+  in?: $Enums.LimitScope[] | Prisma.ListEnumLimitScopeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.LimitScope[] | Prisma.ListEnumLimitScopeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumLimitScopeWithAggregatesFilter<$PrismaModel> | $Enums.LimitScope
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumLimitScopeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumLimitScopeFilter<$PrismaModel>
+}
+
+export type EnumPeriodTypeNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PeriodType | Prisma.EnumPeriodTypeFieldRefInput<$PrismaModel> | null
+  in?: $Enums.PeriodType[] | Prisma.ListEnumPeriodTypeFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.PeriodType[] | Prisma.ListEnumPeriodTypeFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumPeriodTypeNullableWithAggregatesFilter<$PrismaModel> | $Enums.PeriodType | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPeriodTypeNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPeriodTypeNullableFilter<$PrismaModel>
 }
 
 export type NestedIntFilter<$PrismaModel = never> = {
@@ -413,12 +447,46 @@ export type NestedBoolFilter<$PrismaModel = never> = {
   not?: Prisma.NestedBoolFilter<$PrismaModel> | boolean
 }
 
+export type NestedEnumLimitScopeFilter<$PrismaModel = never> = {
+  equals?: $Enums.LimitScope | Prisma.EnumLimitScopeFieldRefInput<$PrismaModel>
+  in?: $Enums.LimitScope[] | Prisma.ListEnumLimitScopeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.LimitScope[] | Prisma.ListEnumLimitScopeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumLimitScopeFilter<$PrismaModel> | $Enums.LimitScope
+}
+
+export type NestedEnumPeriodTypeNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.PeriodType | Prisma.EnumPeriodTypeFieldRefInput<$PrismaModel> | null
+  in?: $Enums.PeriodType[] | Prisma.ListEnumPeriodTypeFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.PeriodType[] | Prisma.ListEnumPeriodTypeFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumPeriodTypeNullableFilter<$PrismaModel> | $Enums.PeriodType | null
+}
+
 export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
   equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel>
   not?: Prisma.NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedBoolFilter<$PrismaModel>
   _max?: Prisma.NestedBoolFilter<$PrismaModel>
+}
+
+export type NestedEnumLimitScopeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.LimitScope | Prisma.EnumLimitScopeFieldRefInput<$PrismaModel>
+  in?: $Enums.LimitScope[] | Prisma.ListEnumLimitScopeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.LimitScope[] | Prisma.ListEnumLimitScopeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumLimitScopeWithAggregatesFilter<$PrismaModel> | $Enums.LimitScope
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumLimitScopeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumLimitScopeFilter<$PrismaModel>
+}
+
+export type NestedEnumPeriodTypeNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PeriodType | Prisma.EnumPeriodTypeFieldRefInput<$PrismaModel> | null
+  in?: $Enums.PeriodType[] | Prisma.ListEnumPeriodTypeFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.PeriodType[] | Prisma.ListEnumPeriodTypeFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumPeriodTypeNullableWithAggregatesFilter<$PrismaModel> | $Enums.PeriodType | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPeriodTypeNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPeriodTypeNullableFilter<$PrismaModel>
 }
 
 

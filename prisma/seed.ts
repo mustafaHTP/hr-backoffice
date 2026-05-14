@@ -309,23 +309,41 @@ async function main() {
 
   // ── Leave Types ──────────────────────────────────────────────
   const annualLeave = await prisma.leaveType.create({
-    data: { name: "Annual Leave", isPaid: true, hasLimit: true, dayLimit: 20 },
+    data: {
+      name: "Annual Leave",
+      isPaid: true,
+      limitScope: "PER_PERIOD",
+      periodType: "YEARLY",
+      periodQuantity: 1,
+      periodMaxDays: 20,
+    },
   });
 
   const sickLeave = await prisma.leaveType.create({
-    data: { name: "Sick Leave", isPaid: true, hasLimit: true, dayLimit: 10 },
+    data: {
+      name: "Sick Leave",
+      isPaid: true,
+      limitScope: "PER_PERIOD",
+      periodType: "YEARLY",
+      periodQuantity: 1,
+      periodMaxDays: 10,
+    },
   });
 
   const unpaidLeave = await prisma.leaveType.create({
-    data: { name: "Unpaid Leave", isPaid: false, hasLimit: false },
+    data: {
+      name: "Unpaid Leave",
+      isPaid: false,
+      limitScope: "NONE",
+    },
   });
 
   const maternityLeave = await prisma.leaveType.create({
     data: {
       name: "Maternity Leave",
       isPaid: true,
-      hasLimit: true,
-      dayLimit: 90,
+      limitScope: "PER_REQUEST",
+      perRequestMaxDays: 90,
     },
   });
 
@@ -333,8 +351,8 @@ async function main() {
     data: {
       name: "Bereavement Leave",
       isPaid: true,
-      hasLimit: true,
-      dayLimit: 5,
+      limitScope: "PER_REQUEST",
+      perRequestMaxDays: 5,
     },
   });
 
@@ -348,8 +366,8 @@ async function main() {
       {
         employeeId: find("john.doe@company.com").id,
         leaveTypeId: annualLeave.id,
-        startDate: new Date("2025-06-02"),
-        endDate: new Date("2025-06-06"),
+        startDate: new Date("2026-06-02"),
+        endDate: new Date("2026-06-06"),
         totalDays: 5,
         status: "PENDING",
         description: "Family vacation planned in advance.",
@@ -357,8 +375,8 @@ async function main() {
       {
         employeeId: find("frank.thomas@company.com").id,
         leaveTypeId: sickLeave.id,
-        startDate: new Date("2025-05-26"),
-        endDate: new Date("2025-05-27"),
+        startDate: new Date("2026-05-26"),
+        endDate: new Date("2026-05-27"),
         totalDays: 2,
         status: "PENDING",
         description: "Feeling unwell, doctor's appointment scheduled.",
@@ -367,8 +385,8 @@ async function main() {
       {
         employeeId: find("alice.johnson@company.com").id,
         leaveTypeId: sickLeave.id,
-        startDate: new Date("2025-05-19"),
-        endDate: new Date("2025-05-20"),
+        startDate: new Date("2026-05-19"),
+        endDate: new Date("2026-05-20"),
         totalDays: 2,
         status: "APPROVED",
         description: "Flu symptoms.",
@@ -376,8 +394,8 @@ async function main() {
       {
         employeeId: find("david.wilson@company.com").id,
         leaveTypeId: annualLeave.id,
-        startDate: new Date("2025-07-14"),
-        endDate: new Date("2025-07-25"),
+        startDate: new Date("2026-07-14"),
+        endDate: new Date("2026-07-25"),
         totalDays: 10,
         status: "APPROVED",
         description: "Summer holiday.",
@@ -385,8 +403,8 @@ async function main() {
       {
         employeeId: find("grace.anderson@company.com").id,
         leaveTypeId: bereavementLeave.id,
-        startDate: new Date("2025-05-12"),
-        endDate: new Date("2025-05-14"),
+        startDate: new Date("2026-05-12"),
+        endDate: new Date("2026-05-14"),
         totalDays: 3,
         status: "APPROVED",
         description: "Attending a family funeral.",
@@ -395,8 +413,8 @@ async function main() {
       {
         employeeId: find("bob.martin@company.com").id,
         leaveTypeId: unpaidLeave.id,
-        startDate: new Date("2025-08-04"),
-        endDate: new Date("2025-08-08"),
+        startDate: new Date("2026-08-04"),
+        endDate: new Date("2026-08-08"),
         totalDays: 5,
         status: "REJECTED",
         description: "Personal errands.",
@@ -405,8 +423,8 @@ async function main() {
       {
         employeeId: find("carol.white@company.com").id,
         leaveTypeId: annualLeave.id,
-        startDate: new Date("2025-06-16"),
-        endDate: new Date("2025-06-20"),
+        startDate: new Date("2026-06-16"),
+        endDate: new Date("2026-06-20"),
         totalDays: 5,
         status: "CANCELLED",
         description: "Annual leave — cancelled due to change of plans.",
@@ -414,8 +432,8 @@ async function main() {
       {
         employeeId: find("jane.smith@company.com").id,
         leaveTypeId: maternityLeave.id,
-        startDate: new Date("2025-09-01"),
-        endDate: new Date("2025-11-29"),
+        startDate: new Date("2026-09-01"),
+        endDate: new Date("2026-11-29"),
         totalDays: 90,
         status: "APPROVED",
         description: "Maternity leave.",
