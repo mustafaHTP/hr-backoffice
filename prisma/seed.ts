@@ -1,5 +1,11 @@
 import { hashPassword } from "@/lib/password";
 import { prisma } from "@/lib/prisma";
+import {
+  LeaveStatus,
+  LimitScope,
+  PeriodType,
+  Role,
+} from "@/generated/prisma/enums";
 
 async function main() {
   // Clean existing data (optional but useful in dev)
@@ -58,13 +64,14 @@ async function main() {
   });
 
   // Employees
-  const employees = await prisma.employee.createMany({
+  await prisma.employee.createMany({
     data: [
       {
         firstName: "John",
         lastName: "Doe",
         email: "john.doe@company.com",
         phone: "+90 555 111 2233",
+        hireDate: new Date("2021-04-12"),
         departmentId: engineering.id,
         titleId: engineer.id,
       },
@@ -73,6 +80,7 @@ async function main() {
         lastName: "Smith",
         email: "jane.smith@company.com",
         phone: "+90 555 222 3344",
+        hireDate: new Date("2018-02-01"),
         departmentId: engineering.id,
         titleId: manager.id,
       },
@@ -81,6 +89,7 @@ async function main() {
         lastName: "Brown",
         email: "michael.brown@company.com",
         phone: "+90 555 333 4455",
+        hireDate: new Date("2017-09-18"),
         departmentId: hr.id,
         titleId: manager.id,
       },
@@ -89,6 +98,7 @@ async function main() {
         lastName: "Davis",
         email: "emily.davis@company.com",
         phone: "+90 555 444 5566",
+        hireDate: new Date("2019-11-04"),
         departmentId: finance.id,
         titleId: manager.id,
       },
@@ -97,6 +107,7 @@ async function main() {
         lastName: "Wilson",
         email: "david.wilson@company.com",
         phone: "+90 555 555 6677",
+        hireDate: new Date("2020-06-22"),
         departmentId: engineering.id,
         titleId: seniorEngineer.id,
       },
@@ -105,6 +116,7 @@ async function main() {
         lastName: "Miller",
         email: "hr.specialist@company.com",
         phone: "+90 555 666 7788",
+        hireDate: new Date("2022-01-10"),
         departmentId: hr.id,
         titleId: specialist.id,
       },
@@ -113,6 +125,7 @@ async function main() {
         lastName: "Taylor",
         email: "hr.recruiter@company.com",
         phone: "+90 555 777 8899",
+        hireDate: new Date("2023-03-27"),
         departmentId: hr.id,
         titleId: recruiter.id,
       },
@@ -121,6 +134,7 @@ async function main() {
         lastName: "Anderson",
         email: "ops.manager@company.com",
         phone: "+90 555 888 9900",
+        hireDate: new Date("2016-05-30"),
         departmentId: engineering.id,
         titleId: manager.id,
       },
@@ -129,6 +143,7 @@ async function main() {
         lastName: "Johnson",
         email: "alice.johnson@company.com",
         phone: "+90 555 111 0011",
+        hireDate: new Date("2022-08-15"),
         departmentId: engineering.id,
         titleId: engineer.id,
       },
@@ -137,6 +152,7 @@ async function main() {
         lastName: "Martin",
         email: "bob.martin@company.com",
         phone: "+90 555 222 0011",
+        hireDate: new Date("2021-12-06"),
         departmentId: finance.id,
         titleId: analyst.id,
       },
@@ -145,6 +161,7 @@ async function main() {
         lastName: "White",
         email: "carol.white@company.com",
         phone: "+90 555 333 0011",
+        hireDate: new Date("2020-02-24"),
         departmentId: hr.id,
         titleId: specialist.id,
       },
@@ -153,6 +170,7 @@ async function main() {
         lastName: "Thomas",
         email: "frank.thomas@company.com",
         phone: "+90 555 444 0011",
+        hireDate: new Date("2023-07-08"),
         departmentId: engineering.id,
         titleId: engineer.id,
       },
@@ -161,6 +179,7 @@ async function main() {
         lastName: "Anderson",
         email: "grace.anderson@company.com",
         phone: "+90 555 555 0011",
+        hireDate: new Date("2024-04-01"),
         departmentId: finance.id,
         titleId: analyst.id,
       },
@@ -181,7 +200,7 @@ async function main() {
     data: {
       email: "admin@company.com",
       password: adminPassword,
-      role: "ADMIN",
+      role: Role.ADMIN,
     },
   });
 
@@ -191,7 +210,7 @@ async function main() {
       {
         email: "hr.manager@company.com",
         password: hrPassword,
-        role: "HR",
+        role: Role.HR,
         employeeId: createdEmployees.find(
           (e) => e.email === "michael.brown@company.com",
         )?.id,
@@ -199,7 +218,7 @@ async function main() {
       {
         email: "hr.specialist@company.com",
         password: hrPassword,
-        role: "HR",
+        role: Role.HR,
         employeeId: createdEmployees.find(
           (e) => e.email === "hr.specialist@company.com",
         )?.id,
@@ -207,7 +226,7 @@ async function main() {
       {
         email: "hr.recruiter@company.com",
         password: hrPassword,
-        role: "HR",
+        role: Role.HR,
         employeeId: createdEmployees.find(
           (e) => e.email === "hr.recruiter@company.com",
         )?.id,
@@ -221,7 +240,7 @@ async function main() {
       {
         email: "eng.manager@company.com",
         password: managerPassword,
-        role: "MANAGER",
+        role: Role.MANAGER,
         employeeId: createdEmployees.find(
           (e) => e.email === "jane.smith@company.com",
         )?.id,
@@ -229,7 +248,7 @@ async function main() {
       {
         email: "finance.manager@company.com",
         password: managerPassword,
-        role: "MANAGER",
+        role: Role.MANAGER,
         employeeId: createdEmployees.find(
           (e) => e.email === "emily.davis@company.com",
         )?.id,
@@ -237,7 +256,7 @@ async function main() {
       {
         email: "ops.manager@company.com",
         password: managerPassword,
-        role: "MANAGER",
+        role: Role.MANAGER,
         employeeId: createdEmployees.find(
           (e) => e.email === "ops.manager@company.com",
         )?.id,
@@ -251,7 +270,7 @@ async function main() {
       {
         email: "john.doe@company.com",
         password: employeePassword,
-        role: "EMPLOYEE",
+        role: Role.EMPLOYEE,
         employeeId: createdEmployees.find(
           (e) => e.email === "john.doe@company.com",
         )?.id,
@@ -259,7 +278,7 @@ async function main() {
       {
         email: "david.wilson@company.com",
         password: employeePassword,
-        role: "EMPLOYEE",
+        role: Role.EMPLOYEE,
         employeeId: createdEmployees.find(
           (e) => e.email === "david.wilson@company.com",
         )?.id,
@@ -267,7 +286,7 @@ async function main() {
       {
         email: "alice.johnson@company.com",
         password: employeePassword,
-        role: "EMPLOYEE",
+        role: Role.EMPLOYEE,
         employeeId: createdEmployees.find(
           (e) => e.email === "alice.johnson@company.com",
         )?.id,
@@ -275,7 +294,7 @@ async function main() {
       {
         email: "bob.martin@company.com",
         password: employeePassword,
-        role: "EMPLOYEE",
+        role: Role.EMPLOYEE,
         employeeId: createdEmployees.find(
           (e) => e.email === "bob.martin@company.com",
         )?.id,
@@ -283,7 +302,7 @@ async function main() {
       {
         email: "carol.white@company.com",
         password: employeePassword,
-        role: "EMPLOYEE",
+        role: Role.EMPLOYEE,
         employeeId: createdEmployees.find(
           (e) => e.email === "carol.white@company.com",
         )?.id,
@@ -291,7 +310,7 @@ async function main() {
       {
         email: "frank.thomas@company.com",
         password: employeePassword,
-        role: "EMPLOYEE",
+        role: Role.EMPLOYEE,
         employeeId: createdEmployees.find(
           (e) => e.email === "frank.thomas@company.com",
         )?.id,
@@ -299,7 +318,7 @@ async function main() {
       {
         email: "grace.anderson@company.com",
         password: employeePassword,
-        role: "EMPLOYEE",
+        role: Role.EMPLOYEE,
         employeeId: createdEmployees.find(
           (e) => e.email === "grace.anderson@company.com",
         )?.id,
@@ -312,8 +331,8 @@ async function main() {
     data: {
       name: "Annual Leave",
       isPaid: true,
-      limitScope: "PER_PERIOD",
-      periodType: "YEARLY",
+      limitScope: LimitScope.PER_PERIOD,
+      periodType: PeriodType.YEARLY,
       periodQuantity: 1,
       periodMaxDays: 20,
     },
@@ -323,8 +342,8 @@ async function main() {
     data: {
       name: "Sick Leave",
       isPaid: true,
-      limitScope: "PER_PERIOD",
-      periodType: "YEARLY",
+      limitScope: LimitScope.PER_PERIOD,
+      periodType: PeriodType.YEARLY,
       periodQuantity: 1,
       periodMaxDays: 10,
     },
@@ -334,7 +353,7 @@ async function main() {
     data: {
       name: "Unpaid Leave",
       isPaid: false,
-      limitScope: "NONE",
+      limitScope: LimitScope.NONE,
     },
   });
 
@@ -342,7 +361,7 @@ async function main() {
     data: {
       name: "Maternity Leave",
       isPaid: true,
-      limitScope: "PER_REQUEST",
+      limitScope: LimitScope.PER_REQUEST,
       perRequestMaxDays: 90,
     },
   });
@@ -351,8 +370,30 @@ async function main() {
     data: {
       name: "Bereavement Leave",
       isPaid: true,
-      limitScope: "PER_REQUEST",
+      limitScope: LimitScope.PER_REQUEST,
       perRequestMaxDays: 5,
+    },
+  });
+
+  await prisma.leaveType.create({
+    data: {
+      name: "Work from home",
+      isPaid: true,
+      limitScope: LimitScope.PER_PERIOD,
+      periodType: PeriodType.MONTHLY,
+      periodQuantity: 1,
+      periodMaxDays: 3,
+    },
+  });
+
+  await prisma.leaveType.create({
+    data: {
+      name: "Volunteer time",
+      isPaid: true,
+      limitScope: LimitScope.PER_PERIOD,
+      periodType: PeriodType.WEEKLY,
+      periodQuantity: 1,
+      periodMaxDays: 1,
     },
   });
 
@@ -369,7 +410,7 @@ async function main() {
         startDate: new Date("2026-06-02"),
         endDate: new Date("2026-06-06"),
         totalDays: 5,
-        status: "PENDING",
+        status: LeaveStatus.PENDING,
         description: "Family vacation planned in advance.",
       },
       {
@@ -378,7 +419,7 @@ async function main() {
         startDate: new Date("2026-05-26"),
         endDate: new Date("2026-05-27"),
         totalDays: 2,
-        status: "PENDING",
+        status: LeaveStatus.PENDING,
         description: "Feeling unwell, doctor's appointment scheduled.",
       },
       // APPROVED
@@ -388,7 +429,7 @@ async function main() {
         startDate: new Date("2026-05-19"),
         endDate: new Date("2026-05-20"),
         totalDays: 2,
-        status: "APPROVED",
+        status: LeaveStatus.APPROVED,
         description: "Flu symptoms.",
       },
       {
@@ -397,7 +438,7 @@ async function main() {
         startDate: new Date("2026-07-14"),
         endDate: new Date("2026-07-25"),
         totalDays: 10,
-        status: "APPROVED",
+        status: LeaveStatus.APPROVED,
         description: "Summer holiday.",
       },
       {
@@ -406,7 +447,7 @@ async function main() {
         startDate: new Date("2026-05-12"),
         endDate: new Date("2026-05-14"),
         totalDays: 3,
-        status: "APPROVED",
+        status: LeaveStatus.APPROVED,
         description: "Attending a family funeral.",
       },
       // REJECTED
@@ -416,7 +457,7 @@ async function main() {
         startDate: new Date("2026-08-04"),
         endDate: new Date("2026-08-08"),
         totalDays: 5,
-        status: "REJECTED",
+        status: LeaveStatus.REJECTED,
         description: "Personal errands.",
       },
       // CANCELLED
@@ -426,7 +467,7 @@ async function main() {
         startDate: new Date("2026-06-16"),
         endDate: new Date("2026-06-20"),
         totalDays: 5,
-        status: "CANCELLED",
+        status: LeaveStatus.CANCELLED,
         description: "Annual leave — cancelled due to change of plans.",
       },
       {
@@ -435,7 +476,7 @@ async function main() {
         startDate: new Date("2026-09-01"),
         endDate: new Date("2026-11-29"),
         totalDays: 90,
-        status: "APPROVED",
+        status: LeaveStatus.APPROVED,
         description: "Maternity leave.",
       },
     ],

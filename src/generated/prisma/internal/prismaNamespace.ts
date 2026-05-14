@@ -917,6 +917,7 @@ export const EmployeeScalarFieldEnum = {
   lastName: 'lastName',
   email: 'email',
   phone: 'phone',
+  hireDate: 'hireDate',
   titleId: 'titleId',
   departmentId: 'departmentId',
   createdAt: 'createdAt'
