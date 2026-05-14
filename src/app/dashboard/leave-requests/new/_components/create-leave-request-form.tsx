@@ -1,6 +1,9 @@
 "use client";
 
-import createLeaveRequestAction from "@/app/actions/leave-request";
+import {
+  createLeaveRequestAction,
+  validateLeaveRequest,
+} from "@/app/actions/leave-request";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -71,16 +74,12 @@ export default function CreateLeaveRequestForm({
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const formData = new FormData();
-    formData.set("employeeId", String(employee.id));
-    formData.set("leaveTypeId", leaveTypeId);
-    formData.set("startDate", startDate.toISOString());
-    formData.set("endDate", endDate.toISOString());
-    formData.set("description", description);
-    formData.set("totalDays", String(inclusiveDayCount(startDate, endDate)));
-    startTransition(() => {
-      formAction(formData);
-    });
+
+    const isValidLeaveRequest = validateLeaveRequest(
+      startDate,
+      endDate,
+      Number(leaveTypeId),
+    );
   }
 
   return (

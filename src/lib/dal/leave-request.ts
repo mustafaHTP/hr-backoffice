@@ -91,3 +91,41 @@ export async function getLeaveRequestsByEmployeeId(
     throw error;
   }
 }
+
+export async function getLeaveRequestsByEmployeeIdAndDate(
+  employeeId: number,
+  startDate: Date,
+  endDate: Date,
+) {
+  try {
+    const leaveRequests = await prisma.leaveRequest.findMany({
+      where: {
+        employeeId,
+        // Overlap condition:
+        // existing.startDate <= requested.endDate
+        // AND
+        // existing.endDate >= requested.startDate
+        AND: [
+          {
+            startDate: {
+              lte: endDate,
+            },
+          },
+          {
+            endDate: {
+              gte: startDate,
+            },
+          },
+        ],
+      },
+    });
+
+    return leaveRequests;
+  } catch (error) {
+    console.error(
+      `Error fetching leave requests for employee id ${employeeId}:`,
+      error,
+    );
+    throw error;
+  }
+}

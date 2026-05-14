@@ -9,3 +9,16 @@ export async function getLeaveTypes(): Promise<LeaveType[]> {
     throw error;
   }
 }
+
+export async function getLeaveType(id: number): Promise<LeaveType | null> {
+  try {
+    return await prisma.leaveType.findUnique({
+      where: {
+        id: id,
+      },
+    });
+  } catch (error) {
+    console.error(`Error fetching leave type with id: id, `, error);
+    throw error;
+  }
+}

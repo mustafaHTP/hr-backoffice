@@ -1,3 +1,5 @@
+import { LeaveRequest, LeaveType, LimitScope } from "@/generated/prisma/client";
+import { DAYS_PER_LEAVE_PERIOD_TYPE } from "@/types/leave-request";
 import { differenceInCalendarDays } from "date-fns/differenceInCalendarDays";
 
 export function isNumber(number: string) {
@@ -17,4 +19,21 @@ export function getInitials(firstName: string, lastName: string): string {
 
 export function inclusiveDayCount(start: Date, end: Date): number {
   return differenceInCalendarDays(end, start) + 1;
+}
+
+export function getPeriodDays(leaveType: LeaveType) {
+  if (leaveType.limitScope !== LimitScope.PER_PERIOD) return null;
+
+  const { periodType, periodQuantity } = leaveType;
+  if (!periodType) return null;
+  if (!periodQuantity) return null;
+
+  return DAYS_PER_LEAVE_PERIOD_TYPE[periodType] * periodQuantity;
+}
+
+export function subtractDates(date1: Date, date2: Date) {
+  const oneDay = 24 * 60 * 60 * 1000; // milliseconds in one day
+  const diffInMilliseconds = date1.getTime() - date2.getTime();
+
+  return Math.round(diffInMilliseconds / oneDay); // Convert milliseconds to days
 }
