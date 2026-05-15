@@ -1,5 +1,24 @@
 import { Role } from "@/generated/prisma/enums";
 
+export function hasAccess(role: Role, requestedPath: string) {
+  const rule = getRouteAccessRule(requestedPath);
+
+  // If route is not protected → allow
+  if (!rule) return true;
+
+  return hasAccessToRoute(role, rule);
+}
+
+export function getRouteAccessRule(requestedPath: string) {
+  return routeAccessRules.find(
+    (r) => r.path.toLowerCase() === requestedPath.toLowerCase(),
+  );
+}
+
+export function hasAccessToRoute(role: Role, rule: RouteAccessRule) {
+  return rule.allowedRoles.includes(role);
+}
+
 export type RouteAccessRule = {
   path: string;
   allowedRoles: Role[];
