@@ -23,7 +23,7 @@ import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 import { cn } from "@/lib/utils";
 import { LeaveRequestSchema } from "@/lib/schemas/leave-request";
-import { inclusiveDayCount } from "@/lib/date-utils";
+import { inclusiveDayCount } from "@/lib/utils/date-utils";
 
 type CreateLeaveRequestFormProps = {
   leaveTypes: LeaveType[];

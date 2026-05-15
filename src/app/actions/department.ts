@@ -6,7 +6,7 @@ import {
   updateDepartment,
 } from "@/lib/dal/department";
 import { departmentSchema } from "@/lib/schemas/department";
-import { isNumber } from "@/lib/utility";
+import { isNumber } from "@/lib/utils/utility";
 import { ActionResponse } from "@/types/action-response";
 
 function dalErrorMessage(error: unknown, fallback: string): string {

@@ -12,7 +12,8 @@ import {
   LeaveRequestSchema,
   leaveRequestSchema,
 } from "@/lib/schemas/leave-request";
-import { getPeriodDays, inclusiveDayCount, subtractDates } from "@/lib/utility";
+import { inclusiveDayCount } from "@/lib/utils/date-utils";
+import { getPeriodDays, subtractDates } from "@/lib/utils/utility";
 import { ActionResponse } from "@/types/action-response";
 import {
   LeavePeriod,

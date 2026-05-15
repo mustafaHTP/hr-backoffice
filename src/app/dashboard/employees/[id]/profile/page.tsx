@@ -1,6 +1,6 @@
 import { getEmployee } from "@/lib/dal/employee";
 import { notFound } from "next/navigation";
-import { getInitials } from "@/lib/utility";
+import { getInitials } from "@/lib/utils/utility";
 import * as Avatar from "@radix-ui/react-avatar";
 import Link from "next/link";
 
