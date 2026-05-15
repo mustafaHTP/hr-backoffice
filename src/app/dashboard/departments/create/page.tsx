@@ -1,6 +1,6 @@
 "use client";
 
-import { createDepartmentAction } from "@/app/actions/department";
+import { createDepartmentActionAsync } from "@/app/actions/department";
 import { ActionResponse } from "@/types/action-response";
 import { useRouter } from "next/navigation";
 import { useActionState } from "react";
@@ -12,7 +12,7 @@ export default function DepartmentCreatePage() {
     FormData
   >(
     async (_, formData) => {
-      const result = await createDepartmentAction(formData);
+      const result = await createDepartmentActionAsync(formData);
 
       if (result.success) {
         router.refresh();

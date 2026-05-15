@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
-import { signOutAction } from "../../actions/auth";
+import { signOutActionAsync } from "../../actions/auth";
 
 export default function SignOutButton() {
   const router = useRouter();
@@ -10,7 +10,7 @@ export default function SignOutButton() {
 
   const handleSignOut = () => {
     startTransition(async () => {
-      const result = await signOutAction();
+      const result = await signOutActionAsync();
 
       if (result.success) {
         router.push("/signin");

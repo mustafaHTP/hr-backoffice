@@ -1,7 +1,7 @@
 "use client";
 
 import { Department } from "@/generated/prisma/client";
-import { deleteDepartmentAction } from "@/app/actions/department";
+import { deleteDepartmentActionAsync } from "@/app/actions/department";
 import { ActionResponse } from "@/types/action-response";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -19,7 +19,7 @@ export default function DepartmentRow({
     FormData
   >(
     async (_, formData) => {
-      const result = await deleteDepartmentAction(formData);
+      const result = await deleteDepartmentActionAsync(formData);
 
       router.refresh();
 

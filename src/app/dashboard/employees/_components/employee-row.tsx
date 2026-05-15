@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
-import { deleteEmployeeAction } from "@/app/actions/employee";
+import { deleteEmployeeActionAsync } from "@/app/actions/employee";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ActionResponse } from "@/types/action-response";
@@ -19,7 +19,7 @@ export default function EmployeeRow({
     FormData
   >(
     async (_, formData) => {
-      const response = await deleteEmployeeAction(formData);
+      const response = await deleteEmployeeActionAsync(formData);
       router.refresh();
 
       return response;

@@ -1,6 +1,6 @@
 "use client";
 
-import { signInAction } from "@/app/actions/auth";
+import { signInActionAsync } from "@/app/actions/auth";
 import { NotificationService as ToastService } from "@/lib/toast-service";
 import { ActionResponse } from "@/types/action-response";
 import Link from "next/link";
@@ -15,7 +15,7 @@ export default function SignInPage() {
     FormData
   >(
     async (_, formData) => {
-      const result = await signInAction(formData);
+      const result = await signInActionAsync(formData);
 
       if (result.success) {
         ToastService.success("Login is successful");

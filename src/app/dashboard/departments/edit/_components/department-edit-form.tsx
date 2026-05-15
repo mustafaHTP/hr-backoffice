@@ -1,6 +1,6 @@
 "use client";
 
-import { updateDepartmentAction } from "@/app/actions/department";
+import { updateDepartmentActionAsync } from "@/app/actions/department";
 import { Department } from "@/generated/prisma/client";
 import { ActionResponse } from "@/types/action-response";
 import { useRouter } from "next/navigation";
@@ -19,7 +19,7 @@ export default function DepartmentEditForm({
     FormData
   >(
     async (_, formData) => {
-      const response = await updateDepartmentAction(formData);
+      const response = await updateDepartmentActionAsync(formData);
 
       router.refresh();
 

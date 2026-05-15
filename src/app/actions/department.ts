@@ -13,7 +13,7 @@ function dalErrorMessage(error: unknown, fallback: string): string {
   return error instanceof Error ? error.message : fallback;
 }
 
-export async function createDepartmentAction(
+export async function createDepartmentActionAsync(
   formData: FormData,
 ): Promise<ActionResponse> {
   const departmentFormData = {
@@ -44,7 +44,7 @@ export async function createDepartmentAction(
   };
 }
 
-export async function updateDepartmentAction(
+export async function updateDepartmentActionAsync(
   formData: FormData,
 ): Promise<ActionResponse> {
   const departmentForm = {
@@ -83,7 +83,7 @@ export async function updateDepartmentAction(
   };
 }
 
-export async function deleteDepartmentAction(
+export async function deleteDepartmentActionAsync(
   formData: FormData,
 ): Promise<ActionResponse> {
   const idFromForm = formData.get("id");

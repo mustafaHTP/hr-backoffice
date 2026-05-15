@@ -1,6 +1,6 @@
 "use client";
 
-import { createEmployeeAction } from "@/app/actions/employee";
+import { createEmployeeActionAsync } from "@/app/actions/employee";
 import { Department, EmployeeTitle } from "@/generated/prisma/client";
 import { ActionResponse } from "@/types/action-response";
 import { useRouter } from "next/navigation";
@@ -19,7 +19,7 @@ export default function EmployeeForm({
     FormData
   >(
     async (_, formData) => {
-      const result = await createEmployeeAction(formData);
+      const result = await createEmployeeActionAsync(formData);
 
       if (result.success) {
         router.refresh();

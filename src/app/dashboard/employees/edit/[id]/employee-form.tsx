@@ -1,6 +1,6 @@
 "use client";
 
-import { updateEmployeeAction } from "@/app/actions/employee";
+import { updateEmployeeActionAsync } from "@/app/actions/employee";
 import type { EmployeeWithDeptTitle } from "@/lib/dal/employee";
 import { Department, EmployeeTitle } from "@/generated/prisma/client";
 import { useRouter } from "next/navigation";
@@ -16,10 +16,13 @@ export default function EmployeeForm({
   employeeTitles: EmployeeTitle[];
 }) {
   const router = useRouter();
-  const [state, formAction, isPending] = useActionState(updateEmployeeAction, {
-    success: false,
-    message: "",
-  });
+  const [state, formAction, isPending] = useActionState(
+    updateEmployeeActionAsync,
+    {
+      success: false,
+      message: "",
+    },
+  );
 
   return (
     <div className="max-w-2xl space-y-6">

@@ -1,6 +1,6 @@
 "use client";
 
-import { createLeaveRequestAction } from "@/app/actions/leave-request";
+import { createLeaveRequestActionAsync } from "@/app/actions/leave-request";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -67,7 +67,7 @@ export default function CreateLeaveRequestForm({
       description: description,
       totalDays: inclusiveDayCount(startDate, endDate),
     };
-    const result = await createLeaveRequestAction(leaveRequest);
+    const result = await createLeaveRequestActionAsync(leaveRequest);
     if (result.success) {
       NotificationService.success("Leave request created successfully");
       router.push("/dashboard/leave-request-list");

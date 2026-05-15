@@ -6,7 +6,7 @@ import { verifyPassword } from "@/lib/password";
 import { signInSchema, SignInSchema } from "@/lib/schemas/auth";
 import { ActionResponse } from "@/types/action-response";
 
-export async function signInAction(
+export async function signInActionAsync(
   formData: FormData,
 ): Promise<ActionResponse> {
   try {
@@ -69,7 +69,7 @@ export async function signInAction(
   }
 }
 
-export async function signOutAction(): Promise<ActionResponse> {
+export async function signOutActionAsync(): Promise<ActionResponse> {
   try {
     await deleteSession();
     return {

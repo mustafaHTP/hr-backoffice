@@ -22,7 +22,7 @@ import {
   MIN_DAYS_PER_LEAVE_REQUEST,
 } from "@/types/leave-request";
 
-export async function createLeaveRequestAction(
+export async function createLeaveRequestActionAsync(
   leaveRequest: LeaveRequestSchema,
 ): Promise<ActionResponse> {
   if (!leaveRequest.leaveTypeId) {
@@ -42,7 +42,7 @@ export async function createLeaveRequestAction(
     };
   }
 
-  const leaveRequestValidationResult = await validateLeaveRequest(
+  const leaveRequestValidationResult = await validateLeaveRequestAsync(
     leaveRequest.startDate,
     leaveRequest.endDate,
     Number(leaveRequest.leaveTypeId),
@@ -63,7 +63,7 @@ export async function createLeaveRequestAction(
   };
 }
 
-export async function validateLeaveRequest(
+async function validateLeaveRequestAsync(
   startDate: Date,
   endDate: Date,
   leaveTypeId: number,
@@ -154,7 +154,7 @@ export async function validateLeaveRequest(
         error: `Period days could not be calculated for ${leaveType.name}`,
       };
     }
-    const currentPeriod = await getCurrentPeriodForEmployee(
+    const currentPeriod = await getCurrentPeriodForEmployeeAsync(
       employeeId,
       periodDays,
     );
@@ -166,7 +166,7 @@ export async function validateLeaveRequest(
       };
     }
 
-    const usedDays = await getUsedDaysForEmployee(
+    const usedDays = await getUsedDaysForEmployeeAsync(
       employeeId,
       leaveTypeId,
       currentPeriod,
@@ -194,7 +194,7 @@ export async function validateLeaveRequest(
   };
 }
 
-async function getCurrentPeriodForEmployee(
+async function getCurrentPeriodForEmployeeAsync(
   employeeId: number,
   periodDays: number,
 ): Promise<LeavePeriod | null> {
@@ -226,7 +226,7 @@ async function getCurrentPeriodForEmployee(
   };
 }
 
-async function getUsedDaysForEmployee(
+async function getUsedDaysForEmployeeAsync(
   employeeId: number,
   leaveTypeId: number,
   leavePeriod: LeavePeriod,

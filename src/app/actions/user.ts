@@ -3,7 +3,7 @@
 import { getSession } from "@/lib/auth";
 import { getUser } from "@/lib/dal/user";
 
-export async function getCurrentUser() {
+export async function getCurrentUserActionAsync() {
   const session = await getSession();
   if (!session) {
     return null;

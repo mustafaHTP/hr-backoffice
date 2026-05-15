@@ -1,11 +1,11 @@
-import { getCurrentUser } from "@/app/actions/user";
+import { getCurrentUserActionAsync } from "@/app/actions/user";
 import { getEmployee } from "@/lib/dal/employee";
 import { getLeaveRequestsByEmployeeId } from "@/lib/dal/leave-request";
 import LeaveStatusBadge from "../leave-requests/_components/leave-status-badge";
 import Link from "next/link";
 
 export default async function LeaveRequestListPage() {
-  const user = await getCurrentUser();
+  const user = await getCurrentUserActionAsync();
   if (!user) throw new Error("No user found this session");
 
   if (!user.employeeId)
