@@ -1,9 +1,9 @@
-import { getSession } from "@/lib/auth";
+import { getSessionAsync } from "@/lib/auth";
 import SignOutButton from "./signout-button";
 import { getUserAsync } from "@/lib/dal/user";
 
 export default async function SidebarProfile() {
-  const session = await getSession();
+  const session = await getSessionAsync();
 
   if (!session?.userId) {
     return null;

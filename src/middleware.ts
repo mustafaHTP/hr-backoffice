@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { getSession } from "./lib/auth";
+import { getSessionAsync } from "./lib/auth";
 import { Role } from "./generated/prisma/enums";
 
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
-  const session = await getSession();
+  const session = await getSessionAsync();
   if (!session) {
     return NextResponse.redirect(new URL("/signin", request.url));
   }

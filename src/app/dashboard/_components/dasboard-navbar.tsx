@@ -1,8 +1,8 @@
-import { getSession } from "@/lib/auth";
+import { getSessionAsync } from "@/lib/auth";
 import { getUserAsync } from "@/lib/dal/user";
 
 export default async function DashboardNavbar() {
-  const session = await getSession();
+  const session = await getSessionAsync();
   let userName = "Guest";
 
   if (session?.userId) {

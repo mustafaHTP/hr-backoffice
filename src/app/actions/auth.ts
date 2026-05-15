@@ -1,8 +1,12 @@
 "use server";
 
-import { createSession, deleteSession, SessionPayload } from "@/lib/auth";
+import {
+  createSessionAsync,
+  deleteSessionAsync,
+  SessionPayload,
+} from "@/lib/auth";
 import { getUserByEmailAsync } from "@/lib/dal/user";
-import { verifyPassword } from "@/lib/password";
+import { verifyPasswordAsync } from "@/lib/password";
 import { signInSchema, SignInSchema } from "@/lib/schemas/auth";
 import { ActionResponse } from "@/types/action-response";
 
@@ -34,7 +38,7 @@ export async function signInActionAsync(
       };
     }
 
-    const isPasswordValid = verifyPassword(
+    const isPasswordValid = verifyPasswordAsync(
       signInFormData.password,
       user.password,
     );
@@ -53,7 +57,7 @@ export async function signInActionAsync(
       email: user.email,
       role: user.role,
     };
-    await createSession(sessionInput);
+    await createSessionAsync(sessionInput);
 
     return {
       success: true,
@@ -71,7 +75,7 @@ export async function signInActionAsync(
 
 export async function signOutActionAsync(): Promise<ActionResponse> {
   try {
-    await deleteSession();
+    await deleteSessionAsync();
     return {
       success: true,
       message: "Signed out successfully",

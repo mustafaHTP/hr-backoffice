@@ -17,7 +17,7 @@ export interface SessionPayload extends JWTPayload {
 /**
  * Encrypts payload into a JWT
  */
-async function encrypt(payload: SessionPayload): Promise<string> {
+async function encryptAsync(payload: SessionPayload): Promise<string> {
   return new SignJWT(payload)
     .setProtectedHeader({ alg: SESSION_ALG })
     .setIssuedAt()
@@ -29,7 +29,7 @@ async function encrypt(payload: SessionPayload): Promise<string> {
  * Decrypts and validates the JWT.
  * Returns null instead of throwing to keep flow control clean.
  */
-async function decrypt(
+async function decryptAsync(
   token: string | undefined,
 ): Promise<SessionPayload | null> {
   if (!token) return null;
@@ -48,8 +48,10 @@ async function decrypt(
 /**
  * Creates a session and sets the cookie
  */
-export async function createSession(payload: SessionPayload): Promise<void> {
-  const session = await encrypt(payload);
+export async function createSessionAsync(
+  payload: SessionPayload,
+): Promise<void> {
+  const session = await encryptAsync(payload);
   const cookieStore = await cookies();
 
   cookieStore.set(SESSION_COOKIE_NAME, session, {
@@ -64,13 +66,13 @@ export async function createSession(payload: SessionPayload): Promise<void> {
 /**
  * Retrieves and verifies the session.
  */
-export async function getSession(): Promise<SessionPayload | null> {
+export async function getSessionAsync(): Promise<SessionPayload | null> {
   const cookieStore = await cookies();
   const token = cookieStore.get(SESSION_COOKIE_NAME)?.value;
-  return await decrypt(token);
+  return await decryptAsync(token);
 }
 
-export async function deleteSession(): Promise<void> {
+export async function deleteSessionAsync(): Promise<void> {
   const cookieStore = await cookies();
   cookieStore.delete(SESSION_COOKIE_NAME);
 }

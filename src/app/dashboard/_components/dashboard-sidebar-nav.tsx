@@ -1,5 +1,5 @@
 import { Role } from "@/generated/prisma/enums";
-import { getSession } from "@/lib/auth";
+import { getSessionAsync } from "@/lib/auth";
 import { NavItem } from "./dashboard-navlink";
 
 type NavItemElement = {
@@ -9,7 +9,7 @@ type NavItemElement = {
 };
 
 export default async function DashboardSidebarNav() {
-  const session = await getSession();
+  const session = await getSessionAsync();
   if (!session) return null;
 
   const navItems: NavItemElement[] = [

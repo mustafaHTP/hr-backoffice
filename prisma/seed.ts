@@ -1,4 +1,4 @@
-import { hashPassword } from "@/lib/password";
+import { hashPasswordAsync } from "@/lib/password";
 import { prisma } from "@/lib/prisma";
 import {
   LeaveStatus,
@@ -189,10 +189,10 @@ async function main() {
   // Fetch created employees to link with users
   const createdEmployees = await prisma.employee.findMany();
 
-  const adminPassword = await hashPassword("admin123");
-  const hrPassword = await hashPassword("hr123");
-  const managerPassword = await hashPassword("manager123");
-  const employeePassword = await hashPassword("employee123");
+  const adminPassword = await hashPasswordAsync("admin123");
+  const hrPassword = await hashPasswordAsync("hr123");
+  const managerPassword = await hashPasswordAsync("manager123");
+  const employeePassword = await hashPasswordAsync("employee123");
 
   // Users
   // Admin user (only 1)

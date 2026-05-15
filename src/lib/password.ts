@@ -5,11 +5,14 @@ import bcrypt, { compare, hash } from "bcryptjs";
  */
 const PASSWORD_HASH_ROUNDS = 10;
 
-export async function verifyPassword(password: string, hashedPassword: string) {
+export async function verifyPasswordAsync(
+  password: string,
+  hashedPassword: string,
+) {
   return await compare(password, hashedPassword);
 }
 
-export async function hashPassword(password: string) {
+export async function hashPasswordAsync(password: string) {
   const salt = await bcrypt.genSalt(PASSWORD_HASH_ROUNDS);
   return await hash(password, salt);
 }

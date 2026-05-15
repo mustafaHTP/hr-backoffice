@@ -1,6 +1,6 @@
 import { getLeaveTypesAsync } from "@/lib/dal/leave-type";
 import CreateLeaveRequestForm from "./_components/create-leave-request-form";
-import { getSession } from "@/lib/auth";
+import { getSessionAsync } from "@/lib/auth";
 import { getEmployeeAsync } from "@/lib/dal/employee";
 import { getCurrentUserActionAsync } from "@/app/actions/user";
 

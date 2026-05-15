@@ -1,8 +1,8 @@
-import { getSession } from "@/lib/auth";
+import { getSessionAsync } from "@/lib/auth";
 import Link from "next/link";
 
 export default async function HomeNavBar() {
-  const session = await getSession();
+  const session = await getSessionAsync();
 
   return (
     <nav className="border-b border-white/10 bg-zinc-950/80 backdrop-blur-md">
