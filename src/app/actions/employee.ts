@@ -10,10 +10,6 @@ import { revalidatePath } from "next/cache";
 import { employeeSchema } from "@/lib/schemas/employee";
 import { ActionResponse } from "@/types/action-response";
 
-function dalErrorMessage(error: unknown, fallback: string): string {
-  return error instanceof Error ? error.message : fallback;
-}
-
 export async function createEmployeeActionAsync(
   formData: FormData,
 ): Promise<ActionResponse> {
@@ -41,10 +37,10 @@ export async function createEmployeeActionAsync(
 
   try {
     await createEmployee(validationResult.data);
-  } catch (error) {
+  } catch {
     return {
       success: false,
-      message: dalErrorMessage(error, "Failed to create employee"),
+      message: "Failed to create employee",
     };
   }
 
@@ -82,10 +78,10 @@ export async function updateEmployeeActionAsync(
 
   try {
     await updateEmployee(formEmployee.id, validationResult.data);
-  } catch (error) {
+  } catch {
     return {
       success: false,
-      message: dalErrorMessage(error, "Failed to update employee"),
+      message: "Failed to update employee",
     };
   }
 
@@ -117,10 +113,10 @@ export async function deleteEmployeeActionAsync(formData: FormData) {
 
   try {
     await deleteEmployee(id);
-  } catch (error) {
+  } catch {
     return {
       success: false,
-      message: dalErrorMessage(error, "Failed to delete employee"),
+      message: "Failed to delete employee",
     };
   }
 
