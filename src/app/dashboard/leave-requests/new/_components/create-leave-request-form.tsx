@@ -12,6 +12,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Employee, LeaveType } from "@/generated/prisma/client";
+import { NotificationService } from "@/lib/toast-service";
 import { inclusiveDayCount } from "@/lib/utility";
 import { ActionResponse } from "@/types/action-response";
 import { CalendarIcon } from "@radix-ui/react-icons";
@@ -72,14 +73,24 @@ export default function CreateLeaveRequestForm({
     setEndDate(selectedDate);
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    const isValidLeaveRequest = validateLeaveRequest(
+    const leaveRequestValidationResult = await validateLeaveRequest(
       startDate,
       endDate,
       Number(leaveTypeId),
+      employee.id,
     );
+
+    if (!leaveRequestValidationResult.success) {
+      NotificationService.error(
+        leaveRequestValidationResult.error ??
+          "Not enough info for an occurred error!",
+      );
+    } else {
+      NotificationService.success("Leave request created successfully");
+    }
   }
 
   return (

@@ -5,6 +5,7 @@ import { getEmployee } from "@/lib/dal/employee";
 import {
   createLeaveRequest,
   getLeaveRequestsByEmployeeIdAndDate,
+  getLeaveRequestsEmployeeUsedInPeriod,
 } from "@/lib/dal/leave-request";
 import { getLeaveType } from "@/lib/dal/leave-type";
 import {
@@ -100,48 +101,96 @@ export async function validateLeaveRequest(
     };
   }
 
-  if (!leaveType.periodQuantity || !leaveType.periodType) {
-    return {
-      success: false,
-      error: `Inconsistency in db for selected leave type ${leaveType.name}`,
-    };
-  }
-
-  const periodDays = getPeriodDays(leaveType);
-  if (!periodDays) {
-    return {
-      success: false,
-      error: `Period days could not be calculated for ${leaveType.name}`,
-    };
-  }
-  const currentPeriod = await getCurrentPeriodForEmployee(
+  const overlappedLeaveRequests = await getLeaveRequestsByEmployeeIdAndDate(
     employeeId,
-    periodDays,
-    leaveType.periodQuantity,
+    startDate,
+    endDate,
   );
 
-  if (!currentPeriod) {
+  if (overlappedLeaveRequests.length > 0) {
     return {
       success: false,
-      error: "Current period could not calculated for employee",
-    };
-  }
-
-  const overlappedLeaveRequest = await getLeaveRequestsByEmployeeIdAndDate(
-    employeeId,
-    currentPeriod.startDate,
-    currentPeriod.endDate,
-  );
-
-  if (overlappedLeaveRequest.length > 0) {
-    return {
-      success: false,
-      error: "There is overlapping leave requests for you",
+      error: "There is overlapping leave requests",
     };
   }
 
   if (leaveType.limitScope === LimitScope.PER_REQUEST) {
+    // Check day limit for leave type
+    if (!leaveType.perRequestMaxDays) {
+      return {
+        success: false,
+        error: `Inconsistency in db for selected leave type ${leaveType.name}`,
+      };
+    }
+
+    if (requestedDays > leaveType.perRequestMaxDays) {
+      return {
+        success: false,
+        error: "You exceed day limit",
+      };
+    }
   } else if (leaveType.limitScope === LimitScope.PER_PERIOD) {
+    // Get used days that employee used in current period
+    if (!leaveType.periodQuantity) {
+      return {
+        success: false,
+        error: `Inconsistency in db for selected leave type ${leaveType.name}`,
+      };
+    }
+
+    if (!leaveType.periodType) {
+      return {
+        success: false,
+        error: `Inconsistency in db for selected leave type ${leaveType.name}`,
+      };
+    }
+
+    if (!leaveType.periodMaxDays) {
+      return {
+        success: false,
+        error: `Inconsistency in db for selected leave type ${leaveType.name}`,
+      };
+    }
+
+    const periodDays = getPeriodDays(leaveType);
+    if (!periodDays) {
+      return {
+        success: false,
+        error: `Period days could not be calculated for ${leaveType.name}`,
+      };
+    }
+    const currentPeriod = await getCurrentPeriodForEmployee(
+      employeeId,
+      periodDays,
+    );
+
+    if (!currentPeriod) {
+      return {
+        success: false,
+        error: "Current period could not calculated for employee",
+      };
+    }
+
+    const usedDays = await getUsedDaysForEmployee(
+      employeeId,
+      leaveTypeId,
+      currentPeriod,
+    );
+
+    const leftDays = leaveType.periodMaxDays - usedDays;
+    if (leftDays <= 0) {
+      return {
+        success: false,
+        error: "Not enough days to make leave request",
+      };
+    }
+
+    if (leftDays < requestedDays) {
+      return {
+        success: false,
+        error: "You exceed day limit determined by your manager",
+      };
+    }
   }
 
   // for Limit scope === NONE, no check
@@ -153,7 +202,6 @@ export async function validateLeaveRequest(
 async function getCurrentPeriodForEmployee(
   employeeId: number,
   periodDays: number,
-  periodQuantity: number, // Assuming this is for accrual amounts per period
 ): Promise<LeavePeriod | null> {
   const employee = await getEmployee(employeeId);
   if (!employee || !employee.hireDate) {
@@ -181,4 +229,25 @@ async function getCurrentPeriodForEmployee(
     startDate: currentPeriodStart,
     endDate: currentPeriodEnd,
   };
+}
+
+async function getUsedDaysForEmployee(
+  employeeId: number,
+  leaveTypeId: number,
+  leavePeriod: LeavePeriod,
+) {
+  const leaveRequets = await getLeaveRequestsEmployeeUsedInPeriod(
+    employeeId,
+    leaveTypeId,
+    leavePeriod,
+  );
+
+  let usedDays = 0;
+  if (leaveRequets.length > 0) {
+    for (let i = 0; i < leaveRequets.length; i++) {
+      usedDays += leaveRequets[i].totalDays;
+    }
+  }
+
+  return usedDays;
 }

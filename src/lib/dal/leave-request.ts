@@ -1,6 +1,7 @@
 import { Prisma } from "@/generated/prisma/client";
 import { LeaveRequestSchema } from "../schemas/leave-request";
 import { prisma } from "../prisma";
+import { LeavePeriod } from "@/types/leave-request";
 
 export type LeaveRequestWithEmployeeAndLeaveType =
   Prisma.LeaveRequestGetPayload<{
@@ -100,23 +101,42 @@ export async function getLeaveRequestsByEmployeeIdAndDate(
   try {
     const leaveRequests = await prisma.leaveRequest.findMany({
       where: {
-        employeeId,
-        // Overlap condition:
-        // existing.startDate <= requested.endDate
-        // AND
-        // existing.endDate >= requested.startDate
-        AND: [
-          {
-            startDate: {
-              lte: endDate,
-            },
-          },
-          {
-            endDate: {
-              gte: startDate,
-            },
-          },
-        ],
+        employeeId: employeeId,
+        startDate: {
+          lte: endDate,
+        },
+        endDate: {
+          gte: startDate,
+        },
+      },
+    });
+
+    return leaveRequests;
+  } catch (error) {
+    console.error(
+      `Error fetching leave requests for employee id ${employeeId}:`,
+      error,
+    );
+    throw error;
+  }
+}
+
+export async function getLeaveRequestsEmployeeUsedInPeriod(
+  employeeId: number,
+  leaveTypeId: number,
+  leavePeriod: LeavePeriod,
+) {
+  try {
+    const leaveRequests = await prisma.leaveRequest.findMany({
+      where: {
+        employeeId: employeeId,
+        leaveTypeId: leaveTypeId,
+        startDate: {
+          lte: leavePeriod.endDate,
+        },
+        endDate: {
+          gte: leavePeriod.startDate,
+        },
       },
     });
 
