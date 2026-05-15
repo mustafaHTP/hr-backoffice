@@ -9,8 +9,8 @@ import {
 } from "@/lib/dal/leave-request";
 import { getLeaveType } from "@/lib/dal/leave-type";
 import {
-  leaveRequestSchema,
   LeaveRequestSchema,
+  leaveRequestSchema,
 } from "@/lib/schemas/leave-request";
 import { getPeriodDays, inclusiveDayCount, subtractDates } from "@/lib/utility";
 import { ActionResponse } from "@/types/action-response";
@@ -22,45 +22,39 @@ import {
 } from "@/types/leave-request";
 
 export async function createLeaveRequestAction(
-  formData: FormData,
+  leaveRequest: LeaveRequestSchema,
 ): Promise<ActionResponse> {
-  if (!formData)
+  if (!leaveRequest.leaveTypeId) {
     return {
       success: false,
-      error: "Form data is null",
-    };
-
-  const leaveRequestFormData: LeaveRequestSchema = {
-    description: formData.get("description") as string,
-    employeeId: Number(formData.get("employeeId")),
-    leaveTypeId: Number(formData.get("leaveTypeId")),
-    startDate: new Date(formData.get("startDate") as string),
-    endDate: new Date(formData.get("endDate") as string),
-    totalDays: Number(formData.get("totalDays")),
-  };
-
-  console.log(leaveRequestFormData);
-  const validationResult = leaveRequestSchema.safeParse(leaveRequestFormData);
-  if (!validationResult.success) {
-    return {
-      success: false,
-      errors: validationResult.error.flatten().fieldErrors,
+      error: "Please select a leave type.",
     };
   }
 
-  try {
-    await createLeaveRequest(validationResult.data);
-  } catch (error) {
+  const zodValidationResult = leaveRequestSchema.safeParse(leaveRequest);
+  if (!zodValidationResult.success) {
+    console.log(zodValidationResult.error);
     return {
       success: false,
-      error:
-        error instanceof Error
-          ? error.message
-          : "Error occurred on creating leave request",
+      errors: zodValidationResult.error.flatten().fieldErrors,
+      error: "Check related field(s) for an error",
     };
   }
 
-  console.log("created successfully");
+  const leaveRequestValidationResult = await validateLeaveRequest(
+    leaveRequest.startDate,
+    leaveRequest.endDate,
+    Number(leaveRequest.leaveTypeId),
+    leaveRequest.employeeId,
+  );
+  if (!leaveRequestValidationResult.success) {
+    return {
+      success: false,
+      error: leaveRequestValidationResult.error,
+    };
+  }
+
+  await createLeaveRequest(zodValidationResult.data);
 
   return {
     success: true,

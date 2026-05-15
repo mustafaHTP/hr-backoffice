@@ -1,9 +1,6 @@
 "use client";
 
-import {
-  createLeaveRequestAction,
-  validateLeaveRequest,
-} from "@/app/actions/leave-request";
+import { createLeaveRequestAction } from "@/app/actions/leave-request";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -16,16 +13,17 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip"; // Ensure you have shadcn tooltip installed
+} from "@/components/ui/tooltip";
 import { Employee, LeaveType } from "@/generated/prisma/client";
 import { NotificationService } from "@/lib/toast-service";
-import { ActionResponse } from "@/types/action-response";
 import { CalendarIcon, InfoCircledIcon } from "@radix-ui/react-icons";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 import { format } from "date-fns/format";
 import { useRouter } from "next/navigation";
-import { FormEvent, useActionState, useState, startTransition } from "react";
+import { FormEvent, useState } from "react";
 import { cn } from "@/lib/utils";
+import { LeaveRequestSchema } from "@/lib/schemas/leave-request";
+import { inclusiveDayCount } from "@/lib/date-utils";
 
 type CreateLeaveRequestFormProps = {
   leaveTypes: LeaveType[];
@@ -43,22 +41,8 @@ export default function CreateLeaveRequestForm({
   const [endDate, setEndDate] = useState(today);
   const [leaveTypeId, setLeaveTypeId] = useState("");
   const [description, setDescription] = useState("");
+  const [isPending, setIsPending] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-
-  const [state, formAction, isPending] = useActionState<
-    ActionResponse,
-    FormData
-  >(
-    async (_, formData) => {
-      const result = await createLeaveRequestAction(formData);
-      if (result.success) {
-        router.push("/dashboard/leave-request-list");
-        return result;
-      }
-      return result;
-    },
-    { success: false, message: "" },
-  );
 
   function handleStartDateSelection(selectedDate: Date | undefined) {
     if (!selectedDate) return;
@@ -75,25 +59,22 @@ export default function CreateLeaveRequestForm({
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (!leaveTypeId) {
-      NotificationService.error("Please select a leave type.");
-      return;
-    }
-
-    const leaveRequestValidationResult = await validateLeaveRequest(
-      startDate,
-      endDate,
-      Number(leaveTypeId),
-      employee.id,
-    );
-
-    if (!leaveRequestValidationResult.success) {
-      NotificationService.error(
-        leaveRequestValidationResult.error ??
-          "Not enough info for an occurred error!",
-      );
-    } else {
+    const leaveRequest: LeaveRequestSchema = {
+      employeeId: employee.id,
+      startDate: startDate,
+      endDate: endDate,
+      leaveTypeId: Number(leaveTypeId),
+      description: description,
+      totalDays: inclusiveDayCount(startDate, endDate),
+    };
+    const result = await createLeaveRequestAction(leaveRequest);
+    if (result.success) {
       NotificationService.success("Leave request created successfully");
+      router.push("/dashboard/leave-request-list");
+    } else {
+      NotificationService.error(
+        result.error ?? "Not enough info for an occurred error",
+      );
     }
   }
 

@@ -1,7 +1,7 @@
 import { Prisma } from "@/generated/prisma/client";
-import { LeaveRequestSchema } from "../schemas/leave-request";
 import { prisma } from "../prisma";
 import { LeavePeriod } from "@/types/leave-request";
+import { LeaveRequestSchema } from "../schemas/leave-request";
 
 export type LeaveRequestWithEmployeeAndLeaveType =
   Prisma.LeaveRequestGetPayload<{

@@ -1,4 +1,4 @@
-import { LimitScope, PeriodType } from "@/generated/prisma/enums";
+import { PeriodType } from "@/generated/prisma/enums";
 
 export const MIN_DAYS_PER_LEAVE_REQUEST = 0;
 export const MAX_DAYS_PER_LEAVE_REQUEST = 360;
