@@ -58,11 +58,13 @@ export default async function LeaveRequestListPage() {
                     className="group hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition"
                   >
                     <td className="px-6 py-4 text-zinc-950 dark:text-white">
-                      {lq.leaveType.name}
+                      <Link href={`/dashboard/leave-request-list/${lq.id}`}>
+                        {lq.leaveType.name}
+                      </Link>
                     </td>
 
                     <td className="px-6 py-4">
-                      <Link href={`/dashboard/leave-requests/${lq.id}`}>
+                      <Link href={`/dashboard/leave-request-list/${lq.id}`}>
                         <LeaveStatusBadge status={lq.status} />
                       </Link>
                     </td>
