@@ -93,10 +93,11 @@ enum PeriodType {
 }
 
 model LeaveType {
-  id         Int        @id @default(autoincrement())
-  name       String     @unique
-  isPaid     Boolean
-  limitScope LimitScope @default(NONE)
+  id          Int        @id @default(autoincrement())
+  name        String     @unique
+  description String
+  isPaid      Boolean
+  limitScope  LimitScope @default(NONE)
 
   perRequestMaxDays Int?
 

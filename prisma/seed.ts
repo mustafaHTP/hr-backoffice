@@ -335,6 +335,8 @@ async function main() {
       periodType: PeriodType.YEARLY,
       periodQuantity: 1,
       periodMaxDays: 20,
+      description:
+        "Paid time off for vacation, personal use, or rest allocated per calendar year.",
     },
   });
 
@@ -346,6 +348,8 @@ async function main() {
       periodType: PeriodType.YEARLY,
       periodQuantity: 1,
       periodMaxDays: 10,
+      description:
+        "Paid leave reserved for recovery from personal illness, injury, or medical appointments.",
     },
   });
 
@@ -354,6 +358,8 @@ async function main() {
       name: "Unpaid Leave",
       isPaid: false,
       limitScope: LimitScope.NONE,
+      description:
+        "Approved time off without pay for extended personal matters when paid leave balances are exhausted.",
     },
   });
 
@@ -363,6 +369,8 @@ async function main() {
       isPaid: true,
       limitScope: LimitScope.PER_REQUEST,
       perRequestMaxDays: 90,
+      description:
+        "Paid job-protected leave for expectant mothers before and after childbirth.",
     },
   });
 
@@ -372,6 +380,8 @@ async function main() {
       isPaid: true,
       limitScope: LimitScope.PER_REQUEST,
       perRequestMaxDays: 5,
+      description:
+        "Paid time off granted to employees following the loss of an immediate family member.",
     },
   });
 
@@ -383,6 +393,8 @@ async function main() {
       periodType: PeriodType.MONTHLY,
       periodQuantity: 1,
       periodMaxDays: 3,
+      description:
+        "Enables working remotely instead of commuting to the office.",
     },
   });
 
@@ -394,6 +406,8 @@ async function main() {
       periodType: PeriodType.WEEKLY,
       periodQuantity: 1,
       periodMaxDays: 1,
+      description:
+        "Paid time dedicated to participating in community service or authorized charitable activities.",
     },
   });
 

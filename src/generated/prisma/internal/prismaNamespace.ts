@@ -955,6 +955,7 @@ export type LeaveRequestScalarFieldEnum = (typeof LeaveRequestScalarFieldEnum)[k
 export const LeaveTypeScalarFieldEnum = {
   id: 'id',
   name: 'name',
+  description: 'description',
   isPaid: 'isPaid',
   limitScope: 'limitScope',
   perRequestMaxDays: 'perRequestMaxDays',
