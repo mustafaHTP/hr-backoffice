@@ -36,10 +36,7 @@ export default async function DashboardSidebarNav() {
     {
       href: "/dashboard/leave-request-list",
       label: "My Leave Requests",
-      canShow:
-        session.role === Role.EMPLOYEE ||
-        session.role === Role.HR ||
-        session.role === Role.MANAGER,
+      canShow: session.role === Role.EMPLOYEE || session.role === Role.MANAGER,
     },
   ];
 
