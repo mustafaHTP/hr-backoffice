@@ -204,36 +204,6 @@ async function main() {
     },
   });
 
-  // HR users (multiple)
-  await prisma.user.createMany({
-    data: [
-      {
-        email: "hr.manager@company.com",
-        password: hrPassword,
-        role: Role.HR,
-        employeeId: createdEmployees.find(
-          (e) => e.email === "michael.brown@company.com",
-        )?.id,
-      },
-      {
-        email: "hr.specialist@company.com",
-        password: hrPassword,
-        role: Role.HR,
-        employeeId: createdEmployees.find(
-          (e) => e.email === "hr.specialist@company.com",
-        )?.id,
-      },
-      {
-        email: "hr.recruiter@company.com",
-        password: hrPassword,
-        role: Role.HR,
-        employeeId: createdEmployees.find(
-          (e) => e.email === "hr.recruiter@company.com",
-        )?.id,
-      },
-    ],
-  });
-
   // Manager users (multiple)
   await prisma.user.createMany({
     data: [
