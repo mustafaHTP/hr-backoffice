@@ -1,11 +1,11 @@
-import { getDepartments } from "@/lib/dal/department";
+import { getDepartmentsAsync } from "@/lib/dal/department";
 import EmployeeForm from "./employee-form";
-import { getEmployeeTitles } from "@/lib/dal/employee-title";
+import { getEmployeeTitlesAsync } from "@/lib/dal/employee-title";
 
 export default async function EmployeeCreatePage() {
   const [departments, employeeTitles] = await Promise.all([
-    getDepartments(),
-    getEmployeeTitles(),
+    getDepartmentsAsync(),
+    getEmployeeTitlesAsync(),
   ]);
 
   return (

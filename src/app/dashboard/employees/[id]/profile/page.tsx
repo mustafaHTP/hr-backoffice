@@ -1,4 +1,4 @@
-import { getEmployee } from "@/lib/dal/employee";
+import { getEmployeeAsync } from "@/lib/dal/employee";
 import { notFound } from "next/navigation";
 import { getInitials } from "@/lib/utils/utility";
 import * as Avatar from "@radix-ui/react-avatar";
@@ -12,7 +12,7 @@ export default async function EmployeeProfilePage({
   params,
 }: EmployeeProfilePageProps) {
   const { id } = await params;
-  const employee = await getEmployee(Number(id));
+  const employee = await getEmployeeAsync(Number(id));
   if (!employee) {
     notFound();
   }

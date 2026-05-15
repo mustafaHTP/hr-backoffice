@@ -1,13 +1,13 @@
 "use server";
 
 import { LimitScope } from "@/generated/prisma/enums";
-import { getEmployee } from "@/lib/dal/employee";
+import { getEmployeeAsync } from "@/lib/dal/employee";
 import {
-  createLeaveRequest,
-  getLeaveRequestsByEmployeeIdAndDate,
-  getLeaveRequestsEmployeeUsedInPeriod,
+  createLeaveRequestAsync,
+  getLeaveRequestsByEmployeeIdAndDateAsync,
+  getLeaveRequestsEmployeeUsedInPeriodAsync,
 } from "@/lib/dal/leave-request";
-import { getLeaveType } from "@/lib/dal/leave-type";
+import { getLeaveTypeAsync } from "@/lib/dal/leave-type";
 import {
   LeaveRequestSchema,
   leaveRequestSchema,
@@ -55,7 +55,7 @@ export async function createLeaveRequestActionAsync(
     };
   }
 
-  await createLeaveRequest(zodValidationResult.data);
+  await createLeaveRequestAsync(zodValidationResult.data);
 
   return {
     success: true,
@@ -88,7 +88,7 @@ async function validateLeaveRequestAsync(
   }
 
   // 3. check is there any overlapped leave requests
-  const leaveType = await getLeaveType(leaveTypeId);
+  const leaveType = await getLeaveTypeAsync(leaveTypeId);
   if (!leaveType) {
     return {
       success: false,
@@ -96,11 +96,12 @@ async function validateLeaveRequestAsync(
     };
   }
 
-  const overlappedLeaveRequests = await getLeaveRequestsByEmployeeIdAndDate(
-    employeeId,
-    startDate,
-    endDate,
-  );
+  const overlappedLeaveRequests =
+    await getLeaveRequestsByEmployeeIdAndDateAsync(
+      employeeId,
+      startDate,
+      endDate,
+    );
 
   if (overlappedLeaveRequests.length > 0) {
     return {
@@ -198,7 +199,7 @@ async function getCurrentPeriodForEmployeeAsync(
   employeeId: number,
   periodDays: number,
 ): Promise<LeavePeriod | null> {
-  const employee = await getEmployee(employeeId);
+  const employee = await getEmployeeAsync(employeeId);
   if (!employee || !employee.hireDate) {
     return null;
   }
@@ -231,7 +232,7 @@ async function getUsedDaysForEmployeeAsync(
   leaveTypeId: number,
   leavePeriod: LeavePeriod,
 ) {
-  const leaveRequets = await getLeaveRequestsEmployeeUsedInPeriod(
+  const leaveRequets = await getLeaveRequestsEmployeeUsedInPeriodAsync(
     employeeId,
     leaveTypeId,
     leavePeriod,

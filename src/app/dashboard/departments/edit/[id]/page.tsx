@@ -1,4 +1,4 @@
-import { getDepartment } from "@/lib/dal/department";
+import { getDepartmentAsync } from "@/lib/dal/department";
 import DepartmentEditForm from "../_components/department-edit-form";
 import { notFound } from "next/navigation";
 
@@ -10,7 +10,7 @@ export default async function DepartmentEditPage({
   params,
 }: DepartmentEditPageProps) {
   const { id } = await params;
-  const department = await getDepartment(Number(id));
+  const department = await getDepartmentAsync(Number(id));
   if (!department) {
     notFound();
   }

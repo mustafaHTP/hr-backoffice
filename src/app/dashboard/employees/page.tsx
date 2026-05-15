@@ -1,9 +1,9 @@
-import { getEmployees } from "@/lib/dal/employee";
+import { getEmployeesAsync } from "@/lib/dal/employee";
 import Link from "next/link";
 import EmployeeRow from "./_components/employee-row";
 
 export default async function EmployeesPage() {
-  const employees = await getEmployees();
+  const employees = await getEmployeesAsync();
 
   return (
     <div className="space-y-6">

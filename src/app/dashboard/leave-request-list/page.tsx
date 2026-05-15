@@ -1,6 +1,6 @@
 import { getCurrentUserActionAsync } from "@/app/actions/user";
-import { getEmployee } from "@/lib/dal/employee";
-import { getLeaveRequestsByEmployeeId } from "@/lib/dal/leave-request";
+import { getEmployeeAsync } from "@/lib/dal/employee";
+import { getLeaveRequestsByEmployeeIdAsync } from "@/lib/dal/leave-request";
 import LeaveStatusBadge from "../leave-requests/_components/leave-status-badge";
 import Link from "next/link";
 
@@ -11,12 +11,12 @@ export default async function LeaveRequestListPage() {
   if (!user.employeeId)
     throw new Error("No employee is associated with current user");
 
-  const employee = await getEmployee(user.employeeId);
+  const employee = await getEmployeeAsync(user.employeeId);
   if (!employee) {
     throw new Error("No employee found corresponding to current user!");
   }
 
-  const leaveRequests = await getLeaveRequestsByEmployeeId(employee.id);
+  const leaveRequests = await getLeaveRequestsByEmployeeIdAsync(employee.id);
 
   return (
     <div className="space-y-6">

@@ -2,9 +2,9 @@
 
 import { isNumber } from "@/lib/utils/utility";
 import {
-  createEmployee,
-  deleteEmployee,
-  updateEmployee,
+  createEmployeeAsync,
+  deleteEmployeeAsync,
+  updateEmployeeAsync,
 } from "@/lib/dal/employee";
 import { revalidatePath } from "next/cache";
 import { employeeSchema } from "@/lib/schemas/employee";
@@ -36,7 +36,7 @@ export async function createEmployeeActionAsync(
   }
 
   try {
-    await createEmployee(validationResult.data);
+    await createEmployeeAsync(validationResult.data);
   } catch {
     return {
       success: false,
@@ -77,7 +77,7 @@ export async function updateEmployeeActionAsync(
   }
 
   try {
-    await updateEmployee(formEmployee.id, validationResult.data);
+    await updateEmployeeAsync(formEmployee.id, validationResult.data);
   } catch {
     return {
       success: false,
@@ -112,7 +112,7 @@ export async function deleteEmployeeActionAsync(formData: FormData) {
   const id = Number(idFromForm);
 
   try {
-    await deleteEmployee(id);
+    await deleteEmployeeAsync(id);
   } catch {
     return {
       success: false,

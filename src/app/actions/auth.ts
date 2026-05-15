@@ -1,7 +1,7 @@
 "use server";
 
 import { createSession, deleteSession, SessionPayload } from "@/lib/auth";
-import { getUserByEmail } from "@/lib/dal/user";
+import { getUserByEmailAsync } from "@/lib/dal/user";
 import { verifyPassword } from "@/lib/password";
 import { signInSchema, SignInSchema } from "@/lib/schemas/auth";
 import { ActionResponse } from "@/types/action-response";
@@ -23,7 +23,7 @@ export async function signInActionAsync(
       };
     }
 
-    const user = await getUserByEmail(signInFormData.email);
+    const user = await getUserByEmailAsync(signInFormData.email);
     if (!user) {
       return {
         success: false,

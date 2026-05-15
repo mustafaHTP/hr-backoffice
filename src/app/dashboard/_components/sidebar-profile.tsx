@@ -1,6 +1,6 @@
 import { getSession } from "@/lib/auth";
 import SignOutButton from "./signout-button";
-import { getUser } from "@/lib/dal/user";
+import { getUserAsync } from "@/lib/dal/user";
 
 export default async function SidebarProfile() {
   const session = await getSession();
@@ -11,7 +11,7 @@ export default async function SidebarProfile() {
 
   let user = null;
   try {
-    user = await getUser(session.userId);
+    user = await getUserAsync(session.userId);
   } catch {
     return null;
   }

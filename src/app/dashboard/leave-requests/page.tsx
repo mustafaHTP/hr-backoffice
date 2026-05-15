@@ -1,9 +1,9 @@
-import { getLeaveRequests } from "@/lib/dal/leave-request";
+import { getLeaveRequestsAsync } from "@/lib/dal/leave-request";
 import LeaveStatusBadge from "./_components/leave-status-badge";
 import Link from "next/link";
 
 export default async function LeaveRequestsPage() {
-  const leaveRequests = await getLeaveRequests();
+  const leaveRequests = await getLeaveRequestsAsync();
 
   return (
     <div className="space-y-6">

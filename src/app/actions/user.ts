@@ -1,7 +1,7 @@
 "use server";
 
 import { getSession } from "@/lib/auth";
-import { getUser } from "@/lib/dal/user";
+import { getUserAsync } from "@/lib/dal/user";
 
 export async function getCurrentUserActionAsync() {
   const session = await getSession();
@@ -10,7 +10,7 @@ export async function getCurrentUserActionAsync() {
   }
 
   try {
-    return await getUser(session.userId);
+    return await getUserAsync(session.userId);
   } catch {
     return null;
   }

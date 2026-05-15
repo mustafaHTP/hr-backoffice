@@ -1,7 +1,7 @@
 import { LeaveType } from "@/generated/prisma/client";
 import { prisma } from "../prisma";
 
-export async function getLeaveTypes(): Promise<LeaveType[]> {
+export async function getLeaveTypesAsync(): Promise<LeaveType[]> {
   try {
     return await prisma.leaveType.findMany();
   } catch (error) {
@@ -10,7 +10,7 @@ export async function getLeaveTypes(): Promise<LeaveType[]> {
   }
 }
 
-export async function getLeaveType(id: number): Promise<LeaveType | null> {
+export async function getLeaveTypeAsync(id: number): Promise<LeaveType | null> {
   try {
     return await prisma.leaveType.findUnique({
       where: {

@@ -1,9 +1,9 @@
 "use server";
 
 import {
-  createDepartment,
-  deleteDepartment,
-  updateDepartment,
+  createDepartmentAsync,
+  deleteDepartmentAsync,
+  updateDepartmentAsync,
 } from "@/lib/dal/department";
 import { departmentSchema } from "@/lib/schemas/department";
 import { isNumber } from "@/lib/utils/utility";
@@ -30,7 +30,7 @@ export async function createDepartmentActionAsync(
   }
 
   try {
-    await createDepartment(validationResult.data);
+    await createDepartmentAsync(validationResult.data);
   } catch (error) {
     return {
       success: false,
@@ -69,7 +69,7 @@ export async function updateDepartmentActionAsync(
   }
 
   try {
-    await updateDepartment(departmentForm.id, validationResult.data);
+    await updateDepartmentAsync(departmentForm.id, validationResult.data);
   } catch (error) {
     return {
       success: false,
@@ -104,7 +104,7 @@ export async function deleteDepartmentActionAsync(
   const id = Number(idFromForm);
 
   try {
-    await deleteDepartment(id);
+    await deleteDepartmentAsync(id);
   } catch (error) {
     return {
       success: false,

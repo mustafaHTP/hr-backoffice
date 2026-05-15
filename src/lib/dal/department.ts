@@ -2,7 +2,7 @@ import { Department } from "@/generated/prisma/client";
 import { prisma } from "../prisma";
 import { DepartmentSchema } from "../schemas/department";
 
-export async function getDepartments(): Promise<Department[]> {
+export async function getDepartmentsAsync(): Promise<Department[]> {
   try {
     return await prisma.department.findMany();
   } catch (error) {
@@ -11,7 +11,7 @@ export async function getDepartments(): Promise<Department[]> {
   }
 }
 
-export async function createDepartment(
+export async function createDepartmentAsync(
   department: DepartmentSchema,
 ): Promise<void> {
   try {
@@ -24,7 +24,7 @@ export async function createDepartment(
   }
 }
 
-export async function deleteDepartment(id: number): Promise<void> {
+export async function deleteDepartmentAsync(id: number): Promise<void> {
   try {
     await prisma.department.delete({
       where: {
@@ -37,7 +37,7 @@ export async function deleteDepartment(id: number): Promise<void> {
   }
 }
 
-export async function getDepartment(
+export async function getDepartmentAsync(
   id: number,
 ): Promise<Department | null> {
   try {
@@ -52,7 +52,7 @@ export async function getDepartment(
   }
 }
 
-export async function updateDepartment(
+export async function updateDepartmentAsync(
   id: number,
   deparment: DepartmentSchema,
 ): Promise<void> {

@@ -1,7 +1,7 @@
 import { User } from "@/generated/prisma/client";
 import { prisma } from "../prisma";
 
-export async function getUser(userId: number): Promise<User | null> {
+export async function getUserAsync(userId: number): Promise<User | null> {
   try {
     return await prisma.user.findUnique({
       where: {
@@ -14,7 +14,7 @@ export async function getUser(userId: number): Promise<User | null> {
   }
 }
 
-export async function getUserByEmail(email: string): Promise<User | null> {
+export async function getUserByEmailAsync(email: string): Promise<User | null> {
   try {
     return await prisma.user.findUnique({
       where: {

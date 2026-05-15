@@ -6,7 +6,7 @@ export type EmployeeWithDeptTitle = Prisma.EmployeeGetPayload<{
   include: { department: true; title: true };
 }>;
 
-export async function getEmployees(): Promise<EmployeeWithDeptTitle[]> {
+export async function getEmployeesAsync(): Promise<EmployeeWithDeptTitle[]> {
   try {
     return await prisma.employee.findMany({
       include: {
@@ -20,7 +20,9 @@ export async function getEmployees(): Promise<EmployeeWithDeptTitle[]> {
   }
 }
 
-export async function createEmployee(employee: EmployeeSchema): Promise<void> {
+export async function createEmployeeAsync(
+  employee: EmployeeSchema,
+): Promise<void> {
   try {
     await prisma.employee.create({
       data: employee,
@@ -31,7 +33,7 @@ export async function createEmployee(employee: EmployeeSchema): Promise<void> {
   }
 }
 
-export async function updateEmployee(
+export async function updateEmployeeAsync(
   id: number,
   employee: EmployeeSchema,
 ): Promise<void> {
@@ -48,7 +50,7 @@ export async function updateEmployee(
   }
 }
 
-export async function getEmployee(
+export async function getEmployeeAsync(
   id: number,
 ): Promise<EmployeeWithDeptTitle | null> {
   try {
@@ -67,7 +69,7 @@ export async function getEmployee(
   }
 }
 
-export async function deleteEmployee(id: number): Promise<void> {
+export async function deleteEmployeeAsync(id: number): Promise<void> {
   try {
     await prisma.employee.delete({
       where: {

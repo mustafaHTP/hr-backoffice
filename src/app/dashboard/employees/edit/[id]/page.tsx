@@ -1,7 +1,7 @@
-import { getDepartments } from "@/lib/dal/department";
+import { getDepartmentsAsync } from "@/lib/dal/department";
 import EmployeeForm from "./employee-form";
-import { getEmployee } from "@/lib/dal/employee";
-import { getEmployeeTitles } from "@/lib/dal/employee-title";
+import { getEmployeeAsync } from "@/lib/dal/employee";
+import { getEmployeeTitlesAsync } from "@/lib/dal/employee-title";
 import { notFound } from "next/navigation";
 
 type EmployeeEditPageProps = {
@@ -13,9 +13,9 @@ export default async function EmployeeEditPage({
 }: EmployeeEditPageProps) {
   const { id } = await params;
   const [departments, employeeTitles, employee] = await Promise.all([
-    getDepartments(),
-    getEmployeeTitles(),
-    getEmployee(Number(id)),
+    getDepartmentsAsync(),
+    getEmployeeTitlesAsync(),
+    getEmployeeAsync(Number(id)),
   ]);
 
   if (!employee) {

@@ -19,7 +19,7 @@ export type LeaveRequestWithLeaveType = Prisma.LeaveRequestGetPayload<{
   include: { leaveType: true };
 }>;
 
-export async function createLeaveRequest(
+export async function createLeaveRequestAsync(
   leaveRequest: LeaveRequestSchema,
 ): Promise<void> {
   try {
@@ -32,7 +32,7 @@ export async function createLeaveRequest(
   }
 }
 
-export async function getLeaveRequests(): Promise<
+export async function getLeaveRequestsAsync(): Promise<
   LeaveRequestWithEmployeeAndLeaveType[]
 > {
   try {
@@ -48,7 +48,7 @@ export async function getLeaveRequests(): Promise<
   }
 }
 
-export async function getLeaveRequest(
+export async function getLeaveRequestAsync(
   id: number,
 ): Promise<LeaveRequestDetail | null> {
   try {
@@ -72,7 +72,7 @@ export async function getLeaveRequest(
   }
 }
 
-export async function getLeaveRequestsByEmployeeId(
+export async function getLeaveRequestsByEmployeeIdAsync(
   employeeId: number,
 ): Promise<LeaveRequestWithLeaveType[]> {
   try {
@@ -93,7 +93,7 @@ export async function getLeaveRequestsByEmployeeId(
   }
 }
 
-export async function getLeaveRequestsByEmployeeIdAndDate(
+export async function getLeaveRequestsByEmployeeIdAndDateAsync(
   employeeId: number,
   startDate: Date,
   endDate: Date,
@@ -121,7 +121,7 @@ export async function getLeaveRequestsByEmployeeIdAndDate(
   }
 }
 
-export async function getLeaveRequestsEmployeeUsedInPeriod(
+export async function getLeaveRequestsEmployeeUsedInPeriodAsync(
   employeeId: number,
   leaveTypeId: number,
   leavePeriod: LeavePeriod,

@@ -1,5 +1,5 @@
 import { getSession } from "@/lib/auth";
-import { getUser } from "@/lib/dal/user";
+import { getUserAsync } from "@/lib/dal/user";
 
 export default async function DashboardNavbar() {
   const session = await getSession();
@@ -7,7 +7,7 @@ export default async function DashboardNavbar() {
 
   if (session?.userId) {
     try {
-      const user = await getUser(session.userId);
+      const user = await getUserAsync(session.userId);
       if (user) {
         userName = user.email || "User";
       }

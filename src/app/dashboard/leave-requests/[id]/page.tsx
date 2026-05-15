@@ -1,4 +1,4 @@
-import { getLeaveRequest } from "@/lib/dal/leave-request";
+import { getLeaveRequestAsync } from "@/lib/dal/leave-request";
 import {
   PersonIcon,
   FileTextIcon,
@@ -16,7 +16,7 @@ export default async function LeaveRequestPage({
   params,
 }: LeaveRequestPageProps) {
   const { id } = await params;
-  const leaveRequest = await getLeaveRequest(Number(id));
+  const leaveRequest = await getLeaveRequestAsync(Number(id));
   if (!leaveRequest) throw new Error("Leave request not found");
 
   return (

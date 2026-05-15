@@ -1,9 +1,9 @@
 import Link from "next/link";
 import DepartmentRow from "./_components/department-row";
-import { getDepartments } from "@/lib/dal/department";
+import { getDepartmentsAsync } from "@/lib/dal/department";
 
 export default async function DeparmentsPage() {
-  const departments = await getDepartments();
+  const departments = await getDepartmentsAsync();
 
   return (
     <div className="space-y-6">
