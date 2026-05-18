@@ -1,14 +1,43 @@
 import { getEmployeesAsync } from "@/lib/dal/employee";
 import Link from "next/link";
 import EmployeeRow from "./_components/employee-row";
+import Pagination from "./_components/pagination";
+import {
+  DEFAULT_PAGE_NUMBER,
+  DEFAULT_PAGE_SIZE,
+  QueryParams,
+} from "@/types/query-params";
+import {
+  getTotalPages,
+  isValidPageNumber,
+  isValidPageSize,
+} from "@/lib/utils/query-params-utils";
 
-export default async function EmployeesPage() {
-  const employees = await getEmployeesAsync();
+export default async function EmployeesPage(props: {
+  searchParams?: Promise<{
+    pageNumber?: string;
+    pageSize?: string;
+  }>;
+}) {
+  const searchParams = await props.searchParams;
+  const pageNumber = isValidPageNumber(searchParams?.pageNumber)
+    ? Number(searchParams?.pageNumber)
+    : DEFAULT_PAGE_NUMBER;
+  const pageSize = isValidPageSize(searchParams?.pageSize)
+    ? Number(searchParams?.pageSize)
+    : DEFAULT_PAGE_SIZE;
+
+  const queryParams: QueryParams = {
+    page: pageNumber,
+    pageSize: pageSize,
+  };
+
+  const employees = await getEmployeesAsync(queryParams);
+  const totalPages = getTotalPages(pageSize, employees.length);
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-start justify-between">
+      <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
         <div>
           <h1 className="text-2xl font-semibold text-zinc-950 dark:text-white">
             Employees
@@ -19,19 +48,18 @@ export default async function EmployeesPage() {
         </div>
 
         <Link href="/dashboard/employees/create">
-          <button className="flex items-center space-x-1 rounded-full bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700 cursor-pointer transition">
-            <span>+ Add Employee</span>
+          <button className="flex items-center justify-center rounded-full bg-green-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">
+            + Add Employee
           </button>
         </Link>
       </div>
 
-      {/* Card */}
       <div className="rounded-3xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900 overflow-hidden">
         {employees.length > 0 ? (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
-              <thead className="border-b border-zinc-200 dark:border-zinc-800">
-                <tr className="text-zinc-500 dark:text-zinc-400">
+              <thead className="border-b border-zinc-200 bg-zinc-50 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400">
+                <tr>
                   <th className="px-6 py-4 font-medium">Full Name</th>
                   <th className="px-6 py-4 font-medium">Email</th>
                   <th className="px-6 py-4 font-medium">Phone</th>
@@ -54,6 +82,8 @@ export default async function EmployeesPage() {
           </div>
         )}
       </div>
+
+      <Pagination totalPages={totalPages} currentPage={pageNumber} />
     </div>
   );
 }

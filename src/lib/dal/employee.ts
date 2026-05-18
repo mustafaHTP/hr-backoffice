@@ -1,19 +1,29 @@
 import { Prisma } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import { EmployeeSchema } from "../schemas/employee";
+import { QueryParams } from "@/types/query-params";
 
 export type EmployeeWithDeptTitle = Prisma.EmployeeGetPayload<{
   include: { department: true; title: true };
 }>;
 
-export async function getEmployeesAsync(): Promise<EmployeeWithDeptTitle[]> {
+export async function getEmployeesAsync(
+  queryParams: QueryParams | null,
+): Promise<EmployeeWithDeptTitle[]> {
   try {
-    return await prisma.employee.findMany({
+    const page = queryParams?.page ?? 1;
+    const pageSize = queryParams?.pageSize ?? 10;
+
+    const employees = await prisma.employee.findMany({
       include: {
         department: true,
         title: true,
       },
+      take: pageSize,
+      skip: (page - 1) * pageSize,
     });
+
+    return employees;
   } catch (error) {
     console.error("Error fetching employees:", error);
     throw error;
