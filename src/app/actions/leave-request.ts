@@ -69,9 +69,32 @@ async function validateLeaveRequestAsync(
   leaveTypeId: number,
   employeeId: number,
 ): Promise<LeaveRequestValidationResponse> {
-  const requestedDays = inclusiveDayCount(startDate, endDate);
+  // 0?. leave start date could not be earlier than leave entitlement date
+  const employee = await getEmployeeAsync(employeeId);
+  if (!employee) {
+    return {
+      success: false,
+      error: "Employee related info not found",
+    };
+  }
+
+  if (!employee.hireDate) {
+    return {
+      success: false,
+      error: "Employee hire date info not found",
+    };
+  }
+
+  if (startDate <= employee.hireDate) {
+    return {
+      success: false,
+      error:
+        "Leave start date could not be earlier than leave entitlement date",
+    };
+  }
 
   // 1. requested days must be bigger than MIN_DAYS_PER_LEAVE_REQUEST
+  const requestedDays = inclusiveDayCount(startDate, endDate);
   if (requestedDays <= MIN_DAYS_PER_LEAVE_REQUEST) {
     return {
       success: false,
