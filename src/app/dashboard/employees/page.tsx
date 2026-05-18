@@ -1,4 +1,4 @@
-import { getEmployeesAsync } from "@/lib/dal/employee";
+import { getEmployeesAsync, getEmployeesCountAsync } from "@/lib/dal/employee";
 import Link from "next/link";
 import EmployeeRow from "./_components/employee-row";
 import Pagination from "./_components/pagination";
@@ -28,12 +28,13 @@ export default async function EmployeesPage(props: {
     : DEFAULT_PAGE_SIZE;
 
   const queryParams: QueryParams = {
-    page: pageNumber,
+    pageNumber: pageNumber,
     pageSize: pageSize,
   };
 
   const employees = await getEmployeesAsync(queryParams);
-  const totalPages = getTotalPages(pageSize, employees.length);
+  const employeesCount = await getEmployeesCountAsync();
+  const totalPages = getTotalPages(pageSize, employeesCount);
 
   return (
     <div className="space-y-6">
@@ -83,7 +84,11 @@ export default async function EmployeesPage(props: {
         )}
       </div>
 
-      <Pagination totalPages={totalPages} currentPage={pageNumber} />
+      <Pagination
+        totalPages={totalPages}
+        currentPage={pageNumber}
+        pageSize={pageSize}
+      />
     </div>
   );
 }

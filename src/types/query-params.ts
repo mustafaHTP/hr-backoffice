@@ -1,7 +1,10 @@
 export type QueryParams = {
-  page?: number;
+  pageNumber?: number;
   pageSize?: number;
 };
+
+export const QUERY_PAGE_NUMBER_NAME = "pageNumber";
+export const QUERY_PAGE_SIZE_NAME = "pageSize";
 
 export const DEFAULT_PAGE_NUMBER = 1;
 export const DEFAULT_PAGE_SIZE = 10;

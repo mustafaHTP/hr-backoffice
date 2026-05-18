@@ -7,11 +7,20 @@ export type EmployeeWithDeptTitle = Prisma.EmployeeGetPayload<{
   include: { department: true; title: true };
 }>;
 
+export async function getEmployeesCountAsync() {
+  try {
+    return await prisma.employee.count();
+  } catch (error) {
+    console.error("Error fetching employees count:", error);
+    throw error;
+  }
+}
+
 export async function getEmployeesAsync(
   queryParams: QueryParams | null,
 ): Promise<EmployeeWithDeptTitle[]> {
   try {
-    const page = queryParams?.page ?? 1;
+    const page = queryParams?.pageNumber ?? 1;
     const pageSize = queryParams?.pageSize ?? 10;
 
     const employees = await prisma.employee.findMany({
