@@ -28,9 +28,9 @@ export default function CancelLeaveRequestButton({
       );
 
       if (result.success) {
-        ToastService.success(result.message ?? "No enough info for message");
+        ToastService.success(result.message);
       } else {
-        ToastService.error(result.error ?? "No enough info for message");
+        ToastService.error(result.error);
       }
 
       router.refresh();

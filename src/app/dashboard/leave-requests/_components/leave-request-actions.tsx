@@ -23,9 +23,9 @@ export default function LeaveRequestActions({
         leaveStatus,
       );
       if (result.success) {
-        ToastService.success(result.message ?? "Not enough info for success");
+        ToastService.success(result.message);
       } else {
-        ToastService.error(result.error ?? "Not enough info for error");
+        ToastService.error(result.error);
       }
 
       router.refresh();
