@@ -7,6 +7,7 @@ import {
 } from "@radix-ui/react-icons";
 import LeaveStatusBadge from "../_components/leave-status-badge";
 import Link from "next/link";
+import LeaveRequestActions from "../_components/leave-request-actions";
 
 type LeaveRequestPageProps = {
   params: Promise<{ id: string }>;
@@ -130,7 +131,8 @@ export default async function LeaveRequestPage({
       </div>
 
       {/* Actions */}
-      <div className="flex flex-wrap gap-3">
+      <LeaveRequestActions leaveRequestId={leaveRequest.id} />
+      {/* <div className="flex flex-wrap gap-3">
         <button className="rounded-xl bg-green-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-green-700">
           Approve Request
         </button>
@@ -138,11 +140,7 @@ export default async function LeaveRequestPage({
         <button className="rounded-xl bg-red-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-red-700">
           Reject Request
         </button>
-
-        <button className="rounded-xl border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-zinc-700 transition hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800">
-          Cancel Request
-        </button>
-      </div>
+      </div> */}
     </div>
   );
 }
