@@ -1,4 +1,4 @@
-import { toast, ToastOptions, TypeOptions } from "react-toastify";
+import { toast, ToastOptions } from "react-toastify";
 
 export class ToastService {
   private static readonly defaultOptions: ToastOptions = {
@@ -6,18 +6,6 @@ export class ToastService {
     autoClose: 2000,
     position: "bottom-right",
   };
-
-  public static show(
-    message: string,
-    type: TypeOptions,
-    options?: ToastOptions,
-  ) {
-    return toast.success(message, {
-      ...this.defaultOptions,
-      ...options,
-      type,
-    });
-  }
 
   public static success(message: string, options?: ToastOptions) {
     return toast.success(message, {
