@@ -3,7 +3,7 @@
 import { updateLeaveRequestActionAsync } from "@/app/actions/leave-request";
 import { LeaveRequest } from "@/generated/prisma/client";
 import { LeaveStatus } from "@/generated/prisma/enums";
-import { NotificationService } from "@/lib/toast-service";
+import { ToastService } from "@/lib/toast-service";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { MouseEvent } from "react";
@@ -28,13 +28,9 @@ export default function CancelLeaveRequestButton({
       );
 
       if (result.success) {
-        NotificationService.success(
-          result.message ?? "No enough info for message",
-        );
+        ToastService.success(result.message ?? "No enough info for message");
       } else {
-        NotificationService.error(
-          result.message ?? "No enough info for message",
-        );
+        ToastService.error(result.message ?? "No enough info for message");
       }
 
       router.refresh();

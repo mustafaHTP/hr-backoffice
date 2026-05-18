@@ -15,7 +15,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Employee, LeaveType } from "@/generated/prisma/client";
-import { NotificationService } from "@/lib/toast-service";
+import { ToastService } from "@/lib/toast-service";
 import { CalendarIcon, InfoCircledIcon } from "@radix-ui/react-icons";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 import { format } from "date-fns/format";
@@ -69,10 +69,10 @@ export default function CreateLeaveRequestForm({
     };
     const result = await createLeaveRequestActionAsync(leaveRequest);
     if (result.success) {
-      NotificationService.success("Leave request created successfully");
+      ToastService.success("Leave request created successfully");
       router.push("/dashboard/leave-request-list");
     } else {
-      NotificationService.error(
+      ToastService.error(
         result.error ?? "Not enough info for an occurred error",
       );
     }

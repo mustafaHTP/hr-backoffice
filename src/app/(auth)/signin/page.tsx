@@ -1,7 +1,7 @@
 "use client";
 
 import { signInActionAsync } from "@/app/actions/auth";
-import { NotificationService as ToastService } from "@/lib/toast-service";
+import { ToastService as ToastService } from "@/lib/toast-service";
 import { ActionResponse } from "@/types/action-response";
 import Link from "next/link";
 import { useRouter } from "next/navigation";

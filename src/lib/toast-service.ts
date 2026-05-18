@@ -1,6 +1,6 @@
 import { toast, ToastOptions, TypeOptions } from "react-toastify";
 
-export class NotificationService {
+export class ToastService {
   private static readonly defaultOptions: ToastOptions = {
     pauseOnHover: false,
     autoClose: 2000,
