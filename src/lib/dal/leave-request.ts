@@ -1,4 +1,4 @@
-import { Prisma } from "@/generated/prisma/client";
+import { LeaveStatus, Prisma } from "@/generated/prisma/client";
 import { prisma } from "../prisma";
 import { LeavePeriod } from "@/types/leave-request";
 import { LeaveRequestSchema } from "../schemas/leave-request";
@@ -144,6 +144,28 @@ export async function getLeaveRequestsEmployeeUsedInPeriodAsync(
   } catch (error) {
     console.error(
       `Error fetching leave requests for employee id ${employeeId}:`,
+      error,
+    );
+    throw error;
+  }
+}
+
+export async function updateLeaveRequestStatusAsync(
+  leaveRequestId: number,
+  leaveStatus: LeaveStatus,
+) {
+  try {
+    await prisma.leaveRequest.update({
+      where: {
+        id: leaveRequestId,
+      },
+      data: {
+        status: leaveStatus,
+      },
+    });
+  } catch (error) {
+    console.error(
+      `Error updating leave request status for id ${leaveRequestId}:`,
       error,
     );
     throw error;

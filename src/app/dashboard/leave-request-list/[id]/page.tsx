@@ -3,10 +3,11 @@ import {
   ArrowLeftIcon,
   CalendarIcon,
   FileTextIcon,
-  PersonIcon,
 } from "@radix-ui/react-icons";
 import Link from "next/link";
 import LeaveStatusBadge from "../../leave-requests/_components/leave-status-badge";
+import CancelLeaveRequestButton from "./_components/cancel-leave-request-button";
+import { LeaveStatus } from "@/generated/prisma/enums";
 
 type LeaveRequestPageProps = {
   params: Promise<{ id: string }>;
@@ -101,9 +102,7 @@ export default async function LeaveRequestPage({
 
       {/* Actions */}
       <div className="flex flex-wrap gap-3">
-        <button className="rounded-xl bg-red-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-red-700">
-          Cancel Request
-        </button>
+        <CancelLeaveRequestButton leaveRequest={leaveRequest} />
       </div>
     </div>
   );

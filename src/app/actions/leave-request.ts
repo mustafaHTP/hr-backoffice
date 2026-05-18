@@ -1,11 +1,13 @@
 "use server";
 
-import { LimitScope } from "@/generated/prisma/enums";
+import { LeaveStatus, LimitScope } from "@/generated/prisma/enums";
 import { getEmployeeAsync } from "@/lib/dal/employee";
 import {
   createLeaveRequestAsync,
+  getLeaveRequestAsync,
   getLeaveRequestsByEmployeeIdAndDateAsync,
   getLeaveRequestsEmployeeUsedInPeriodAsync,
+  updateLeaveRequestStatusAsync,
 } from "@/lib/dal/leave-request";
 import { getLeaveTypeAsync } from "@/lib/dal/leave-type";
 import {
@@ -21,6 +23,7 @@ import {
   MAX_DAYS_PER_LEAVE_REQUEST,
   MIN_DAYS_PER_LEAVE_REQUEST,
 } from "@/types/leave-request";
+import { revalidatePath } from "next/cache";
 
 export async function createLeaveRequestActionAsync(
   leaveRequest: LeaveRequestSchema,
@@ -60,6 +63,36 @@ export async function createLeaveRequestActionAsync(
   return {
     success: true,
     message: "Leave Request created successfully",
+  };
+}
+
+export async function updateLeaveRequestActionAsync(
+  leaveRequestId: number,
+  leaveStatus: LeaveStatus,
+): Promise<ActionResponse> {
+  const leaveRequest = await getLeaveRequestAsync(leaveRequestId);
+  if (!leaveRequest) {
+    return {
+      success: false,
+      error: "There is no leave request",
+    };
+  }
+
+  const currentLeaveStatus = leaveRequest.status;
+  // They are same, do not update
+  if (leaveStatus === currentLeaveStatus) {
+    return {
+      success: true,
+    };
+  }
+
+  await updateLeaveRequestStatusAsync(leaveRequestId, leaveStatus);
+
+  //revalidatePath(`/dashboard/leave-request-list/${leaveRequestId}`);
+
+  return {
+    success: true,
+    message: "Leave request canceled successfully",
   };
 }
 
