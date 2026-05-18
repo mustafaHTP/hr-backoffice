@@ -22,6 +22,7 @@ export default async function EmployeeProfilePage({
   const titleName = employee.title?.name ?? "-";
   const departmentName = employee.department?.name ?? "-";
   const phone = employee.phone ?? "-";
+  const hireDate = employee.hireDate ?? "-";
 
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:items-start">
@@ -58,6 +59,12 @@ export default async function EmployeeProfilePage({
           <dl className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <InfoItem label="Department" value={departmentName} />
             <InfoItem label="Title" value={titleName} />
+            <InfoItem
+              label="Hire Date"
+              value={hireDate.toLocaleString(undefined, {
+                dateStyle: "medium",
+              })}
+            />
           </dl>
         </div>
       </div>
