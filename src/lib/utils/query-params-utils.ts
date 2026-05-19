@@ -14,7 +14,7 @@ export function isValidPageNumber(rawPageNumber?: string) {
   if (!isNumber(rawPageNumber)) return false;
 
   const pageNumber = Number(rawPageNumber);
-  if (pageNumber <= MIN_PAGE_NUMBER) return false;
+  if (pageNumber < MIN_PAGE_NUMBER) return false;
 
   return true;
 }
@@ -25,7 +25,7 @@ export function isValidPageSize(rawPageSize?: string) {
   if (!isNumber(rawPageSize)) return false;
 
   const pageSize = Number(rawPageSize);
-  if (pageSize <= MIN_PAGE_SIZE) return false;
+  if (pageSize < MIN_PAGE_SIZE) return false;
 
   return true;
 }

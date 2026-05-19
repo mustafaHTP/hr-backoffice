@@ -1,12 +1,33 @@
 import { Department } from "@/generated/prisma/client";
 import { prisma } from "../prisma";
 import { DepartmentSchema } from "../schemas/department";
+import {
+  DEFAULT_PAGE_NUMBER,
+  DEFAULT_PAGE_SIZE,
+  QueryParams,
+} from "@/types/query-params";
 
-export async function getDepartmentsAsync(): Promise<Department[]> {
+export async function getDepartmentsAsync(
+  queryParams: QueryParams | undefined,
+): Promise<Department[]> {
+  const page = queryParams?.pageNumber ?? DEFAULT_PAGE_NUMBER;
+  const pageSize = queryParams?.pageSize ?? DEFAULT_PAGE_SIZE;
   try {
-    return await prisma.department.findMany();
+    return await prisma.department.findMany({
+      take: pageSize,
+      skip: (page - 1) * pageSize,
+    });
   } catch (error) {
     console.error("Error fetching departments:", error);
+    throw error;
+  }
+}
+
+export async function getDepartmentsCount() {
+  try {
+    return await prisma.department.count();
+  } catch (error) {
+    console.error("Error fetching departments count:", error);
     throw error;
   }
 }

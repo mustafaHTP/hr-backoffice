@@ -1,7 +1,11 @@
 import { Prisma } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import { EmployeeSchema } from "../schemas/employee";
-import { QueryParams } from "@/types/query-params";
+import {
+  DEFAULT_PAGE_NUMBER,
+  DEFAULT_PAGE_SIZE,
+  QueryParams,
+} from "@/types/query-params";
 
 export type EmployeeWithDeptTitle = Prisma.EmployeeGetPayload<{
   include: { department: true; title: true };
@@ -17,11 +21,11 @@ export async function getEmployeesCountAsync() {
 }
 
 export async function getEmployeesAsync(
-  queryParams: QueryParams | null,
+  queryParams: QueryParams | undefined,
 ): Promise<EmployeeWithDeptTitle[]> {
   try {
-    const page = queryParams?.pageNumber ?? 1;
-    const pageSize = queryParams?.pageSize ?? 10;
+    const page = queryParams?.pageNumber ?? DEFAULT_PAGE_NUMBER;
+    const pageSize = queryParams?.pageSize ?? DEFAULT_PAGE_SIZE;
 
     const employees = await prisma.employee.findMany({
       include: {

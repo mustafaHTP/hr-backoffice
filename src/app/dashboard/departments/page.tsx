@@ -1,9 +1,30 @@
 import Link from "next/link";
 import DepartmentRow from "./_components/department-row";
-import { getDepartmentsAsync } from "@/lib/dal/department";
+import {
+  getDepartmentsAsync,
+  getDepartmentsCount as getDepartmentsCountAsync,
+} from "@/lib/dal/department";
+import Pagination from "../employees/_components/pagination";
+import { QueryParams } from "@/types/query-params";
+import {
+  buildQueryParams,
+  getTotalPages,
+} from "@/lib/utils/query-params-utils";
 
-export default async function DeparmentsPage() {
-  const departments = await getDepartmentsAsync();
+export default async function DepartmentsPage(props: {
+  searchParams?: Promise<{
+    pageNumber?: string;
+    pageSize?: string;
+  }>;
+}) {
+  const searchParams = await props.searchParams;
+  const queryParams: QueryParams = buildQueryParams(
+    searchParams?.pageNumber,
+    searchParams?.pageSize,
+  );
+  const departments = await getDepartmentsAsync(queryParams);
+  const departmentsCount = await getDepartmentsCountAsync();
+  const totalPages = getTotalPages(queryParams.pageSize, departmentsCount);
 
   return (
     <div className="space-y-6">
@@ -53,6 +74,11 @@ export default async function DeparmentsPage() {
           </div>
         )}
       </div>
+      <Pagination
+        currentPage={queryParams.pageNumber}
+        pageSize={queryParams.pageSize}
+        totalPages={totalPages}
+      />
     </div>
   );
 }
