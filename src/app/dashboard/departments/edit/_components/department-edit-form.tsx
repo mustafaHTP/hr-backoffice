@@ -2,6 +2,7 @@
 
 import { updateDepartmentActionAsync } from "@/app/actions/department";
 import { Department } from "@/generated/prisma/client";
+import { ToastService } from "@/lib/toast-service";
 import { ActionResponse } from "@/types/action-response";
 import { useRouter } from "next/navigation";
 import { useActionState } from "react";
@@ -11,8 +12,6 @@ export default function DepartmentEditForm({
 }: {
   department: Department;
 }) {
-  console.log(department);
-
   const router = useRouter();
   const [state, formAction, isPending] = useActionState<
     ActionResponse,
@@ -20,8 +19,12 @@ export default function DepartmentEditForm({
   >(
     async (_, formData) => {
       const response = await updateDepartmentActionAsync(formData);
-
-      router.refresh();
+      if (response.success) {
+        ToastService.success(response.message);
+        router.refresh();
+      } else {
+        ToastService.error(response.error);
+      }
 
       return response;
     },

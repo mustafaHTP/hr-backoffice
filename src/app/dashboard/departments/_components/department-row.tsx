@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useActionState } from "react";
 import { TrashIcon, Pencil1Icon } from "@radix-ui/react-icons";
+import { ToastService } from "@/lib/toast-service";
 
 export default function DepartmentRow({
   department,
@@ -19,11 +20,15 @@ export default function DepartmentRow({
     FormData
   >(
     async (_, formData) => {
-      const result = await deleteDepartmentActionAsync(formData);
+      const response = await deleteDepartmentActionAsync(formData);
+      if (response.success) {
+        ToastService.success(response.message);
+        router.refresh();
+      } else {
+        ToastService.error(response.error);
+      }
 
-      router.refresh();
-
-      return result;
+      return response;
     },
     {
       success: false,

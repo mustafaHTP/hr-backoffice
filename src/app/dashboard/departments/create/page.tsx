@@ -1,6 +1,7 @@
 "use client";
 
 import { createDepartmentActionAsync } from "@/app/actions/department";
+import { ToastService } from "@/lib/toast-service";
 import { ActionResponse } from "@/types/action-response";
 import { useRouter } from "next/navigation";
 import { useActionState } from "react";
@@ -12,14 +13,17 @@ export default function DepartmentCreatePage() {
     FormData
   >(
     async (_, formData) => {
-      const result = await createDepartmentActionAsync(formData);
+      const response = await createDepartmentActionAsync(formData);
 
-      if (result.success) {
+      if (response.success) {
+        ToastService.success(response.message);
         router.refresh();
         router.push("/dashboard/departments");
+      } else {
+        ToastService.error(response.error);
       }
 
-      return result;
+      return response;
     },
     {
       success: false,
