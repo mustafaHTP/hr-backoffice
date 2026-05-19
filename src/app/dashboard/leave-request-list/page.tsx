@@ -1,10 +1,24 @@
 import { getCurrentUserActionAsync } from "@/app/actions/user";
 import { getEmployeeAsync } from "@/lib/dal/employee";
-import { getLeaveRequestsByEmployeeIdAsync } from "@/lib/dal/leave-request";
+import {
+  getLeaveRequestsByEmployeeIdAsync,
+  getLeaveRequestCountByEmployeeIdAsync,
+} from "@/lib/dal/leave-request";
 import LeaveStatusBadge from "../leave-requests/_components/leave-status-badge";
 import Link from "next/link";
+import Pagination from "../employees/_components/pagination";
+import { QueryParams } from "@/types/query-params";
+import {
+  buildQueryParams,
+  getTotalPages,
+} from "@/lib/utils/query-params-utils";
 
-export default async function LeaveRequestListPage() {
+export default async function LeaveRequestListPage(props: {
+  searchParams?: Promise<{
+    pageNumber?: string;
+    pageSize?: string;
+  }>;
+}) {
   const user = await getCurrentUserActionAsync();
   if (!user) throw new Error("No user found this session");
 
@@ -16,7 +30,19 @@ export default async function LeaveRequestListPage() {
     throw new Error("No employee found corresponding to current user!");
   }
 
-  const leaveRequests = await getLeaveRequestsByEmployeeIdAsync(employee.id);
+  const searchParams = await props.searchParams;
+  const queryParams: QueryParams = buildQueryParams(
+    searchParams?.pageNumber,
+    searchParams?.pageSize,
+  );
+  const leaveRequests = await getLeaveRequestsByEmployeeIdAsync(
+    employee.id,
+    queryParams,
+  );
+  const leaveRequestCount = await getLeaveRequestCountByEmployeeIdAsync(
+    employee.id,
+  );
+  const totalPages = getTotalPages(queryParams.pageSize, leaveRequestCount);
 
   return (
     <div className="space-y-6">
@@ -85,6 +111,11 @@ export default async function LeaveRequestListPage() {
           </div>
         )}
       </div>
+      <Pagination
+        currentPage={queryParams.pageNumber}
+        pageSize={queryParams.pageSize}
+        totalPages={totalPages}
+      />
     </div>
   );
 }

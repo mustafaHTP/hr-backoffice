@@ -2,6 +2,11 @@ import { LeaveStatus, Prisma } from "@/generated/prisma/client";
 import { prisma } from "../prisma";
 import { LeavePeriod } from "@/types/leave-request";
 import { LeaveRequestSchema } from "../schemas/leave-request";
+import {
+  DEFAULT_PAGE_NUMBER,
+  DEFAULT_PAGE_SIZE,
+  QueryParams,
+} from "@/types/query-params";
 
 export type LeaveRequestWithEmployeeAndLeaveType =
   Prisma.LeaveRequestGetPayload<{
@@ -74,8 +79,12 @@ export async function getLeaveRequestAsync(
 
 export async function getLeaveRequestsByEmployeeIdAsync(
   employeeId: number,
+  queryParams?: QueryParams,
 ): Promise<LeaveRequestWithLeaveType[]> {
   try {
+    const page = queryParams?.pageNumber ?? DEFAULT_PAGE_NUMBER;
+    const pageSize = queryParams?.pageSize ?? DEFAULT_PAGE_SIZE;
+
     return await prisma.leaveRequest.findMany({
       where: {
         employeeId: employeeId,
@@ -83,10 +92,30 @@ export async function getLeaveRequestsByEmployeeIdAsync(
       include: {
         leaveType: true,
       },
+      take: pageSize,
+      skip: (page - 1) * pageSize,
     });
   } catch (error) {
     console.error(
       `Error fetching leave requests for employee id ${employeeId}:`,
+      error,
+    );
+    throw error;
+  }
+}
+
+export async function getLeaveRequestCountByEmployeeIdAsync(
+  employeeId: number,
+) {
+  try {
+    return await prisma.leaveRequest.count({
+      where: {
+        employeeId: employeeId,
+      },
+    });
+  } catch (error) {
+    console.error(
+      `Error fetching leave requests count for employee id ${employeeId}:`,
       error,
     );
     throw error;
