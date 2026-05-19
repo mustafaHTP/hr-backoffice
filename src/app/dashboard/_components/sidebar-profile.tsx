@@ -1,22 +1,16 @@
 import { getSessionAsync } from "@/lib/auth";
 import SignOutButton from "./signout-button";
-import { getUserAsync } from "@/lib/dal/user";
+import { getUsername as getUsernameAsync } from "@/lib/user";
 
 export default async function SidebarProfile() {
   const session = await getSessionAsync();
-
-  if (!session?.userId) {
-    return null;
+  if (!session) {
+    throw new Error("Session not found");
   }
 
-  let user = null;
-  try {
-    user = await getUserAsync(session.userId);
-  } catch {
-    return null;
-  }
-  if (!user) {
-    return null;
+  const userName = await getUsernameAsync(session);
+  if (!userName) {
+    throw new Error("Username not found");
   }
 
   return (
@@ -26,10 +20,7 @@ export default async function SidebarProfile() {
           Account
         </p>
         <p className="text-sm font-semibold text-white mt-2 truncate">
-          {user.email}
-        </p>
-        <p className="text-xs text-zinc-400 mt-1 capitalize">
-          {user.role.toLowerCase()}
+          {userName}
         </p>
       </div>
       <SignOutButton />
