@@ -23,7 +23,6 @@ import {
   MAX_DAYS_PER_LEAVE_REQUEST,
   MIN_DAYS_PER_LEAVE_REQUEST,
 } from "@/types/leave-request";
-import { revalidatePath } from "next/cache";
 
 export async function createLeaveRequestActionAsync(
   leaveRequest: LeaveRequestSchema,
@@ -88,11 +87,19 @@ export async function updateLeaveRequestActionAsync(
 
   await updateLeaveRequestStatusAsync(leaveRequestId, leaveStatus);
 
-  //revalidatePath(`/dashboard/leave-request-list/${leaveRequestId}`);
+  let successMessage;
+  // for now there is no leave status-pending check
+  if (leaveStatus === LeaveStatus.APPROVED) {
+    successMessage = "Leave request approved";
+  } else if (leaveStatus === LeaveStatus.CANCELLED) {
+    successMessage = "Leave request cancelled";
+  } else if (leaveStatus === LeaveStatus.REJECTED) {
+    successMessage = "Leave request rejected";
+  }
 
   return {
     success: true,
-    message: "Leave request canceled successfully",
+    message: successMessage,
   };
 }
 
