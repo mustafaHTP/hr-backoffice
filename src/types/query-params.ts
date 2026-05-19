@@ -1,6 +1,6 @@
 export type QueryParams = {
-  pageNumber?: number;
-  pageSize?: number;
+  pageNumber: number;
+  pageSize: number;
 };
 
 export const QUERY_PAGE_NUMBER_NAME = "pageNumber";

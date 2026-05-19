@@ -2,15 +2,10 @@ import { getEmployeesAsync, getEmployeesCountAsync } from "@/lib/dal/employee";
 import Link from "next/link";
 import EmployeeRow from "./_components/employee-row";
 import Pagination from "./_components/pagination";
+import { QueryParams } from "@/types/query-params";
 import {
-  DEFAULT_PAGE_NUMBER,
-  DEFAULT_PAGE_SIZE,
-  QueryParams,
-} from "@/types/query-params";
-import {
+  buildQueryParams,
   getTotalPages,
-  isValidPageNumber,
-  isValidPageSize,
 } from "@/lib/utils/query-params-utils";
 
 export default async function EmployeesPage(props: {
@@ -20,21 +15,14 @@ export default async function EmployeesPage(props: {
   }>;
 }) {
   const searchParams = await props.searchParams;
-  const pageNumber = isValidPageNumber(searchParams?.pageNumber)
-    ? Number(searchParams?.pageNumber)
-    : DEFAULT_PAGE_NUMBER;
-  const pageSize = isValidPageSize(searchParams?.pageSize)
-    ? Number(searchParams?.pageSize)
-    : DEFAULT_PAGE_SIZE;
-
-  const queryParams: QueryParams = {
-    pageNumber: pageNumber,
-    pageSize: pageSize,
-  };
+  const queryParams: QueryParams = buildQueryParams(
+    searchParams?.pageNumber,
+    searchParams?.pageSize,
+  );
 
   const employees = await getEmployeesAsync(queryParams);
   const employeesCount = await getEmployeesCountAsync();
-  const totalPages = getTotalPages(pageSize, employeesCount);
+  const totalPages = getTotalPages(queryParams.pageSize, employeesCount);
 
   return (
     <div className="space-y-6">
@@ -86,8 +74,8 @@ export default async function EmployeesPage(props: {
 
       <Pagination
         totalPages={totalPages}
-        currentPage={pageNumber}
-        pageSize={pageSize}
+        currentPage={queryParams.pageNumber}
+        pageSize={queryParams.pageSize}
       />
     </div>
   );
