@@ -1,8 +1,26 @@
-import { getEmployeesAsync } from "@/lib/dal/employee";
+import { getEmployeesAsync, getEmployeesCountAsync } from "@/lib/dal/employee";
 import EmployeeRow from "./_components/employee-row";
+import Pagination from "../employees/_components/pagination";
+import { QueryParams } from "@/types/query-params";
+import {
+  buildQueryParams,
+  getTotalPages,
+} from "@/lib/utils/query-params-utils";
 
-export default async function EmployeeListPage() {
-  const employees = await getEmployeesAsync();
+export default async function EmployeeListPage(props: {
+  searchParams?: Promise<{
+    pageNumber?: string;
+    pageSize?: string;
+  }>;
+}) {
+  const searchParams = await props.searchParams;
+  const queryParams: QueryParams = buildQueryParams(
+    searchParams?.pageNumber,
+    searchParams?.pageSize,
+  );
+  const employees = await getEmployeesAsync(queryParams);
+  const employeeCount = await getEmployeesCountAsync();
+  const totalPages = getTotalPages(queryParams.pageSize, employeeCount);
 
   return (
     <div className="space-y-6">
@@ -46,6 +64,11 @@ export default async function EmployeeListPage() {
           </div>
         )}
       </div>
+      <Pagination
+        currentPage={queryParams.pageNumber}
+        pageSize={queryParams.pageSize}
+        totalPages={totalPages}
+      />
     </div>
   );
 }

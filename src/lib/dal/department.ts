@@ -8,7 +8,7 @@ import {
 } from "@/types/query-params";
 
 export async function getDepartmentsAsync(
-  queryParams: QueryParams | undefined,
+  queryParams?: QueryParams,
 ): Promise<Department[]> {
   const page = queryParams?.pageNumber ?? DEFAULT_PAGE_NUMBER;
   const pageSize = queryParams?.pageSize ?? DEFAULT_PAGE_SIZE;

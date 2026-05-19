@@ -21,7 +21,7 @@ export async function getEmployeesCountAsync() {
 }
 
 export async function getEmployeesAsync(
-  queryParams: QueryParams | undefined,
+  queryParams?: QueryParams,
 ): Promise<EmployeeWithDeptTitle[]> {
   try {
     const page = queryParams?.pageNumber ?? DEFAULT_PAGE_NUMBER;
