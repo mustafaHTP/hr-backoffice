@@ -31,7 +31,7 @@ export function isValidPageSize(rawPageSize?: string) {
 }
 
 export function getTotalPages(pageSize: number, itemCount: number) {
-  return Math.max(MIN_TOTAL_PAGE, Math.floor(itemCount / pageSize));
+  return Math.max(MIN_TOTAL_PAGE, Math.ceil(itemCount / pageSize));
 }
 
 export function buildQueryParams(
