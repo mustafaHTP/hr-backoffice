@@ -2,6 +2,7 @@
 
 import { createEmployeeActionAsync } from "@/app/actions/employee";
 import { Department, EmployeeTitle } from "@/generated/prisma/client";
+import { ToastService } from "@/lib/toast-service";
 import { ActionResponse } from "@/types/action-response";
 import { useRouter } from "next/navigation";
 import { useActionState } from "react";
@@ -22,8 +23,11 @@ export default function EmployeeForm({
       const result = await createEmployeeActionAsync(formData);
 
       if (result.success) {
+        ToastService.success(result.message);
         router.refresh();
         router.push("/dashboard/employees");
+      } else {
+        ToastService.error(result.error);
       }
 
       return result;

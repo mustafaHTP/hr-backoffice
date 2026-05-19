@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { ActionResponse } from "@/types/action-response";
 import type { EmployeeWithDeptTitle } from "@/lib/dal/employee";
 import { TrashIcon, Pencil1Icon } from "@radix-ui/react-icons";
+import { ToastService } from "@/lib/toast-service";
 
 export default function EmployeeRow({
   employee,
@@ -20,7 +21,12 @@ export default function EmployeeRow({
   >(
     async (_, formData) => {
       const response = await deleteEmployeeActionAsync(formData);
-      router.refresh();
+      if (response.success) {
+        ToastService.success(response.message);
+        router.refresh();
+      } else {
+        ToastService.error(response.error);
+      }
 
       return response;
     },

@@ -5,6 +5,8 @@ import type { EmployeeWithDeptTitle } from "@/lib/dal/employee";
 import { Department, EmployeeTitle } from "@/generated/prisma/client";
 import { useRouter } from "next/navigation";
 import { useActionState } from "react";
+import { ActionResponse } from "@/types/action-response";
+import { ToastService } from "@/lib/toast-service";
 
 export default function EmployeeForm({
   employee,
@@ -16,8 +18,20 @@ export default function EmployeeForm({
   employeeTitles: EmployeeTitle[];
 }) {
   const router = useRouter();
-  const [state, formAction, isPending] = useActionState(
-    updateEmployeeActionAsync,
+  const [state, formAction, isPending] = useActionState<
+    ActionResponse,
+    FormData
+  >(
+    async (_, formData) => {
+      const result = await updateEmployeeActionAsync(_, formData);
+      if (result.success) {
+        ToastService.success(result.message);
+      } else {
+        ToastService.error(result.error);
+      }
+
+      return result;
+    },
     {
       success: false,
       message: "",
@@ -39,16 +53,6 @@ export default function EmployeeForm({
       {/* Card */}
       <div className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
         <form action={formAction} className="space-y-4">
-          {state?.message && (
-            <p
-              className={`text-sm ${
-                state.success ? "text-green-600" : "text-red-500"
-              }`}
-            >
-              {state.message}
-            </p>
-          )}
-
           <input type="hidden" name="id" value={employee.id} />
 
           {/* Name */}

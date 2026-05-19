@@ -93,7 +93,9 @@ export async function updateEmployeeActionAsync(
   };
 }
 
-export async function deleteEmployeeActionAsync(formData: FormData) {
+export async function deleteEmployeeActionAsync(
+  formData: FormData,
+): Promise<ActionResponse> {
   const idFromForm = formData.get("id");
   if (!idFromForm) {
     return {
