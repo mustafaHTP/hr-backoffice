@@ -1,9 +1,29 @@
-import { getLeaveRequestsAsync } from "@/lib/dal/leave-request";
+import {
+  getLeaveRequestCountAsync,
+  getLeaveRequestsAsync,
+} from "@/lib/dal/leave-request";
 import LeaveStatusBadge from "./_components/leave-status-badge";
 import Link from "next/link";
+import {
+  buildQueryParams,
+  getTotalPages,
+} from "@/lib/utils/query-params-utils";
+import Pagination from "../employees/_components/pagination";
 
-export default async function LeaveRequestsPage() {
-  const leaveRequests = await getLeaveRequestsAsync();
+export default async function LeaveRequestsPage(props: {
+  searchParams?: Promise<{
+    pageNumber?: string;
+    pageSize?: string;
+  }>;
+}) {
+  const searchParams = await props.searchParams;
+  const queryParams = buildQueryParams(
+    searchParams?.pageNumber,
+    searchParams?.pageSize,
+  );
+  const leaveRequests = await getLeaveRequestsAsync(queryParams);
+  const leaveRequestCount = await getLeaveRequestCountAsync();
+  const totalPages = getTotalPages(queryParams.pageSize, leaveRequestCount);
 
   return (
     <div className="space-y-6">
@@ -74,6 +94,11 @@ export default async function LeaveRequestsPage() {
           </div>
         )}
       </div>
+      <Pagination
+        currentPage={queryParams.pageNumber}
+        pageSize={queryParams.pageSize}
+        totalPages={totalPages}
+      />
     </div>
   );
 }

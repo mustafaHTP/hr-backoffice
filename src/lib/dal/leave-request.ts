@@ -37,15 +37,20 @@ export async function createLeaveRequestAsync(
   }
 }
 
-export async function getLeaveRequestsAsync(): Promise<
-  LeaveRequestWithEmployeeAndLeaveType[]
-> {
+export async function getLeaveRequestsAsync(
+  queryParams?: QueryParams,
+): Promise<LeaveRequestWithEmployeeAndLeaveType[]> {
   try {
+    const page = queryParams?.pageNumber ?? DEFAULT_PAGE_NUMBER;
+    const pageSize = queryParams?.pageSize ?? DEFAULT_PAGE_SIZE;
+
     return await prisma.leaveRequest.findMany({
       include: {
         leaveType: true,
         employee: true,
       },
+      take: pageSize,
+      skip: (page - 1) * pageSize,
     });
   } catch (error) {
     console.error("Error fetching leave requests:", error);
@@ -197,6 +202,15 @@ export async function updateLeaveRequestStatusAsync(
       `Error updating leave request status for id ${leaveRequestId}:`,
       error,
     );
+    throw error;
+  }
+}
+
+export async function getLeaveRequestCountAsync() {
+  try {
+    return await prisma.leaveRequest.count();
+  } catch (error) {
+    console.error("Error fetching leave requests count: ", error);
     throw error;
   }
 }
