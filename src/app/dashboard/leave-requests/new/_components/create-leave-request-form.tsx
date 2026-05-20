@@ -102,6 +102,9 @@ export default function CreateLeaveRequestForm({
             <div className="relative w-full">
               <input type="hidden" name="leaveTypeId" value={leaveTypeId} />
 
+              <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
+                Leave Type
+              </label>
               <Popover open={dropdownOpen} onOpenChange={setDropdownOpen}>
                 <PopoverTrigger asChild>
                   <Button
@@ -195,6 +198,9 @@ export default function CreateLeaveRequestForm({
             {/* Leave period */}
             <div className="grid grid-cols-2 gap-4">
               <div>
+                <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
+                  Start Date
+                </label>
                 <Popover>
                   <PopoverTrigger asChild>
                     <Button
@@ -224,6 +230,9 @@ export default function CreateLeaveRequestForm({
               </div>
 
               <div>
+                <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
+                  End Date
+                </label>
                 <Popover>
                   <PopoverTrigger asChild>
                     <Button
@@ -255,6 +264,9 @@ export default function CreateLeaveRequestForm({
 
             {/* Description */}
             <div>
+              <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
+                Description
+              </label>
               <textarea
                 name="description"
                 value={description}
