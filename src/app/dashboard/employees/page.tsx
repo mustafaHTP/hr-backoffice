@@ -47,7 +47,7 @@ export default async function EmployeesPage(props: {
         {employees.length > 0 ? (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
-              <thead className="border-b border-zinc-200 bg-zinc-50 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400">
+              <thead className="border-b  border-zinc-200 dark:border-zinc-800">
                 <tr>
                   <th className="px-6 py-4 font-medium">Full Name</th>
                   <th className="px-6 py-4 font-medium">Email</th>
