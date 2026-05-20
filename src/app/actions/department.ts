@@ -9,10 +9,6 @@ import { departmentSchema } from "@/lib/schemas/department";
 import { isNumber } from "@/lib/utils/utility";
 import { ActionResponse } from "@/types/action-response";
 
-function dalErrorMessage(error: unknown, fallback: string): string {
-  return error instanceof Error ? error.message : fallback;
-}
-
 export async function createDepartmentActionAsync(
   formData: FormData,
 ): Promise<ActionResponse> {
@@ -31,10 +27,10 @@ export async function createDepartmentActionAsync(
 
   try {
     await createDepartmentAsync(validationResult.data);
-  } catch (error) {
+  } catch {
     return {
       success: false,
-      message: dalErrorMessage(error, "Failed to create department"),
+      error: "Failed to create department",
     };
   }
 
@@ -56,7 +52,7 @@ export async function updateDepartmentActionAsync(
   if (!departmentForm.id) {
     return {
       success: false,
-      message: "Id is not in form",
+      error: "Id is not in form",
     };
   }
 
@@ -70,10 +66,10 @@ export async function updateDepartmentActionAsync(
 
   try {
     await updateDepartmentAsync(departmentForm.id, validationResult.data);
-  } catch (error) {
+  } catch {
     return {
       success: false,
-      message: dalErrorMessage(error, "Failed to update department"),
+      error: "Failed to update department",
     };
   }
 
@@ -90,14 +86,14 @@ export async function deleteDepartmentActionAsync(
   if (!idFromForm) {
     return {
       success: false,
-      message: "Id data is not in form",
+      error: "Id data is not in form",
     };
   }
 
   if (!isNumber(idFromForm.toString())) {
     return {
       success: false,
-      message: "Id data is NaN",
+      error: "Id data is NaN",
     };
   }
 
@@ -105,10 +101,10 @@ export async function deleteDepartmentActionAsync(
 
   try {
     await deleteDepartmentAsync(id);
-  } catch (error) {
+  } catch {
     return {
       success: false,
-      message: dalErrorMessage(error, "Failed to delete department"),
+      error: "Failed to delete department",
     };
   }
 
