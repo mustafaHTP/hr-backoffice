@@ -31,10 +31,7 @@ export async function signInActionAsync(
     if (!user) {
       return {
         success: false,
-        message: "Invalid email or password",
-        errors: {
-          password: ["Invalid email or password"],
-        },
+        error: "Invalid email or password",
       };
     }
 
@@ -45,10 +42,7 @@ export async function signInActionAsync(
     if (!isPasswordValid) {
       return {
         success: false,
-        message: "Invalid email or password",
-        errors: {
-          password: ["Invalid email or password"],
-        },
+        error: "Invalid email or password",
       };
     }
 
@@ -63,11 +57,9 @@ export async function signInActionAsync(
       success: true,
       message: "Signed in successfully",
     };
-  } catch (error) {
-    console.error("Sign in error:", error);
+  } catch {
     return {
       success: false,
-      message: "An error occurred while signing in",
       error: "Failed to sign in",
     };
   }
@@ -80,8 +72,7 @@ export async function signOutActionAsync(): Promise<ActionResponse> {
       success: true,
       message: "Signed out successfully",
     };
-  } catch (error) {
-    console.error("Sign out error: ", error);
+  } catch {
     return {
       success: false,
       error: "Signed out failed",
