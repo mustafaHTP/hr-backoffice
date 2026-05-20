@@ -1,53 +1,23 @@
-import { Role } from "@/generated/prisma/enums";
 import { getSessionAsync } from "@/lib/auth";
 import { NavItem } from "./dashboard-navlink";
-
-type NavItemElement = {
-  href: string;
-  canShow: boolean;
-  label: string;
-};
+import { getAvailableRoutes } from "@/config/route-access";
 
 export default async function DashboardSidebarNav() {
   const session = await getSessionAsync();
   if (!session) return null;
-
-  const navItems: NavItemElement[] = [
-    {
-      href: "/dashboard/employees",
-      label: "Employees",
-      canShow: session.role === Role.MANAGER || session.role === Role.ADMIN,
-    },
-    {
-      href: "/dashboard/departments",
-      label: "Departments",
-      canShow: session.role === Role.MANAGER || session.role === Role.ADMIN,
-    },
-    {
-      href: "/dashboard/employee-list",
-      label: "Employees",
-      canShow: session.role === Role.EMPLOYEE,
-    },
-    {
-      href: "/dashboard/leave-requests",
-      label: "Leave Requests",
-      canShow: session.role === Role.MANAGER || session.role === Role.ADMIN,
-    },
-    {
-      href: "/dashboard/leave-request-list",
-      label: "My Leave Requests",
-      canShow: session.role === Role.EMPLOYEE || session.role === Role.MANAGER,
-    },
-  ];
-
+  const role = session.role;
+  const availableRoutesForRole = getAvailableRoutes(role);
   return (
     <nav className="flex flex-col gap-2 p-4">
-      <NavItem href="/dashboard" label="Home" />
-      {navItems
-        .filter((ni) => ni.canShow)
-        .map((ni, index) => (
-          <NavItem key={index} href={ni.href} label={ni.label} />
-        ))}
+      <NavItem href="/dashboard" label="Home" icon="house" />
+      {availableRoutesForRole.map((route, index) => (
+        <NavItem
+          key={index}
+          href={route.path}
+          label={route.label}
+          icon={route.icon}
+        />
+      ))}
     </nav>
   );
 }
