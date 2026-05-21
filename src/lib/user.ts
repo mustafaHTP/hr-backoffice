@@ -1,5 +1,5 @@
 import { Role } from "@/generated/prisma/enums";
-import { SessionPayload } from "./auth";
+import { getSessionAsync, SessionPayload } from "./auth";
 import { getUserAsync } from "./dal/user";
 import { getEmployeeAsync } from "./dal/employee";
 
@@ -27,4 +27,14 @@ export async function getUsername(
   const fullName = `${employee.firstName} ${employee.lastName}`;
 
   return fullName;
+}
+
+export async function getCurrentUserAsync() {
+  const session = await getSessionAsync();
+  if (!session) return null;
+
+  const user = await getUserAsync(session.userId);
+  if (!user) return null;
+
+  return user;
 }

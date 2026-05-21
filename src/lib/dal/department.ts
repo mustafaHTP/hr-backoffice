@@ -7,15 +7,26 @@ import {
   QueryParams,
 } from "@/types/query-params";
 
-export async function getDepartmentsAsync(
-  queryParams?: QueryParams,
-): Promise<Department[]> {
+type GetDepartmentsOptions = {
+  queryParams?: QueryParams;
+  include?: {
+    employees?: boolean;
+  };
+};
+
+export async function getDepartmentsAsync({
+  queryParams,
+  include,
+}: GetDepartmentsOptions = {}): Promise<Department[]> {
   const page = queryParams?.pageNumber ?? DEFAULT_PAGE_NUMBER;
   const pageSize = queryParams?.pageSize ?? DEFAULT_PAGE_SIZE;
   try {
     return await prisma.department.findMany({
       take: pageSize,
       skip: (page - 1) * pageSize,
+      include: {
+        employees: include?.employees,
+      },
     });
   } catch (error) {
     console.error("Error fetching departments:", error);
