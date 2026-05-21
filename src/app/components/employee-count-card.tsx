@@ -11,8 +11,15 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import EmployeeCountChart from "./employee-count-chart";
 import { prisma } from "@/lib/prisma";
+import { getCurrentUserActionAsync } from "../actions/user";
+import { Role } from "@/generated/prisma/enums";
 
 export default async function EmployeeCountCard() {
+  const user = await getCurrentUserActionAsync();
+  if (!user) return null;
+
+  if (user.role === Role.EMPLOYEE) return null;
+
   const departments = await prisma.department.findMany({
     include: {
       employees: true,
