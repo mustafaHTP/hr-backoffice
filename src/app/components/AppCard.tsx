@@ -8,6 +8,7 @@ interface AppCardProps {
   clickable?: boolean;
 }
 
+// ? a bit useless because of shadcn, could be used if more customization is needed
 export function AppCard({
   children,
   className,

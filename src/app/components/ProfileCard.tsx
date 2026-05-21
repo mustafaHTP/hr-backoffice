@@ -2,6 +2,20 @@ import { getSessionAsync } from "@/lib/auth";
 import { getUserAsync } from "@/lib/dal/user";
 import { AppCard } from "./AppCard";
 import { getEmployeeAsync } from "@/lib/dal/employee";
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { Separator } from "@/components/ui/separator";
 
 export default async function ProfileCard() {
   const session = await getSessionAsync();
@@ -13,19 +27,32 @@ export default async function ProfileCard() {
   if (!employee) return null;
 
   return (
-    <AppCard>
-      <AppCard.Header>
-        <div>
-          <div>{employee.firstName + " " + employee.lastName}</div>
-          <div>{employee.title?.name ?? "Unassigned"}</div>
-          <div>{employee.department?.name ?? "Unassigned"}</div>
-        </div>
-      </AppCard.Header>
-      <AppCard.Body>
-        <div>
-          <div>{employee.hireDate?.toDateString() ?? "Not found"}</div>
-        </div>
-      </AppCard.Body>
-    </AppCard>
+    <>
+      <Card className="w-full max-w-sm">
+        <CardHeader>
+          <CardTitle>{employee.firstName + " " + employee.lastName}</CardTitle>
+          <CardDescription>
+            <div>{employee.title?.name ?? "Unassigned"}</div>
+            <div>{employee.department?.name ?? "Unassigned"}</div>
+          </CardDescription>
+        </CardHeader>
+        <Separator />
+        <CardContent>
+          <dl className="flex items-center justify-between">
+            <dt>Hire Date</dt>
+            <dd className="text-muted-foreground">
+              {employee.hireDate?.toDateString() ?? "Not hired"}
+            </dd>
+          </dl>
+        </CardContent>
+        <CardFooter className="flex-col gap-2 items-end">
+          <Link href={"/dashboard/profile"}>
+            <Button type="submit" className="w-full cursor-pointer">
+              My Account
+            </Button>
+          </Link>
+        </CardFooter>
+      </Card>
+    </>
   );
 }
