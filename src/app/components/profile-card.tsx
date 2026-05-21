@@ -24,7 +24,7 @@ export default async function ProfileCard() {
 
   return (
     <>
-      <Card className="w-full max-w-sm mx-2 my-5">
+      <Card className="w-full mx-2 my-5">
         <CardHeader>
           <CardTitle>{employee.firstName + " " + employee.lastName}</CardTitle>
           <CardDescription>
