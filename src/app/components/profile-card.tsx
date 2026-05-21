@@ -1,18 +1,14 @@
 import { getSessionAsync } from "@/lib/auth";
 import { getUserAsync } from "@/lib/dal/user";
-import { AppCard } from "./AppCard";
 import { getEmployeeAsync } from "@/lib/dal/employee";
 import {
   Card,
-  CardAction,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
