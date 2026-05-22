@@ -20,10 +20,17 @@ enum Role {
 
 model Department {
   id          Int        @id @default(autoincrement())
-  name        String     @unique
+  name        String
   description String?
   employees   Employee[]
   createdAt   DateTime   @default(now())
+
+  // department tree
+  parentId Int?
+  parent   Department?  @relation("DepartmentTree", fields: [parentId], references: [id])
+  children Department[] @relation("DepartmentTree")
+
+  @@unique([name, parentId])
 }
 
 model EmployeeTitle {
