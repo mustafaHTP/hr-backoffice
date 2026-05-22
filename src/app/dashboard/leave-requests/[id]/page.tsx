@@ -131,16 +131,10 @@ export default async function LeaveRequestPage({
       </div>
 
       {/* Actions */}
-      <LeaveRequestActions leaveRequestId={leaveRequest.id} />
-      {/* <div className="flex flex-wrap gap-3">
-        <button className="rounded-xl bg-green-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-green-700">
-          Approve Request
-        </button>
-
-        <button className="rounded-xl bg-red-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-red-700">
-          Reject Request
-        </button>
-      </div> */}
+      <LeaveRequestActions
+        leaveRequestId={leaveRequest.id}
+        leaveStatus={leaveRequest.status}
+      />
     </div>
   );
 }

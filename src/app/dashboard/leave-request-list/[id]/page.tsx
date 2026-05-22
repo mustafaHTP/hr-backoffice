@@ -102,7 +102,9 @@ export default async function LeaveRequestPage({
 
       {/* Actions */}
       <div className="flex flex-wrap gap-3">
-        <CancelLeaveRequestButton leaveRequest={leaveRequest} />
+        {leaveRequest.status === LeaveStatus.PENDING && (
+          <CancelLeaveRequestButton leaveRequest={leaveRequest} />
+        )}
       </div>
     </div>
   );
