@@ -1,6 +1,7 @@
 import { Role } from "@/generated/prisma/enums";
 import {
   AlarmClockOff,
+  Boxes,
   GitFork,
   House,
   type LucideIcon,
@@ -32,7 +33,13 @@ export function getAvailableRoutes(role: Role) {
   });
 }
 
-export type IconKey = "house" | "fork" | "users" | "userMinus" | "alarm";
+export type IconKey =
+  | "house"
+  | "fork"
+  | "users"
+  | "userMinus"
+  | "alarm"
+  | "boxes";
 
 export const iconMap: Record<IconKey, LucideIcon> = {
   house: House,
@@ -40,6 +47,7 @@ export const iconMap: Record<IconKey, LucideIcon> = {
   users: Users,
   userMinus: UserMinus,
   alarm: AlarmClockOff,
+  boxes: Boxes,
 };
 
 export type RouteAccessRule = {
@@ -80,5 +88,11 @@ export const routeAccessRules: RouteAccessRule[] = [
     allowedRoles: [Role.EMPLOYEE],
     label: "My Leave Requests",
     icon: "alarm",
+  },
+  {
+    path: "/dashboard/organization-schema",
+    allowedRoles: [Role.MANAGER, Role.ADMIN],
+    label: "Organization Schema",
+    icon: "boxes",
   },
 ];
