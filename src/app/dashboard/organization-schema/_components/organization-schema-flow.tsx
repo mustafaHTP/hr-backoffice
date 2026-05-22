@@ -12,6 +12,7 @@ import {
 } from "@xyflow/react";
 
 import { graphlib, layout } from "dagre";
+import { Department } from "@/generated/prisma/client";
 
 const position = { x: 0, y: 0 };
 const edgeType = "smoothstep";
@@ -128,7 +129,15 @@ const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
   initialEdges,
 );
 
-export default function OrganizationSchemaFlow() {
+export type OrganizationSchemaFlowProps = {
+  departments: Department[];
+};
+
+export default function OrganizationSchemaFlow(
+  props: OrganizationSchemaFlowProps,
+) {
+  if (props.departments.length === 0) return null;
+
   const [nodes, setNodes, onNodesChange] = useNodesState(layoutedNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(layoutedEdges);
 

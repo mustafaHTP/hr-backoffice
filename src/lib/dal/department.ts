@@ -11,6 +11,8 @@ type GetDepartmentsOptions = {
   queryParams?: QueryParams;
   include?: {
     employees?: boolean;
+    children?: boolean;
+    parent?: boolean;
   };
 };
 
@@ -26,6 +28,8 @@ export async function getDepartmentsAsync({
       skip: (page - 1) * pageSize,
       include: {
         employees: include?.employees,
+        children: include?.children,
+        parent: include?.parent,
       },
     });
   } catch (error) {
