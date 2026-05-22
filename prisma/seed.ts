@@ -24,6 +24,30 @@ async function main() {
     },
   });
 
+  const frontend = await prisma.department.create({
+    data: {
+      name: "Frontend",
+      description: "Client-facing web and app UI engineering",
+      parentId: engineering.id,
+    },
+  });
+
+  const backend = await prisma.department.create({
+    data: {
+      name: "Backend",
+      description: "Server, API, and data engineering",
+      parentId: engineering.id,
+    },
+  });
+
+  const infrastructure = await prisma.department.create({
+    data: {
+      name: "Infrastructure",
+      description: "Cloud, platform, and operational systems",
+      parentId: engineering.id,
+    },
+  });
+
   const hr = await prisma.department.create({
     data: {
       name: "Human Resources",
@@ -31,10 +55,42 @@ async function main() {
     },
   });
 
+  const recruitment = await prisma.department.create({
+    data: {
+      name: "Recruitment",
+      description: "Hiring, onboarding, and talent sourcing",
+      parentId: hr.id,
+    },
+  });
+
+  const peopleOperations = await prisma.department.create({
+    data: {
+      name: "People Operations",
+      description: "Employee relations, benefits, and people programs",
+      parentId: hr.id,
+    },
+  });
+
   const finance = await prisma.department.create({
     data: {
       name: "Finance",
       description: "Budgeting, payroll and financial planning",
+    },
+  });
+
+  const payroll = await prisma.department.create({
+    data: {
+      name: "Payroll",
+      description: "Employee compensation and payroll processing",
+      parentId: finance.id,
+    },
+  });
+
+  const financialAnalysis = await prisma.department.create({
+    data: {
+      name: "Financial Analysis",
+      description: "Budget analysis, forecasting, and reporting",
+      parentId: finance.id,
     },
   });
 
@@ -63,7 +119,7 @@ async function main() {
     data: { name: "Analyst" },
   });
 
-  // Employees
+  // Employees (only assign to leaf departments)
   await prisma.employee.createMany({
     data: [
       {
@@ -72,7 +128,7 @@ async function main() {
         email: "john.doe@company.com",
         phone: "905551112233",
         hireDate: new Date("2021-04-12"),
-        departmentId: engineering.id,
+        departmentId: frontend.id,
         titleId: engineer.id,
       },
       {
@@ -81,7 +137,7 @@ async function main() {
         email: "jane.smith@company.com",
         phone: "905552223344",
         hireDate: new Date("2018-02-01"),
-        departmentId: engineering.id,
+        departmentId: backend.id,
         titleId: manager.id,
       },
       {
@@ -90,7 +146,7 @@ async function main() {
         email: "michael.brown@company.com",
         phone: "905553334455",
         hireDate: new Date("2017-09-18"),
-        departmentId: hr.id,
+        departmentId: recruitment.id,
         titleId: manager.id,
       },
       {
@@ -99,7 +155,7 @@ async function main() {
         email: "emily.davis@company.com",
         phone: "905554445566",
         hireDate: new Date("2019-11-04"),
-        departmentId: finance.id,
+        departmentId: payroll.id,
         titleId: manager.id,
       },
       {
@@ -108,7 +164,7 @@ async function main() {
         email: "david.wilson@company.com",
         phone: "905555556677",
         hireDate: new Date("2020-06-22"),
-        departmentId: engineering.id,
+        departmentId: infrastructure.id,
         titleId: seniorEngineer.id,
       },
       {
@@ -117,7 +173,7 @@ async function main() {
         email: "hr.specialist@company.com",
         phone: "905556667788",
         hireDate: new Date("2022-01-10"),
-        departmentId: hr.id,
+        departmentId: peopleOperations.id,
         titleId: specialist.id,
       },
       {
@@ -126,7 +182,7 @@ async function main() {
         email: "hr.recruiter@company.com",
         phone: "905557778899",
         hireDate: new Date("2023-03-27"),
-        departmentId: hr.id,
+        departmentId: recruitment.id,
         titleId: recruiter.id,
       },
       {
@@ -135,7 +191,7 @@ async function main() {
         email: "ops.manager@company.com",
         phone: "905558889900",
         hireDate: new Date("2016-05-30"),
-        departmentId: engineering.id,
+        departmentId: infrastructure.id,
         titleId: manager.id,
       },
       {
@@ -144,7 +200,7 @@ async function main() {
         email: "alice.johnson@company.com",
         phone: "905551110011",
         hireDate: new Date("2022-08-15"),
-        departmentId: engineering.id,
+        departmentId: backend.id,
         titleId: engineer.id,
       },
       {
@@ -153,7 +209,7 @@ async function main() {
         email: "bob.martin@company.com",
         phone: "905552220011",
         hireDate: new Date("2021-12-06"),
-        departmentId: finance.id,
+        departmentId: financialAnalysis.id,
         titleId: analyst.id,
       },
       {
@@ -162,7 +218,7 @@ async function main() {
         email: "carol.white@company.com",
         phone: "905553330011",
         hireDate: new Date("2020-02-24"),
-        departmentId: hr.id,
+        departmentId: peopleOperations.id,
         titleId: specialist.id,
       },
       {
@@ -171,7 +227,7 @@ async function main() {
         email: "frank.thomas@company.com",
         phone: "905554440011",
         hireDate: new Date("2023-07-08"),
-        departmentId: engineering.id,
+        departmentId: frontend.id,
         titleId: engineer.id,
       },
       {
@@ -180,7 +236,7 @@ async function main() {
         email: "grace.anderson@company.com",
         phone: "905555550011",
         hireDate: new Date("2024-04-01"),
-        departmentId: finance.id,
+        departmentId: financialAnalysis.id,
         titleId: analyst.id,
       },
     ],
@@ -190,7 +246,6 @@ async function main() {
   const createdEmployees = await prisma.employee.findMany();
 
   const adminPassword = await hashPasswordAsync("admin123");
-  const hrPassword = await hashPasswordAsync("hr123");
   const managerPassword = await hashPasswordAsync("manager123");
   const employeePassword = await hashPasswordAsync("employee123");
 
