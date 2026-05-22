@@ -127,7 +127,7 @@ export async function getLeaveRequestCountByEmployeeIdAsync(
   }
 }
 
-export async function getLeaveRequestsByEmployeeIdAndDateAsync(
+export async function getActiveLeaveRequestsByEmployeeIdAndDateAsync(
   employeeId: number,
   startDate: Date,
   endDate: Date,
@@ -141,6 +141,9 @@ export async function getLeaveRequestsByEmployeeIdAndDateAsync(
         },
         endDate: {
           gte: startDate,
+        },
+        status: {
+          in: ["APPROVED", "PENDING"],
         },
       },
     });

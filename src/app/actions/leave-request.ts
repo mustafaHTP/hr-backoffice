@@ -5,7 +5,7 @@ import { getEmployeeAsync } from "@/lib/dal/employee";
 import {
   createLeaveRequestAsync,
   getLeaveRequestAsync,
-  getLeaveRequestsByEmployeeIdAndDateAsync,
+  getActiveLeaveRequestsByEmployeeIdAndDateAsync,
   getLeaveRequestsEmployeeUsedInPeriodAsync,
   updateLeaveRequestStatusAsync,
 } from "@/lib/dal/leave-request";
@@ -160,7 +160,7 @@ async function validateLeaveRequestAsync(
   }
 
   const overlappedLeaveRequests =
-    await getLeaveRequestsByEmployeeIdAndDateAsync(
+    await getActiveLeaveRequestsByEmployeeIdAndDateAsync(
       employeeId,
       startDate,
       endDate,
