@@ -156,7 +156,7 @@ export default function OrganizationSchemaFlow(
           }}
           onClick={() => onLayout(GraphDirection.Vertical)}
         >
-          vertical layout
+          vertical
         </button>
         <button
           style={{
@@ -170,7 +170,7 @@ export default function OrganizationSchemaFlow(
           }}
           onClick={() => onLayout(GraphDirection.Horizontal)}
         >
-          horizontal layout
+          horizontal
         </button>
       </Panel>
       <Background />
