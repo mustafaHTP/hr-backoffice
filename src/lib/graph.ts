@@ -1,5 +1,5 @@
 import { GraphDirection } from "@/types/graph";
-import { Edge, XYPosition, Node, Position } from "@xyflow/react";
+import { Edge, Node, Position } from "@xyflow/react";
 import { graphlib, layout } from "dagre";
 
 export function getLayoutedElements(
