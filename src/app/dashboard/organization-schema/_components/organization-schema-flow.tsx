@@ -2,132 +2,86 @@
 
 import { useCallback } from "react";
 import {
+  Node,
   Background,
   ReactFlow,
   addEdge,
   ConnectionLineType,
   Panel,
-  useNodesState,
   useEdgesState,
+  useNodesState,
+  Position,
+  Edge,
 } from "@xyflow/react";
+import "@xyflow/react/dist/style.css";
 
 import { graphlib, layout } from "dagre";
 import { Department } from "@/generated/prisma/client";
+import { ToastService } from "@/lib/toast-service";
+import {
+  DEFAULT_NODE_POSITION,
+  EDGE_TYPE,
+  GraphDirection,
+} from "@/types/graph";
+import { getLayoutedElements } from "@/lib/graph";
 
-const position = { x: 0, y: 0 };
-const edgeType = "smoothstep";
+function buildGraphFromDepartments(departments: Department[]) {
+  // DO NOT USE ARBITRARY ID
+  // node of the id is important because building edges is based on these ids
+  const nodes: Node[] = departments.map((department) => ({
+    id: `department-${department.id}`,
+    position: DEFAULT_NODE_POSITION,
+    data: {
+      label: `${department.name}`,
+    },
+    style: {
+      background: "#111827",
+      color: "#f8fafc",
+      border: "1px solid #374151",
+      boxShadow: "0 10px 30px rgba(15, 23, 42, 0.3)",
+      fontSize: "0.95rem",
+      fontWeight: 500,
+    },
+  }));
 
-export const initialNodes = [
-  {
-    id: "1",
+  // construct edges except root of departments
+  // create root node, it represents company also departments who dont have parent department
+  // are connected to root node
+  const rootNode: Node = {
+    id: `root`,
     type: "input",
-    data: { label: "input" },
-    position,
-  },
-  {
-    id: "2",
-    data: { label: "node 2" },
-    position,
-  },
-  {
-    id: "2a",
-    data: { label: "node 2a" },
-    position,
-  },
-  {
-    id: "2b",
-    data: { label: "node 2b" },
-    position,
-  },
-  {
-    id: "2c",
-    data: { label: "node 2c" },
-    position,
-  },
-  {
-    id: "2d",
-    data: { label: "node 2d" },
-    position,
-  },
-  {
-    id: "3",
-    data: { label: "node 3" },
-    position,
-  },
-  {
-    id: "4",
-    data: { label: "node 4" },
-    position,
-  },
-  {
-    id: "5",
-    data: { label: "node 5" },
-    position,
-  },
-  {
-    id: "6",
-    type: "output",
-    data: { label: "output" },
-    position,
-  },
-  { id: "7", type: "output", data: { label: "output" }, position },
-];
+    position: DEFAULT_NODE_POSITION,
+    data: {
+      label: `Company`,
+    },
+    style: {
+      background: "#111827",
+      color: "#f8fafc",
+      border: "1px solid #374151",
+      boxShadow: "0 10px 30px rgba(15, 23, 42, 0.3)",
+      fontSize: "0.95rem",
+      fontWeight: 500,
+    },
+  };
+  nodes.push(rootNode);
 
-export const initialEdges = [
-  { id: "e12", source: "1", target: "2", type: edgeType, animated: true },
-  { id: "e13", source: "1", target: "3", type: edgeType, animated: true },
-  { id: "e22a", source: "2", target: "2a", type: edgeType, animated: true },
-  { id: "e22b", source: "2", target: "2b", type: edgeType, animated: true },
-  { id: "e22c", source: "2", target: "2c", type: edgeType, animated: true },
-  { id: "e2c2d", source: "2c", target: "2d", type: edgeType, animated: true },
-  { id: "e45", source: "4", target: "5", type: edgeType, animated: true },
-  { id: "e56", source: "5", target: "6", type: edgeType, animated: true },
-  { id: "e57", source: "5", target: "7", type: edgeType, animated: true },
-];
+  const edges: Edge[] = departments.map((department) => ({
+    id: `edge-${department.parentId}-${department.id}`,
+    source: department.parentId ? `department-${department.parentId}` : "root",
+    target: `department-${department.id}`,
+    type: EDGE_TYPE,
+    animated: true,
+    style: {
+      stroke: "#9ca3af",
+    },
+    markerEnd: {
+      type: "arrowclosed",
+      color: "#9ca3af",
+    },
+  }));
 
-const dagreGraph = new graphlib.Graph().setDefaultEdgeLabel(() => ({}));
-
-const nodeWidth = 172;
-const nodeHeight = 36;
-
-const getLayoutedElements = (nodes, edges, direction = "TB") => {
-  const isHorizontal = direction === "LR";
-  dagreGraph.setGraph({ rankdir: direction });
-
-  nodes.forEach((node) => {
-    dagreGraph.setNode(node.id, { width: nodeWidth, height: nodeHeight });
-  });
-
-  edges.forEach((edge) => {
-    dagreGraph.setEdge(edge.source, edge.target);
-  });
-
-  layout(dagreGraph);
-
-  const newNodes = nodes.map((node) => {
-    const nodeWithPosition = dagreGraph.node(node.id);
-    const newNode = {
-      ...node,
-      targetPosition: isHorizontal ? "left" : "top",
-      sourcePosition: isHorizontal ? "right" : "bottom",
-      // We are shifting the dagre node position (anchor=center center) to the top left
-      // so it matches the React Flow node anchor point (top left).
-      position: {
-        x: nodeWithPosition.x - nodeWidth / 2,
-        y: nodeWithPosition.y - nodeHeight / 2,
-      },
-    };
-
-    return newNode;
-  });
-
-  return { nodes: newNodes, edges };
-};
-
-const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
-  initialNodes,
-  initialEdges,
-);
+  return { nodes, edges };
+}
 
 export type OrganizationSchemaFlowProps = {
   departments: Department[];
@@ -136,30 +90,36 @@ export type OrganizationSchemaFlowProps = {
 export default function OrganizationSchemaFlow(
   props: OrganizationSchemaFlowProps,
 ) {
-  if (props.departments.length === 0) return null;
+  if (props.departments.length === 0) {
+    ToastService.error("No departments to render");
+  }
 
-  const [nodes, setNodes, onNodesChange] = useNodesState(layoutedNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(layoutedEdges);
+  const graph = buildGraphFromDepartments(props.departments);
+  const layouted = getLayoutedElements(graph.nodes, graph.edges);
+
+  const [nodes, setNodes, onNodesChange] = useNodesState(layouted.nodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(layouted.edges);
 
   const onConnect = useCallback(
-    (params) =>
+    (params: any) =>
       setEdges((eds) =>
         addEdge(
           { ...params, type: ConnectionLineType.SmoothStep, animated: true },
           eds,
         ),
       ),
-    [],
+    [setEdges],
   );
+
   const onLayout = useCallback(
-    (direction) => {
+    (direction: GraphDirection) => {
       const { nodes: layoutedNodes, edges: layoutedEdges } =
         getLayoutedElements(nodes, edges, direction);
 
       setNodes([...layoutedNodes]);
       setEdges([...layoutedEdges]);
     },
-    [nodes, edges],
+    [nodes, edges, setEdges, setNodes],
   );
 
   return (
@@ -172,11 +132,44 @@ export default function OrganizationSchemaFlow(
       connectionLineType={ConnectionLineType.SmoothStep}
       fitView
     >
-      <Panel position="top-right">
-        <button className="xy-theme__button" onClick={() => onLayout("TB")}>
+      <Panel
+        position="top-right"
+        style={{
+          background: "rgba(15, 23, 42, 0.92)",
+          border: "1px solid rgba(148, 163, 184, 0.25)",
+          color: "#f8fafc",
+          padding: "0.5rem",
+          borderRadius: "0.75rem",
+          boxShadow: "0 20px 50px rgba(15, 23, 42, 0.5)",
+        }}
+      >
+        <button
+          style={{
+            background: "#1f2937",
+            color: "#f8fafc",
+            border: "1px solid #374151",
+            borderRadius: "0.5rem",
+            padding: "0.45rem 0.8rem",
+            cursor: "pointer",
+            marginBottom: "0.5rem",
+            width: "100%",
+          }}
+          onClick={() => onLayout(GraphDirection.Vertical)}
+        >
           vertical layout
         </button>
-        <button className="xy-theme__button" onClick={() => onLayout("LR")}>
+        <button
+          style={{
+            background: "#1f2937",
+            color: "#f8fafc",
+            border: "1px solid #374151",
+            borderRadius: "0.5rem",
+            padding: "0.45rem 0.8rem",
+            cursor: "pointer",
+            width: "100%",
+          }}
+          onClick={() => onLayout(GraphDirection.Horizontal)}
+        >
           horizontal layout
         </button>
       </Panel>
