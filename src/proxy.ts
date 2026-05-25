@@ -3,7 +3,7 @@ import type { NextRequest } from "next/server";
 import { getSessionAsync } from "./lib/auth";
 import { getRouteAccessRule, hasAccessToRoute } from "./config/route-access";
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const session = await getSessionAsync();
 
   if (!session) {
