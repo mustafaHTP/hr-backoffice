@@ -1,0 +1,534 @@
+import { hashPasswordAsync } from "@/lib/password";
+import { prisma } from "@/lib/prisma";
+import {
+  LeaveStatus,
+  LimitScope,
+  PeriodType,
+  Role,
+} from "@/generated/prisma/enums";
+
+async function main() {
+  // Clean existing data (optional but useful in dev)
+  await prisma.leaveRequest.deleteMany();
+  await prisma.leaveType.deleteMany();
+  await prisma.user.deleteMany();
+  await prisma.employee.deleteMany();
+  await prisma.employeeTitle.deleteMany();
+  await prisma.department.deleteMany();
+
+  // Departments
+  const engineering = await prisma.department.create({
+    data: {
+      name: "Engineering",
+      description: "Software development and technical operations",
+    },
+  });
+
+  const frontend = await prisma.department.create({
+    data: {
+      name: "Frontend",
+      description: "Client-facing web and app UI engineering",
+      parentId: engineering.id,
+    },
+  });
+
+  const backend = await prisma.department.create({
+    data: {
+      name: "Backend",
+      description: "Server, API, and data engineering",
+      parentId: engineering.id,
+    },
+  });
+
+  const infrastructure = await prisma.department.create({
+    data: {
+      name: "Infrastructure",
+      description: "Cloud, platform, and operational systems",
+      parentId: engineering.id,
+    },
+  });
+
+  const hr = await prisma.department.create({
+    data: {
+      name: "Human Resources",
+      description: "People management and recruitment",
+    },
+  });
+
+  const recruitment = await prisma.department.create({
+    data: {
+      name: "Recruitment",
+      description: "Hiring, onboarding, and talent sourcing",
+      parentId: hr.id,
+    },
+  });
+
+  const peopleOperations = await prisma.department.create({
+    data: {
+      name: "People Operations",
+      description: "Employee relations, benefits, and people programs",
+      parentId: hr.id,
+    },
+  });
+
+  const finance = await prisma.department.create({
+    data: {
+      name: "Finance",
+      description: "Budgeting, payroll and financial planning",
+    },
+  });
+
+  const payroll = await prisma.department.create({
+    data: {
+      name: "Payroll",
+      description: "Employee compensation and payroll processing",
+      parentId: finance.id,
+    },
+  });
+
+  const financialAnalysis = await prisma.department.create({
+    data: {
+      name: "Financial Analysis",
+      description: "Budget analysis, forecasting, and reporting",
+      parentId: finance.id,
+    },
+  });
+
+  // Employee Titles
+  const seniorEngineer = await prisma.employeeTitle.create({
+    data: { name: "Senior Software Engineer" },
+  });
+
+  const engineer = await prisma.employeeTitle.create({
+    data: { name: "Software Engineer" },
+  });
+
+  const manager = await prisma.employeeTitle.create({
+    data: { name: "Manager" },
+  });
+
+  const specialist = await prisma.employeeTitle.create({
+    data: { name: "Specialist" },
+  });
+
+  const recruiter = await prisma.employeeTitle.create({
+    data: { name: "Recruiter" },
+  });
+
+  const analyst = await prisma.employeeTitle.create({
+    data: { name: "Analyst" },
+  });
+
+  // Employees (only assign to leaf departments)
+  await prisma.employee.createMany({
+    data: [
+      {
+        firstName: "John",
+        lastName: "Doe",
+        email: "john.doe@company.com",
+        phone: "905551112233",
+        hireDate: new Date("2021-04-12"),
+        departmentId: frontend.id,
+        titleId: engineer.id,
+      },
+      {
+        firstName: "Jane",
+        lastName: "Smith",
+        email: "jane.smith@company.com",
+        phone: "905552223344",
+        hireDate: new Date("2018-02-01"),
+        departmentId: backend.id,
+        titleId: manager.id,
+      },
+      {
+        firstName: "Michael",
+        lastName: "Brown",
+        email: "michael.brown@company.com",
+        phone: "905553334455",
+        hireDate: new Date("2017-09-18"),
+        departmentId: recruitment.id,
+        titleId: manager.id,
+      },
+      {
+        firstName: "Emily",
+        lastName: "Davis",
+        email: "emily.davis@company.com",
+        phone: "905554445566",
+        hireDate: new Date("2019-11-04"),
+        departmentId: payroll.id,
+        titleId: manager.id,
+      },
+      {
+        firstName: "David",
+        lastName: "Wilson",
+        email: "david.wilson@company.com",
+        phone: "905555556677",
+        hireDate: new Date("2020-06-22"),
+        departmentId: infrastructure.id,
+        titleId: seniorEngineer.id,
+      },
+      {
+        firstName: "Sarah",
+        lastName: "Miller",
+        email: "hr.specialist@company.com",
+        phone: "905556667788",
+        hireDate: new Date("2022-01-10"),
+        departmentId: peopleOperations.id,
+        titleId: specialist.id,
+      },
+      {
+        firstName: "Robert",
+        lastName: "Taylor",
+        email: "hr.recruiter@company.com",
+        phone: "905557778899",
+        hireDate: new Date("2023-03-27"),
+        departmentId: recruitment.id,
+        titleId: recruiter.id,
+      },
+      {
+        firstName: "James",
+        lastName: "Anderson",
+        email: "ops.manager@company.com",
+        phone: "905558889900",
+        hireDate: new Date("2016-05-30"),
+        departmentId: infrastructure.id,
+        titleId: manager.id,
+      },
+      {
+        firstName: "Alice",
+        lastName: "Johnson",
+        email: "alice.johnson@company.com",
+        phone: "905551110011",
+        hireDate: new Date("2022-08-15"),
+        departmentId: backend.id,
+        titleId: engineer.id,
+      },
+      {
+        firstName: "Bob",
+        lastName: "Martin",
+        email: "bob.martin@company.com",
+        phone: "905552220011",
+        hireDate: new Date("2021-12-06"),
+        departmentId: financialAnalysis.id,
+        titleId: analyst.id,
+      },
+      {
+        firstName: "Carol",
+        lastName: "White",
+        email: "carol.white@company.com",
+        phone: "905553330011",
+        hireDate: new Date("2020-02-24"),
+        departmentId: peopleOperations.id,
+        titleId: specialist.id,
+      },
+      {
+        firstName: "Frank",
+        lastName: "Thomas",
+        email: "frank.thomas@company.com",
+        phone: "905554440011",
+        hireDate: new Date("2023-07-08"),
+        departmentId: frontend.id,
+        titleId: engineer.id,
+      },
+      {
+        firstName: "Grace",
+        lastName: "Anderson",
+        email: "grace.anderson@company.com",
+        phone: "905555550011",
+        hireDate: new Date("2024-04-01"),
+        departmentId: financialAnalysis.id,
+        titleId: analyst.id,
+      },
+    ],
+  });
+
+  // Fetch created employees to link with users
+  const createdEmployees = await prisma.employee.findMany();
+
+  const adminPassword = await hashPasswordAsync("admin123");
+  const managerPassword = await hashPasswordAsync("manager123");
+  const employeePassword = await hashPasswordAsync("employee123");
+
+  // Users
+  // Admin user (only 1)
+  await prisma.user.create({
+    data: {
+      email: "admin@company.com",
+      password: adminPassword,
+      role: Role.ADMIN,
+    },
+  });
+
+  // Manager users (multiple)
+  await prisma.user.createMany({
+    data: [
+      {
+        email: "eng.manager@company.com",
+        password: managerPassword,
+        role: Role.MANAGER,
+        employeeId: createdEmployees.find(
+          (e) => e.email === "jane.smith@company.com",
+        )?.id,
+      },
+      {
+        email: "finance.manager@company.com",
+        password: managerPassword,
+        role: Role.MANAGER,
+        employeeId: createdEmployees.find(
+          (e) => e.email === "emily.davis@company.com",
+        )?.id,
+      },
+      {
+        email: "ops.manager@company.com",
+        password: managerPassword,
+        role: Role.MANAGER,
+        employeeId: createdEmployees.find(
+          (e) => e.email === "ops.manager@company.com",
+        )?.id,
+      },
+    ],
+  });
+
+  // Employee users (multiple)
+  await prisma.user.createMany({
+    data: [
+      {
+        email: "john.doe@company.com",
+        password: employeePassword,
+        role: Role.EMPLOYEE,
+        employeeId: createdEmployees.find(
+          (e) => e.email === "john.doe@company.com",
+        )?.id,
+      },
+      {
+        email: "david.wilson@company.com",
+        password: employeePassword,
+        role: Role.EMPLOYEE,
+        employeeId: createdEmployees.find(
+          (e) => e.email === "david.wilson@company.com",
+        )?.id,
+      },
+      {
+        email: "alice.johnson@company.com",
+        password: employeePassword,
+        role: Role.EMPLOYEE,
+        employeeId: createdEmployees.find(
+          (e) => e.email === "alice.johnson@company.com",
+        )?.id,
+      },
+      {
+        email: "bob.martin@company.com",
+        password: employeePassword,
+        role: Role.EMPLOYEE,
+        employeeId: createdEmployees.find(
+          (e) => e.email === "bob.martin@company.com",
+        )?.id,
+      },
+      {
+        email: "carol.white@company.com",
+        password: employeePassword,
+        role: Role.EMPLOYEE,
+        employeeId: createdEmployees.find(
+          (e) => e.email === "carol.white@company.com",
+        )?.id,
+      },
+      {
+        email: "frank.thomas@company.com",
+        password: employeePassword,
+        role: Role.EMPLOYEE,
+        employeeId: createdEmployees.find(
+          (e) => e.email === "frank.thomas@company.com",
+        )?.id,
+      },
+      {
+        email: "grace.anderson@company.com",
+        password: employeePassword,
+        role: Role.EMPLOYEE,
+        employeeId: createdEmployees.find(
+          (e) => e.email === "grace.anderson@company.com",
+        )?.id,
+      },
+    ],
+  });
+
+  // ── Leave Types ──────────────────────────────────────────────
+  const annualLeave = await prisma.leaveType.create({
+    data: {
+      name: "Annual Leave",
+      isPaid: true,
+      limitScope: LimitScope.PER_PERIOD,
+      periodType: PeriodType.YEARLY,
+      periodQuantity: 1,
+      periodMaxDays: 20,
+      description:
+        "Paid time off for vacation, personal use, or rest allocated per calendar year.",
+    },
+  });
+
+  const sickLeave = await prisma.leaveType.create({
+    data: {
+      name: "Sick Leave",
+      isPaid: true,
+      limitScope: LimitScope.PER_PERIOD,
+      periodType: PeriodType.YEARLY,
+      periodQuantity: 1,
+      periodMaxDays: 10,
+      description:
+        "Paid leave reserved for recovery from personal illness, injury, or medical appointments.",
+    },
+  });
+
+  const unpaidLeave = await prisma.leaveType.create({
+    data: {
+      name: "Unpaid Leave",
+      isPaid: false,
+      limitScope: LimitScope.NONE,
+      description:
+        "Approved time off without pay for extended personal matters when paid leave balances are exhausted.",
+    },
+  });
+
+  const maternityLeave = await prisma.leaveType.create({
+    data: {
+      name: "Maternity Leave",
+      isPaid: true,
+      limitScope: LimitScope.PER_REQUEST,
+      perRequestMaxDays: 90,
+      description:
+        "Paid job-protected leave for expectant mothers before and after childbirth.",
+    },
+  });
+
+  const bereavementLeave = await prisma.leaveType.create({
+    data: {
+      name: "Bereavement Leave",
+      isPaid: true,
+      limitScope: LimitScope.PER_REQUEST,
+      perRequestMaxDays: 5,
+      description:
+        "Paid time off granted to employees following the loss of an immediate family member.",
+    },
+  });
+
+  await prisma.leaveType.create({
+    data: {
+      name: "Work from home",
+      isPaid: true,
+      limitScope: LimitScope.PER_PERIOD,
+      periodType: PeriodType.MONTHLY,
+      periodQuantity: 1,
+      periodMaxDays: 3,
+      description:
+        "Enables working remotely instead of commuting to the office.",
+    },
+  });
+
+  await prisma.leaveType.create({
+    data: {
+      name: "Volunteer time",
+      isPaid: true,
+      limitScope: LimitScope.PER_PERIOD,
+      periodType: PeriodType.WEEKLY,
+      periodQuantity: 1,
+      periodMaxDays: 1,
+      description:
+        "Paid time dedicated to participating in community service or authorized charitable activities.",
+    },
+  });
+
+  // ── Leave Requests ────────────────────────────────────────────
+  const allEmployees = await prisma.employee.findMany();
+  const find = (email: string) => allEmployees.find((e) => e.email === email)!;
+
+  await prisma.leaveRequest.createMany({
+    data: [
+      // PENDING
+      {
+        employeeId: find("john.doe@company.com").id,
+        leaveTypeId: annualLeave.id,
+        startDate: new Date("2026-06-02"),
+        endDate: new Date("2026-06-06"),
+        totalDays: 5,
+        status: LeaveStatus.PENDING,
+        description: "Family vacation planned in advance.",
+      },
+      {
+        employeeId: find("frank.thomas@company.com").id,
+        leaveTypeId: sickLeave.id,
+        startDate: new Date("2026-05-26"),
+        endDate: new Date("2026-05-27"),
+        totalDays: 2,
+        status: LeaveStatus.PENDING,
+        description: "Feeling unwell, doctor's appointment scheduled.",
+      },
+      // APPROVED
+      {
+        employeeId: find("alice.johnson@company.com").id,
+        leaveTypeId: sickLeave.id,
+        startDate: new Date("2026-05-19"),
+        endDate: new Date("2026-05-20"),
+        totalDays: 2,
+        status: LeaveStatus.APPROVED,
+        description: "Flu symptoms.",
+      },
+      {
+        employeeId: find("david.wilson@company.com").id,
+        leaveTypeId: annualLeave.id,
+        startDate: new Date("2026-07-14"),
+        endDate: new Date("2026-07-25"),
+        totalDays: 10,
+        status: LeaveStatus.APPROVED,
+        description: "Summer holiday.",
+      },
+      {
+        employeeId: find("grace.anderson@company.com").id,
+        leaveTypeId: bereavementLeave.id,
+        startDate: new Date("2026-05-12"),
+        endDate: new Date("2026-05-14"),
+        totalDays: 3,
+        status: LeaveStatus.APPROVED,
+        description: "Attending a family funeral.",
+      },
+      // REJECTED
+      {
+        employeeId: find("bob.martin@company.com").id,
+        leaveTypeId: unpaidLeave.id,
+        startDate: new Date("2026-08-04"),
+        endDate: new Date("2026-08-08"),
+        totalDays: 5,
+        status: LeaveStatus.REJECTED,
+        description: "Personal errands.",
+      },
+      // CANCELLED
+      {
+        employeeId: find("carol.white@company.com").id,
+        leaveTypeId: annualLeave.id,
+        startDate: new Date("2026-06-16"),
+        endDate: new Date("2026-06-20"),
+        totalDays: 5,
+        status: LeaveStatus.CANCELLED,
+        description: "Annual leave — cancelled due to change of plans.",
+      },
+      {
+        employeeId: find("jane.smith@company.com").id,
+        leaveTypeId: maternityLeave.id,
+        startDate: new Date("2026-09-01"),
+        endDate: new Date("2026-11-29"),
+        totalDays: 90,
+        status: LeaveStatus.APPROVED,
+        description: "Maternity leave.",
+      },
+    ],
+  });
+
+  console.log("Seed data created successfully!");
+}
+
+main()
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });

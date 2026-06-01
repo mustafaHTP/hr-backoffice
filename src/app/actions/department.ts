@@ -1,0 +1,115 @@
+"use server";
+
+import {
+  createDepartmentAsync,
+  deleteDepartmentAsync,
+  updateDepartmentAsync,
+} from "@/lib/dal/department";
+import { departmentSchema } from "@/lib/schemas/department";
+import { isNumber } from "@/lib/utils/utility";
+import { ActionResponse } from "@/types/action-response";
+
+export async function createDepartmentActionAsync(
+  formData: FormData,
+): Promise<ActionResponse> {
+  const departmentFormData = {
+    name: formData.get("name") as string,
+    description: formData.get("description") as string,
+  };
+
+  const validationResult = departmentSchema.safeParse(departmentFormData);
+  if (!validationResult.success) {
+    return {
+      success: false,
+      errors: validationResult.error.flatten().fieldErrors,
+    };
+  }
+
+  try {
+    await createDepartmentAsync(validationResult.data);
+  } catch {
+    return {
+      success: false,
+      error: "Failed to create department",
+    };
+  }
+
+  return {
+    success: true,
+    message: "Department created successfully",
+  };
+}
+
+export async function updateDepartmentActionAsync(
+  formData: FormData,
+): Promise<ActionResponse> {
+  const departmentForm = {
+    id: formData.get("id") ? Number(formData.get("id")) : null,
+    name: formData.get("name"),
+    description: formData.get("description"),
+  };
+
+  if (!departmentForm.id) {
+    return {
+      success: false,
+      error: "Id is not in form",
+    };
+  }
+
+  const validationResult = departmentSchema.safeParse(departmentForm);
+  if (!validationResult.success) {
+    return {
+      success: false,
+      errors: validationResult.error.flatten().fieldErrors,
+    };
+  }
+
+  try {
+    await updateDepartmentAsync(departmentForm.id, validationResult.data);
+  } catch {
+    return {
+      success: false,
+      error: "Failed to update department",
+    };
+  }
+
+  return {
+    success: true,
+    message: "Department updated successfully",
+  };
+}
+
+export async function deleteDepartmentActionAsync(
+  formData: FormData,
+): Promise<ActionResponse> {
+  const idFromForm = formData.get("id");
+  if (!idFromForm) {
+    return {
+      success: false,
+      error: "Id data is not in form",
+    };
+  }
+
+  if (!isNumber(idFromForm.toString())) {
+    return {
+      success: false,
+      error: "Id data is NaN",
+    };
+  }
+
+  const id = Number(idFromForm);
+
+  try {
+    await deleteDepartmentAsync(id);
+  } catch {
+    return {
+      success: false,
+      error: "Failed to delete department",
+    };
+  }
+
+  return {
+    success: true,
+    message: "Department deleted successfully",
+  };
+}
