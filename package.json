@@ -28,7 +28,6 @@
     "lucide-react": "^1.14.0",
     "next": "16.2.4",
     "pg": "^8.20.0",
-    "radix-ui": "^1.4.3",
     "react": "19.2.4",
     "react-day-picker": "^10.0.0",
     "react-dom": "19.2.4",
@@ -44,16 +43,11 @@
     "@types/bcryptjs": "^2.4.6",
     "@types/dagre": "^0.7.54",
     "@types/node": "^20",
-    "@types/pg": "^8.20.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.4",
-    "eslint-config-prettier": "^10.1.8",
-    "prettier": "^3.8.3",
-    "prisma": "^7.7.0",
     "tailwindcss": "^4",
-    "tsx": "^4.21.0",
     "typescript": "^5"
   }
 }
